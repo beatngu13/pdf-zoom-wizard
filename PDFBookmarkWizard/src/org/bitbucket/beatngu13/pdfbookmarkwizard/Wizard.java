@@ -84,7 +84,6 @@ public class Wizard extends Task<Void> {
 		this.serializationMode = serializationMode;
 		this.mode = mode;
 		this.zoom = zoom;
-		System.out.println(stateProperty());
 	}
 
 	@Override
