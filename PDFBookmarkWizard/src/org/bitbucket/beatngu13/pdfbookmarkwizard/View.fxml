@@ -16,25 +16,17 @@
 	<TextField fx:id="directoryTextField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 	<Button fx:id="browseButton" text="Browse" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
 	<Label text="Zoom level:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-	<ChoiceBox fx:id="zoomChoiceBox" value="Inherit Zoom" GridPane.rowIndex="1" 
+	<ChoiceBox fx:id="zoomChoiceBox" value="Inherit zoom" GridPane.rowIndex="1" 
 		GridPane.columnIndex="1">
-		<!-- TODO Fill ChoiceBox and set default value.
-		<items>
-			<String fx:value="Inherit Zoom"/>
-		</items>
-		-->
+			<String fx:value="Inherit zoom"/>
 	</ChoiceBox>
 	<Label text="PDF version:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
 	<ChoiceBox fx:id="versionChoiceBox" value="1.4" GridPane.rowIndex="2" 
 		GridPane.columnIndex="1">
-		<!-- TODO Fill ChoiceBox and set default value.
-		<items>
 			<String fx:value="1.4"/>
-		</items>
-		-->
 	</ChoiceBox>
 	<Label text="Status:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-	<Text fx:id="statusText" text="Ready." GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+	<Text fx:id="statusText" text="READY" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 	<Button fx:id="runButton" text="Run" disable="true" GridPane.halignment="RIGHT" 
 		GridPane.rowIndex="4" GridPane.columnIndex="2"/>
 </GridPane>

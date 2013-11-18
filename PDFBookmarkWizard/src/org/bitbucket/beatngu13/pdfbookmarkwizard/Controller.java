@@ -19,11 +19,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * Provides a JavaFX-based UI based on <code>View.fxml</code> and takes place as the controller 
@@ -47,6 +53,7 @@ public class Controller {
 	 * Root directory to work with.
 	 */
 	private File rootDirectory;
+	
 	/**
 	 * Main UI.
 	 */
@@ -62,6 +69,16 @@ public class Controller {
 	 */
 	@FXML
 	private Button browseButton;
+	/**
+	 * {@link VersionEnum} to use within {@link #run()}.
+	 */
+	@FXML
+	private ChoiceBox<String> zoomChoiceBox;
+	/**
+	 * {@link SerializationModeEnum} to use within {@link #run()}.
+	 */
+	@FXML
+	private ChoiceBox<String> versionChoiceBox;
 	/**
 	 * Displaying wheter a {@link Wizard} instance is (still) running or not.
 	 */
@@ -116,7 +133,21 @@ public class Controller {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				// TODO Add a warning modal dialog.
+				// TODO Extract warning dialog.
+//				Stage warningDialog = new Stage();
+//				warningDialog.initOwner(runButton.getScene().getWindow());
+//				warningDialog.initModality(Modality.WINDOW_MODAL);
+//				
+//				GridPane gridPane = new GridPane();
+//				gridPane.setAlignment(Pos.CENTER);
+//				gridPane.add(new Text("Warning! All PDF files within " + rootDirectory
+//						+ " will be overwritten!"), 0, 0);
+//				gridPane.add(new Button("OK"), 1, 1);
+//				
+//				Scene warningScene = new Scene(gridPane);
+//				warningDialog.setScene(warningScene);
+//				warningDialog.show();
+//				
 				Controller.this.run();
 			}
 			
@@ -134,12 +165,12 @@ public class Controller {
 		}
 		
 		if (rootDirectory.isDirectory()) {
-			// TODO Add appropriate controls set these options.
-			Version version = VersionEnum.PDF14.getVersion();
+			Version version = computeVersion();
 			SerializationModeEnum serializationMode = SerializationModeEnum.Incremental;
-			ModeEnum mode = ModeEnum.XYZ;
-			Double zoom = null;
+			ModeEnum mode = computeModeEnum();
+			Double zoom = computeZoom();
 			Wizard wizard = new Wizard(rootDirectory, version, serializationMode, mode, zoom);
+			statusText.textProperty().bind(wizard.messageProperty());
 			
 			try {
 				wizard.call();
@@ -147,6 +178,61 @@ public class Controller {
 				logger.log(Level.SEVERE, "Fatal Wizard error.", e);
 			}
 		} else logger.severe(rootDirectory.getAbsolutePath() + " is not a valid directory.");
+	}
+	
+	// TODO Add more values.
+	/**
+	 * Computes {@link Version} according to {@link #versionChoiceBox} when a new Wizard task is 
+	 * started.
+	 * 
+	 * @return Chosen version number. <code>null</code> should'nt be returned due to the predefined
+	 * values within the choice box.
+	 */
+	private Version computeVersion() {
+		Version version = null;
+		
+		switch (versionChoiceBox.getValue()) {
+		case "1.4":
+			version = VersionEnum.PDF14.getVersion();
+		}
+		
+		return version;
+	}
+	
+	// TODO Add more values.
+	/**
+	 * Computes {@link ModeEnum} according to {@link #zoomChoiceBox} when a new Wizard task is 
+	 * started.
+	 * 
+	 * @return Chosen mode. <code>null</code> should'nt be returned due to the predefined values 
+	 * within the choice box.
+	 */
+	private ModeEnum computeModeEnum() {
+		ModeEnum mode = null;
+		
+		switch (zoomChoiceBox.getValue()) {
+		case "Inherit zoom":
+			mode = ModeEnum.XYZ;
+		}
+		
+		return mode;
+	}
+	
+	// TODO Add more values.
+	/**
+	 * Computes zoom according to {@link #zoomChoiceBox} when a new Wizard task is started.
+	 * 
+	 * @return Chosen zoom.
+	 */
+	private Double computeZoom() {
+		Double zoom = null;
+		
+		switch (zoomChoiceBox.getValue()) {
+		case "Inherit zoom":
+			zoom = null;
+		}
+		
+		return zoom;
 	}
 
 	/**

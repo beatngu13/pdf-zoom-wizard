@@ -84,16 +84,22 @@ public class Wizard extends Task<Void> {
 		this.serializationMode = serializationMode;
 		this.mode = mode;
 		this.zoom = zoom;
+		System.out.println(stateProperty());
 	}
 
 	@Override
 	protected Void call() throws Exception {
+		running();
 		logger.info("Start working in \"" + rootDirectory.getAbsolutePath()
 				+ "\". All PDF documents will be saved as version " + version
 				+ " with serialization mode " + serializationMode + ".");
+		
 		modifiyFiles(rootDirectory.listFiles());
-		// TODO What happens when an exception has been thrown?
-		logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " files.");
+		
+		if (!stateProperty().equals(State.FAILED)) {
+			succeeded();
+			logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " files.");
+		}
 		
 		return null;
 	}
@@ -124,9 +130,11 @@ public class Wizard extends Task<Void> {
 					logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
 							+ filename + "\".");
 				} catch (FileNotFoundException e) {
+					failed();
 					logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
 							+ " object.", e);
 				} catch (IOException e) {
+					failed();
 					logger.log(Level.SEVERE, "Could not save modified \"" + file.getAbsolutePath() 
 							+ "\".", e);
 				}
@@ -161,6 +169,24 @@ public class Wizard extends Task<Void> {
 				modifyBookmarks(bookmark.getBookmarks());
 			}
 		}
+	}
+	
+	@Override
+	protected void running() {
+		super.running();
+		updateMessage(State.RUNNING.toString());
+	}
+	
+	@Override
+	protected void succeeded() {
+		super.succeeded();
+		updateMessage(State.SUCCEEDED.toString());
+	}
+	
+	@Override
+	protected void failed() {
+		super.failed();
+		updateMessage(State.FAILED.toString());
 	}
 
 }
