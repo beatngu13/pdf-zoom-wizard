@@ -1,0 +1,83 @@
+<html>
+<head>
+<!--
+  Copyright 2006-2012 Stefano Chizzolini. http://www.pdfclown.org
+
+  Contributors:
+    * Stefano Chizzolini (original code developer, http://www.stefanochizzolini.it)
+
+  This file should be part of the source code distribution of "PDF Clown library"
+  (the Program): see the accompanying README files for more info.
+
+  This Program is free software; you can redistribute it and/or modify it under the terms
+  of the GNU Lesser General Public License as published by the Free Software Foundation;
+  either version 3 of the License, or (at your option) any later version.
+
+  This Program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY,
+  either expressed or implied; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE. See the License for more details.
+
+  You should have received a copy of the GNU Lesser General Public License along with this
+  Program (see README files); if not, go to the GNU website (http://www.gnu.org/licenses/).
+
+  Redistribution and use, with or without modification, are permitted provided that such
+  redistributions retain the above copyright notice, license and disclaimer, along with
+  this list of conditions.
+-->
+</head>
+<body>
+<p>PDF Clown for Java is a general-purpose library for PDF files manipulation.</p>
+
+<h3>Bibliographic references</h3>
+<p>All around this project's documentation, bibliographic references are expressed using the following syntax (XSBNF):</p>
+<pre>
+  biblioReference := { '[' publication ':' version ':' section ']' } // Bibliographic reference.
+  publication := { letter+ } // Publication identifier.
+  version := { digit+ { '.' digit+ }* } // Publication version.
+  section := { chapterParagraph, appendixParagraph } // Publication section.
+  chapterParagraph := { digit+ paragraph } // Chapter paragraph.
+  appendixParagraph := { letter paragraph } // Appendix paragraph.
+  paragraph := { { '.' digit+ }* } // Paragraph.
+</pre>
+
+<p>Publications cited within this project:</p>
+<ul>
+  <li><code>[AFM]</code> <i>Adobe Font Metrics File Format Specification</i>, Adobe Systems Inc., http://www.adobe.com/devnet/font/pdfs/5004.AFM_Spec.pdf;</li>
+  <li><code>[AGL]</code> <i>Adobe Glyph List</i>, Adobe Systems Inc., http://partners.adobe.com/public/developer/en/opentype/glyphlist.txt;</li>
+  <li><code>[AGLFN]</code> <i>Adobe Glyph List For New Fonts</i>, Adobe Systems Inc., http://partners.adobe.com/public/developer/en/opentype/aglfn13.txt;</li>
+  <li><code>[ANSI/ASME Y14.1]</code> <i>Decimal inch drawing sheet size and format</i>, http://www.ansi.org/;</li>
+  <li><code>[CFF]</code> <i>The Compact Font Format Specification</i>, http://www.adobe.com/content/dam/Adobe/en/devnet/font/pdfs/5176.CFF.pdf;</li>
+  <li><code>[CMAP]</code> <i>Adobe CMap and CIDFont Files Specification</i>, http://www.adobe.com/devnet/font/pdfs/5014.CIDFont_Spec.pdf;</li>
+  <li><code>[GS1]</code> <i>GS1 General Specifications</i>, http://www.gs1.org/productssolutions/barcodes/technical/genspecs/index.html;</li>
+  <li><code>[ISO 10918-1]</code> <i>JPEG Standard (digital compression and coding of continuous-tone still images)</i>, http://www.iso.org/;</li>
+  <li><code>[ISO 216]</code> <i>Writing paper and certain classes of printed matter -- Trimmed sizes -- A and B series</i>, http://www.iso.org/;</li>
+  <li><code>[ISO 269]</code> <i>Correspondence envelopes -- Designation and sizes</i>, http://www.iso.org/;</li>
+  <li><code>[JFIF]</code> <i>JPEG File Interchange Format</i>, Eric Hamilton (C-Cube Microsystems), http://www.w3.org/Graphics/JPEG/jfif3.pdf;</li>
+  <li><code>[OFF]</code> <i>Open Font Format</i> (ISO/IEC 14496-22), standardization of the <i>OpenType font format specification</i> (Microsoft Corp. and Adobe Systems Inc.), http://www.iso.org/;</li>
+  <li><code>[PDF]</code> <i>PDF Reference, Adobe Portable Document Format</i>, Adobe Systems Inc., http://www.adobe.com/devnet/pdf/pdf_reference.html;</li>
+  <li><code>[PS]</code> <i>PostScript Language Reference, 3rd edition</i>, Adobe Systems Inc., http://partners.adobe.com/public/developer/en/ps/PLRM.pdf;</li>
+  <li><code>[RFC 2045]</code> <i>Multipurpose Internet Mail Extensions (MIME), Part One: Format of Internet Message Bodies</i>, http://www.ietf.org/rfc/rfc2045.txt;</li>
+  <li><code>[RFC 2046]</code> <i>Multipurpose Internet Mail Extensions (MIME), Part Two: Media Types</i>, http://www.ietf.org/rfc/rfc2046.txt;</li>
+  <li><code>[RFC 2083]</code> <i>Portable Network Graphics (PNG) Specification, version 1.0</i>, http://www.ietf.org/rfc/rfc2083.txt;</li>
+  <li><code>[RFC 2396]</code> <i>Uniform Resource Identifiers (URI): Generic Syntax</i>, http://www.ietf.org/rfc/rfc2396.txt;</li>
+  <li><code>[RFC 3066]</code> <i>Tags for the Identification of Languages</i>, http://www.ietf.org/rfc/rfc3066.txt;</li>
+  <li><code>[UCS]</code> <i>The Unicode Standard</i>, Unicode Consortium, http://www.unicode.org;</li>
+</ul>
+
+<h3>Bugfixes</h3>
+<p>All around this project's documentation, bugfix references are expressed using the following syntax (XSBNF):</p>
+<pre>
+  bugReference := { '[' bugfixTag ':' bugID ']' } // Bug reference.
+  bugfixTag := { 'FIX' } // Bug fix tag.
+  bugID := { publicBugID, privateBugID } // Bug identifier.
+  publicBugID := { digit+ } // Public bug tracker ID (see http://sourceforge.net/tracker/?group_id=176158&atid=876123).
+  privateBugID := { appVersion ':' digit+ } // Private (non-tracked) bug ID.
+</pre>
+
+<h3>Related Documentation</h3>
+<p>For overviews, tutorials, examples, guides, and tool documentation, please see:</p>
+<ul>
+  <li><a href="http://www.pdfclown.org">PDF Clown Home Page</a></li>
+</ul>
+</body>
+</html>
