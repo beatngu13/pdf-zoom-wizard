@@ -165,11 +165,8 @@ public class Controller {
 		}
 		
 		if (rootDirectory.isDirectory()) {
-			Version version = computeVersion();
-			SerializationModeEnum serializationMode = SerializationModeEnum.Incremental;
-			ModeEnum mode = computeModeEnum();
-			Double zoom = computeZoom();
-			Wizard wizard = new Wizard(rootDirectory, version, serializationMode, mode, zoom);
+			Wizard wizard = new Wizard(rootDirectory, computeVersion(), 
+					SerializationModeEnum.Incremental, computeModeEnum(), computeZoom());
 			statusText.textProperty().bind(wizard.messageProperty());
 			
 			try {
@@ -177,7 +174,8 @@ public class Controller {
 			} catch (Exception e) {
 				logger.log(Level.SEVERE, "Fatal Wizard error.", e);
 			}
-		} else logger.severe(rootDirectory.getAbsolutePath() + " is not a valid directory.");
+		} else logger.severe("\"" + rootDirectory.getAbsolutePath() 
+				+ "\" is not a valid directory.");
 	}
 	
 	// TODO Add more values.
@@ -192,14 +190,35 @@ public class Controller {
 		Version version = null;
 		
 		switch (versionChoiceBox.getValue()) {
+		case "1.0":
+			version = VersionEnum.PDF10.getVersion();
+			break;
+		case "1.1":
+			version = VersionEnum.PDF11.getVersion();
+			break;
+		case "1.2":
+			version = VersionEnum.PDF12.getVersion();
+			break;
+		case "1.3":
+			version = VersionEnum.PDF13.getVersion();
+			break;
 		case "1.4":
 			version = VersionEnum.PDF14.getVersion();
+			break;
+		case "1.5":
+			version = VersionEnum.PDF15.getVersion();
+			break;
+		case "1.6":
+			version = VersionEnum.PDF16.getVersion();
+			break;
+		case "1.7":
+			version = VersionEnum.PDF17.getVersion();
 		}
 		
 		return version;
 	}
 	
-	// TODO Add more values.
+	// TODO Add values.
 	/**
 	 * Computes {@link ModeEnum} according to {@link #zoomChoiceBox} when a new Wizard task is 
 	 * started.
@@ -218,7 +237,7 @@ public class Controller {
 		return mode;
 	}
 	
-	// TODO Add more values.
+	// TODO Add values.
 	/**
 	 * Computes zoom according to {@link #zoomChoiceBox} when a new Wizard task is started.
 	 * 
