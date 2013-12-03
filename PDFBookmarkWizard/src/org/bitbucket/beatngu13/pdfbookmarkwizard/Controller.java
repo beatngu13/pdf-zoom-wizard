@@ -230,6 +230,12 @@ public class Controller {
 		ModeEnum mode = null;
 		
 		switch (zoomChoiceBox.getValue()) {
+		case "Fit page":
+			mode = ModeEnum.Fit;
+			break;
+		case "Fit width":
+			mode = ModeEnum.FitHorizontal;
+			break;
 		case "Inherit zoom":
 			mode = ModeEnum.XYZ;
 		}

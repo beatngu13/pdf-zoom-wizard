@@ -18,6 +18,8 @@
 	<Label text="Zoom level:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
 	<ChoiceBox fx:id="zoomChoiceBox" value="Inherit zoom" GridPane.rowIndex="1" 
 		GridPane.columnIndex="1">
+			<String fx:value="Fit page"/>
+			<String fx:value="Fit width"/>
 			<String fx:value="Inherit zoom"/>
 	</ChoiceBox>
 	<Label text="PDF version:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>

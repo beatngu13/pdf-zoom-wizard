@@ -17,6 +17,7 @@ import org.pdfclown.documents.interaction.navigation.document.Destination;
 import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEnum;
 import org.pdfclown.files.File;
 import org.pdfclown.files.SerializationModeEnum;
+import org.pdfclown.util.parsers.ParseException;
 
 import javafx.concurrent.Task;
 
@@ -95,6 +96,7 @@ public class Wizard extends Task<Void> {
 		
 		modifiyFiles(rootDirectory.listFiles());
 		
+		// TODO Add appropriate logger message in case of failure.
 		if (!stateProperty().equals(State.FAILED)) {
 			succeeded();
 			logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " files.");
@@ -128,6 +130,11 @@ public class Wizard extends Task<Void> {
 					pdf.close();
 					logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
 							+ filename + "\".");
+					// TODO Appropriate check provided by PDFClown?
+				} catch (ParseException e) {
+					failed();
+					logger.log(Level.SEVERE, "\"" + file.getAbsolutePath() 
+							+ "\" is not a PDF file.");
 				} catch (FileNotFoundException e) {
 					failed();
 					logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
@@ -185,6 +192,7 @@ public class Wizard extends Task<Void> {
 	@Override
 	protected void failed() {
 		super.failed();
+		fileCount--;
 		updateMessage(State.FAILED.toString());
 	}
 
