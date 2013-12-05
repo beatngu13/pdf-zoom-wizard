@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+
+<GridPane fx:id="warning" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10.0" 
+	vgap="10.0">
+	<Text fx:id="warningText" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+	<HBox spacing="10.0" alignment="BOTTOM_RIGHT" GridPane.rowIndex="1" GridPane.columnIndex="0">
+		<Button fx:id="okButton" text="OK"/>
+		<Button fx:id="cancelButton" text="Cancel"/>
+	</HBox>
+</GridPane>
+

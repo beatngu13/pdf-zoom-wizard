@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.bitbucket.beatngu13.pdfbookmarkwizard;
 
 import java.io.File;
@@ -19,17 +16,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 /**
  * Provides a JavaFX-based UI based on <code>View.fxml</code> and takes place as the controller 
@@ -38,12 +30,12 @@ import javafx.stage.Stage;
  * @author danielkraus1986@gmail.com
  *
  */
-public class Controller {
+public class ViewController {
 	
 	/**
 	 * {@link Logger} instance.
 	 */
-	private static final Logger logger = Logger.getLogger(Controller.class.getName());
+	private static final Logger logger = Logger.getLogger(ViewController.class.getName());
 	
 	/**
 	 * @see #browseButton
@@ -53,14 +45,18 @@ public class Controller {
 	 * Root directory to work with.
 	 */
 	private File rootDirectory;
+	/**
+	 * Displays a modal warning dialog when {@link #runButton} is being clicked.
+	 */
+	private WarningController warningController;
 	
 	/**
-	 * Main UI.
+	 * Actual UI content.
 	 */
 	@FXML
 	private Parent view;
 	/**
-	 * Displaying absolute path of {@link #rootDirectory}.
+	 * Displays absolute path of {@link #rootDirectory}.
 	 */
 	@FXML
 	private TextField directoryTextField;
@@ -80,26 +76,26 @@ public class Controller {
 	@FXML
 	private ChoiceBox<String> versionChoiceBox;
 	/**
-	 * Displaying wheter a {@link Wizard} instance is (still) running or not.
+	 * Displays whether a {@link Wizard} instance is (still) running or not.
 	 */
 	@FXML
 	private Text statusText;
 	/**
-	 * Calls {@link #run()}.
+	 * Calls {@link #run()} if the confirms to proceed within the following modal warning dialog.
 	 */
 	@FXML
 	private Button runButton;
 	
 	/**
-	 * Creates a new <code>Controller</code> instance.
+	 * Creates a new <code>ViewController</code> instance.
 	 */
-	public Controller() {
+	public ViewController() {
 		directoryChooser.setTitle("Choose root directory");
 		
 		try {
-			// TODO Why is the static loader not working?
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("View.fxml"));
-			// TODO Add controller within FXML file.
+			
+			// FIXME Adding controller within FXML file is not working.
 			loader.setController(this);
 			loader.load();
 		} catch (IOException e) {
@@ -133,22 +129,19 @@ public class Controller {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				// TODO Extract warning dialog.
-//				Stage warningDialog = new Stage();
-//				warningDialog.initOwner(runButton.getScene().getWindow());
-//				warningDialog.initModality(Modality.WINDOW_MODAL);
-//				
-//				GridPane gridPane = new GridPane();
-//				gridPane.setAlignment(Pos.CENTER);
-//				gridPane.add(new Text("Warning! All PDF files within " + rootDirectory
-//						+ " will be overwritten!"), 0, 0);
-//				gridPane.add(new Button("OK"), 1, 1);
-//				
-//				Scene warningScene = new Scene(gridPane);
-//				warningDialog.setScene(warningScene);
-//				warningDialog.show();
-//				
-				Controller.this.run();
+				if (rootDirectory == null
+						|| !rootDirectory.getAbsolutePath().equals(directoryTextField.getText())) {
+					rootDirectory = new File(directoryTextField.getText());
+				}
+				// TODO Bad style?
+				warningController = warningController == null ? 
+						new WarningController(runButton.getScene().getWindow()) : warningController;
+				String warningMessage = "All files within \"" + rootDirectory.getAbsolutePath() 
+						+ "\" will be overwritten! \n" + "Are you sure to proceed?";
+				
+				if (warningController.show(warningMessage)) {
+					ViewController.this.run();
+				}
 			}
 			
 		});
@@ -159,26 +152,25 @@ public class Controller {
 	 * {@link #rootDirectory}.
 	 */
 	private void run() {
-		if (rootDirectory == null || rootDirectory.getAbsolutePath() 
-				!= directoryTextField.getText()) {
-			rootDirectory = new File(directoryTextField.getText());
-		}
-		
 		if (rootDirectory.isDirectory()) {
+			// FIXME UI still blocked even though the Wizard is working in a new thread.
 			Wizard wizard = new Wizard(rootDirectory, computeVersion(), 
 					SerializationModeEnum.Incremental, computeModeEnum(), computeZoom());
+			// FIXME Status does not update on RUNNING.
 			statusText.textProperty().bind(wizard.messageProperty());
 			
 			try {
 				wizard.call();
 			} catch (Exception e) {
-				logger.log(Level.SEVERE, "Fatal Wizard error.", e);
+				logger.log(Level.SEVERE, "Unknown Wizard error occurred.", e);
 			}
-		} else logger.severe("\"" + rootDirectory.getAbsolutePath() 
-				+ "\" is not a valid directory.");
+		} else {
+			// TODO Add appropriate user message or make directoryTextField uneditable.
+			logger.severe("\"" + rootDirectory.getAbsolutePath()
+					+ "\" is not a valid directory.");
+		}
 	}
 	
-	// TODO Add more values.
 	/**
 	 * Computes {@link Version} according to {@link #versionChoiceBox} when a new Wizard task is 
 	 * started.
@@ -218,7 +210,7 @@ public class Controller {
 		return version;
 	}
 	
-	// TODO Add values.
+	// TODO Add more values.
 	/**
 	 * Computes {@link ModeEnum} according to {@link #zoomChoiceBox} when a new Wizard task is 
 	 * started.
@@ -243,7 +235,7 @@ public class Controller {
 		return mode;
 	}
 	
-	// TODO Add values.
+	// TODO Add more values.
 	/**
 	 * Computes zoom according to {@link #zoomChoiceBox} when a new Wizard task is started.
 	 * 

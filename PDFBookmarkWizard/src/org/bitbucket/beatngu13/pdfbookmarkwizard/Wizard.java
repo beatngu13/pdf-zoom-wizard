@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.bitbucket.beatngu13.pdfbookmarkwizard;
 
 import java.io.FileNotFoundException;
@@ -96,7 +93,7 @@ public class Wizard extends Task<Void> {
 		
 		modifiyFiles(rootDirectory.listFiles());
 		
-		// TODO Add appropriate logger message in case of failure.
+		// TODO Add appropriate user message in case of failure.
 		if (!stateProperty().equals(State.FAILED)) {
 			succeeded();
 			logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " files.");
@@ -130,15 +127,14 @@ public class Wizard extends Task<Void> {
 					pdf.close();
 					logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
 							+ filename + "\".");
-					// TODO Appropriate check provided by PDFClown?
+				} catch (FileNotFoundException e) {
+					failed();
+					logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
+							+ " instance of \"" + file.getAbsolutePath() + "\".", e);
 				} catch (ParseException e) {
 					failed();
 					logger.log(Level.SEVERE, "\"" + file.getAbsolutePath() 
 							+ "\" is not a PDF file.");
-				} catch (FileNotFoundException e) {
-					failed();
-					logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
-							+ " object.", e);
 				} catch (IOException e) {
 					failed();
 					logger.log(Level.SEVERE, "Could not save modified \"" + file.getAbsolutePath() 
@@ -168,7 +164,7 @@ public class Wizard extends Task<Void> {
 				bookmarkCountLocal++;
 				bookmarkCount++;
 				logger.fine("Successfully set \"" + bookmark.getTitle() 
-						+ "\" to use 'Inherhit Zoom'.");
+						+ "\" to use mode " + mode + " and zoom " + zoom + ".");
 			}
 			
 			if (bookmark.getBookmarks().size() != 0) {
@@ -193,6 +189,7 @@ public class Wizard extends Task<Void> {
 	protected void failed() {
 		super.failed();
 		fileCount--;
+		bookmarkCount -= bookmarkCountLocal;
 		updateMessage(State.FAILED.toString());
 	}
 

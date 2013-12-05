@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.bitbucket.beatngu13.pdfbookmarkwizard;
 
 import javafx.application.Application;
@@ -21,10 +18,10 @@ public class Launcher extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Controller controller = new Controller();
+		ViewController controller = new ViewController();
 		
 		primaryStage.setTitle("PDF Bookmark Wizard");
-        primaryStage.setScene(new Scene(controller.getView(), 400.0, 185.0));
+        primaryStage.setScene(new Scene(controller.getView(), 365.0, 185.0));
         primaryStage.show();
 	}
 
