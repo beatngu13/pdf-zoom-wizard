@@ -86,18 +86,11 @@ public class Wizard extends Task<Void> {
 
 	@Override
 	protected Void call() throws Exception {
-		running();
 		logger.info("Start working in \"" + rootDirectory.getAbsolutePath()
 				+ "\". All PDF documents will be saved as version " + version
 				+ " with serialization mode " + serializationMode + ".");
-		
 		modifiyFiles(rootDirectory.listFiles());
-		
-		// TODO Add appropriate user message in case of failure.
-		if (!stateProperty().equals(State.FAILED)) {
-			succeeded();
-			logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " files.");
-		}
+		logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " file(s).");
 		
 		return null;
 	}
@@ -128,15 +121,12 @@ public class Wizard extends Task<Void> {
 					logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
 							+ filename + "\".");
 				} catch (FileNotFoundException e) {
-					failed();
 					logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
 							+ " instance of \"" + file.getAbsolutePath() + "\".", e);
 				} catch (ParseException e) {
-					failed();
 					logger.log(Level.SEVERE, "\"" + file.getAbsolutePath() 
 							+ "\" is not a PDF file.");
 				} catch (IOException e) {
-					failed();
 					logger.log(Level.SEVERE, "Could not save modified \"" + file.getAbsolutePath() 
 							+ "\".", e);
 				}
@@ -185,6 +175,7 @@ public class Wizard extends Task<Void> {
 		updateMessage(State.SUCCEEDED.toString());
 	}
 	
+	// TODO Call manually?
 	@Override
 	protected void failed() {
 		super.failed();

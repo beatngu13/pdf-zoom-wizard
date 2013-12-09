@@ -18,7 +18,9 @@
 	<ChoiceBox fx:id="zoomChoiceBox" value="Inherit zoom" GridPane.rowIndex="1" 
 		GridPane.columnIndex="1">
 			<String fx:value="Fit page"/>
+			<String fx:value="Actual size"/>
 			<String fx:value="Fit width"/>
+			<String fx:value="Fit visible"/>
 			<String fx:value="Inherit zoom"/>
 	</ChoiceBox>
 	<Label text="PDF version:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
@@ -33,8 +35,8 @@
 			<String fx:value="1.6"/>
 			<String fx:value="1.7"/>
 	</ChoiceBox>
-	<Label text="Status:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-	<Text fx:id="statusText" text="READY" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+	<Label text="State:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+	<Text fx:id="stateText" text="READY" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 	<Button fx:id="runButton" text="Run" disable="true" GridPane.halignment="RIGHT" 
 		GridPane.rowIndex="4" GridPane.columnIndex="2"/>
 </GridPane>

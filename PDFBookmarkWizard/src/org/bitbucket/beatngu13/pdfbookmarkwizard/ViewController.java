@@ -79,7 +79,7 @@ public class ViewController {
 	 * Displays whether a {@link Wizard} instance is (still) running or not.
 	 */
 	@FXML
-	private Text statusText;
+	private Text stateText;
 	/**
 	 * Calls {@link #run()} if the confirms to proceed within the following modal warning dialog.
 	 */
@@ -153,17 +153,13 @@ public class ViewController {
 	 */
 	private void run() {
 		if (rootDirectory.isDirectory()) {
-			// FIXME UI still blocked even though the Wizard is working in a new thread.
 			Wizard wizard = new Wizard(rootDirectory, computeVersion(), 
 					SerializationModeEnum.Incremental, computeModeEnum(), computeZoom());
-			// FIXME Status does not update on RUNNING.
-			statusText.textProperty().bind(wizard.messageProperty());
+			stateText.textProperty().bind(wizard.messageProperty());
 			
-			try {
-				wizard.call();
-			} catch (Exception e) {
-				logger.log(Level.SEVERE, "Unknown Wizard error occurred.", e);
-			}
+			Thread thread = new Thread(wizard);
+			thread.setDaemon(true);
+			thread.start();
 		} else {
 			// TODO Add appropriate user message or make directoryTextField uneditable.
 			logger.severe("\"" + rootDirectory.getAbsolutePath()
@@ -210,13 +206,12 @@ public class ViewController {
 		return version;
 	}
 	
-	// TODO Add more values.
 	/**
 	 * Computes {@link ModeEnum} according to {@link #zoomChoiceBox} when a new Wizard task is 
 	 * started.
 	 * 
-	 * @return Chosen mode. <code>null</code> should'nt be returned due to the predefined values 
-	 * within the choice box.
+	 * @return Chosen mode. <code>null</code> won't be returned due to predefined values within the
+	 * choice box.
 	 */
 	private ModeEnum computeModeEnum() {
 		ModeEnum mode = null;
@@ -225,8 +220,14 @@ public class ViewController {
 		case "Fit page":
 			mode = ModeEnum.Fit;
 			break;
+		case "Actual size":
+			mode = ModeEnum.XYZ;
+			break;
 		case "Fit width":
 			mode = ModeEnum.FitHorizontal;
+			break;
+		case "Fit visible":
+			mode = ModeEnum.FitBoundingBoxHorizontal;
 			break;
 		case "Inherit zoom":
 			mode = ModeEnum.XYZ;
@@ -235,7 +236,6 @@ public class ViewController {
 		return mode;
 	}
 	
-	// TODO Add more values.
 	/**
 	 * Computes zoom according to {@link #zoomChoiceBox} when a new Wizard task is started.
 	 * 
@@ -245,8 +245,11 @@ public class ViewController {
 		Double zoom = null;
 		
 		switch (zoomChoiceBox.getValue()) {
-		case "Inherit zoom":
-			zoom = null;
+		case "Actual size":
+			zoom = 1.0;
+			break;
+		case "Fit visible":
+			zoom = 0.0;
 		}
 		
 		return zoom;
