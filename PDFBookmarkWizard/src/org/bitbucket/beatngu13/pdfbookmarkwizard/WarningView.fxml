@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
 
-<GridPane fx:id="warning" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10.0" 
+<GridPane fx:id="warningView" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10.0" 
 	vgap="10.0">
 	<Text fx:id="warningText" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
 	<HBox spacing="10.0" alignment="BOTTOM_RIGHT" GridPane.rowIndex="1" GridPane.columnIndex="0">

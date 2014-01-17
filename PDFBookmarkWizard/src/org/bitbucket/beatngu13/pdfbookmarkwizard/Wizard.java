@@ -20,8 +20,7 @@ import javafx.concurrent.Task;
 
 /**
  * Modifies all PDF files within a given directory and its enclosing subdirectories. Each bookmark 
- * will be set to use {@link #mode} and {@link #zoom}. Please bear in mind that all documents will 
- * be overwritten!
+ * will be set to use {@link #mode} and {@link #zoom}.
  * 
  * @author danielkraus1986@gmail.com
  *
@@ -62,7 +61,7 @@ public class Wizard extends Task<Void> {
 	 */
 	private int bookmarkCount;
 	/**
-	 * Number of modified bookmarks within a currently modified PDF file.
+	 * Number of modified bookmarks within the currently processed PDF file.
 	 */
 	private int bookmarkCountLocal;
 	
@@ -89,7 +88,9 @@ public class Wizard extends Task<Void> {
 		logger.info("Start working in \"" + rootDirectory.getAbsolutePath()
 				+ "\". All PDF documents will be saved as version " + version
 				+ " with serialization mode " + serializationMode + ".");
+		
 		modifiyFiles(rootDirectory.listFiles());
+		
 		logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " file(s).");
 		
 		return null;
@@ -97,7 +98,7 @@ public class Wizard extends Task<Void> {
 	
 	/**
 	 * Modifies each PDF file which is found by depth-first seach, starting from the given 
-	 * list of files, and performs {@link #modifyBookmarks(Bookmarks)} on them.
+	 * list of files, and calls {@link #modifyBookmarks(Bookmarks)}.
 	 * 
 	 * @param files List of files within the root directory.
 	 */
@@ -106,18 +107,22 @@ public class Wizard extends Task<Void> {
 			String filename = file.getName();
 			
 			if (filename.endsWith(".pdf")) {
-				fileCount++;
 				logger.info("Processing \"" + filename + "\".");
 				
 				try {
 					File pdf = new File(file.getAbsolutePath());
 					Document document = pdf.getDocument();
-					bookmarkCountLocal = 0;
 					
 					modifyBookmarks(document.getBookmarks());
-					document.setVersion(version);
+					// FIXME Broken PDF versioning, probably caused by a PDF Clown bug.
+					if (version != null) {
+						document.setVersion(version);
+					}
 					pdf.save(serializationMode);
 					pdf.close();
+					fileCount++;
+					bookmarkCountLocal = 0;
+					
 					logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
 							+ filename + "\".");
 				} catch (FileNotFoundException e) {
@@ -138,21 +143,21 @@ public class Wizard extends Task<Void> {
 	
 	/**
 	 * Modifies each bookmark which is found by depth-first seach, starting from the given 
-	 * collection of bookmarks, and applies {@link #mode} and {@link #zoom} to them.
+	 * collection of bookmarks, and applies {@link #mode} and {@link #zoom}.
 	 * 
 	 * @param bookmarks Collection of bookmarks to modify.
 	 */
 	private void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
-			
 			if (bookmark.getTarget() instanceof GoToDestination<?>) {
 				Destination destination = ((GoToDestination<?>) bookmark.getTarget())
 						.getDestination();
 
 				destination.setMode(mode);
 				destination.setZoom(zoom);
-				bookmarkCountLocal++;
 				bookmarkCount++;
+				bookmarkCountLocal++;
+				
 				logger.fine("Successfully set \"" + bookmark.getTitle() 
 						+ "\" to use mode " + mode + " and zoom " + zoom + ".");
 			}
@@ -175,12 +180,10 @@ public class Wizard extends Task<Void> {
 		updateMessage(State.SUCCEEDED.toString());
 	}
 	
-	// TODO Call manually?
+	// TODO Update counters.
 	@Override
 	protected void failed() {
 		super.failed();
-		fileCount--;
-		bookmarkCount -= bookmarkCountLocal;
 		updateMessage(State.FAILED.toString());
 	}
 

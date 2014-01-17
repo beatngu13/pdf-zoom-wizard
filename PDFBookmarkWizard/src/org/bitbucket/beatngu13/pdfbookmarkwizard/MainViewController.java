@@ -12,6 +12,7 @@ import org.pdfclown.files.SerializationModeEnum;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,18 +25,17 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 
 /**
- * Provides a JavaFX-based UI based on <code>View.fxml</code> and takes place as the controller 
- * according to the MVC pattern. 
+ * Provides a JavaFX-based Wizard UI.
  * 
  * @author danielkraus1986@gmail.com
  *
  */
-public class ViewController {
+public class MainViewController {
 	
 	/**
 	 * {@link Logger} instance.
 	 */
-	private static final Logger logger = Logger.getLogger(ViewController.class.getName());
+	private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
 	
 	/**
 	 * @see #browseButton
@@ -46,15 +46,15 @@ public class ViewController {
 	 */
 	private File rootDirectory;
 	/**
-	 * Displays a modal warning dialog when {@link #runButton} is being clicked.
+	 * Occurs when {@link #runButton} is being clicked.
 	 */
 	private WarningController warningController;
 	
 	/**
-	 * Actual UI content.
+	 * Wizard UI container.
 	 */
 	@FXML
-	private Parent view;
+	private Parent mainView;
 	/**
 	 * Displays absolute path of {@link #rootDirectory}.
 	 */
@@ -66,36 +66,36 @@ public class ViewController {
 	@FXML
 	private Button browseButton;
 	/**
-	 * {@link VersionEnum} to use within {@link #run()}.
+	 * {@link VersionEnum} to use for modification.
 	 */
 	@FXML
 	private ChoiceBox<String> zoomChoiceBox;
 	/**
-	 * {@link SerializationModeEnum} to use within {@link #run()}.
+	 * {@link SerializationModeEnum} to use for modification.
 	 */
 	@FXML
 	private ChoiceBox<String> versionChoiceBox;
 	/**
-	 * Displays whether a {@link Wizard} instance is (still) running or not.
+	 * Displays the current state of the Wizard. Basically the values of {@link State} are used.
 	 */
 	@FXML
 	private Text stateText;
 	/**
-	 * Calls {@link #run()} if the confirms to proceed within the following modal warning dialog.
+	 * Calls {@link #run()} if the user confirms to proceed.
 	 */
 	@FXML
 	private Button runButton;
 	
 	/**
-	 * Creates a new <code>ViewController</code> instance.
+	 * Creates a new <code>MainViewController</code> instance.
 	 */
-	public ViewController() {
+	public MainViewController() {
 		directoryChooser.setTitle("Choose root directory");
 		
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("View.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
 			
-			// FIXME Adding controller within FXML file is not working.
+			// XXX Adding the controller within the FXML file fails.
 			loader.setController(this);
 			loader.load();
 		} catch (IOException e) {
@@ -116,7 +116,7 @@ public class ViewController {
 			
 			@Override
 			public void handle(ActionEvent arg0) {
-				rootDirectory = directoryChooser.showDialog(view.getScene().getWindow());
+				rootDirectory = directoryChooser.showDialog(mainView.getScene().getWindow());
 				
 				if (rootDirectory != null) {
 					directoryTextField.setText(rootDirectory.getAbsolutePath());
@@ -133,14 +133,14 @@ public class ViewController {
 						|| !rootDirectory.getAbsolutePath().equals(directoryTextField.getText())) {
 					rootDirectory = new File(directoryTextField.getText());
 				}
-				// TODO Bad style?
+				// TODO Bad style.
 				warningController = warningController == null ? 
 						new WarningController(runButton.getScene().getWindow()) : warningController;
-				String warningMessage = "All files within \"" + rootDirectory.getAbsolutePath() 
-						+ "\" will be overwritten! \n" + "Are you sure to proceed?";
+				String message = "All files in \"" + rootDirectory.getAbsolutePath() 
+						+ "\" will be overwritten! \n\n" + "Are you sure to proceed?";
 				
-				if (warningController.show(warningMessage)) {
-					ViewController.this.run();
+				if (warningController.show(message)) {
+					MainViewController.this.run();
 				}
 			}
 			
@@ -148,31 +148,37 @@ public class ViewController {
 	}
 	
 	/**
-	 * Creates a new {@link Wizard} instance and calls it to run modification on 
-	 * {@link #rootDirectory}.
+	 * Creates a new {@link Wizard} instance and starts modification on {@link #rootDirectory}.
 	 */
 	private void run() {
 		if (rootDirectory.isDirectory()) {
 			Wizard wizard = new Wizard(rootDirectory, computeVersion(), 
-					SerializationModeEnum.Incremental, computeModeEnum(), computeZoom());
-			stateText.textProperty().bind(wizard.messageProperty());
-			
+			SerializationModeEnum.Standard, computeModeEnum(), computeZoom());
 			Thread thread = new Thread(wizard);
+			
+			wizard.messageProperty().addListener(new ChangeListener<String>() {
+
+				@Override
+				public void changed(ObservableValue<? extends String> observable, String oldValue, 
+						String newValue) {
+					MainViewController.this.stateText.setText(newValue);
+				}
+			});
+			
 			thread.setDaemon(true);
 			thread.start();
 		} else {
-			// TODO Add appropriate user message or make directoryTextField uneditable.
+			stateText.setText("INVALID DIRECTORY");
+			
 			logger.severe("\"" + rootDirectory.getAbsolutePath()
 					+ "\" is not a valid directory.");
 		}
 	}
 	
 	/**
-	 * Computes {@link Version} according to {@link #versionChoiceBox} when a new Wizard task is 
-	 * started.
+	 * Computes {@link Version} according to the picked value in {@link #versionChoiceBox}.
 	 * 
-	 * @return Chosen version number. <code>null</code> should'nt be returned due to the predefined
-	 * values within the choice box.
+	 * @return Chosen version number, <code>null</code> if "Retain existing" was picked.
 	 */
 	private Version computeVersion() {
 		Version version = null;
@@ -207,11 +213,9 @@ public class ViewController {
 	}
 	
 	/**
-	 * Computes {@link ModeEnum} according to {@link #zoomChoiceBox} when a new Wizard task is 
-	 * started.
+	 * Computes {@link ModeEnum} according to the picked value in {@link #zoomChoiceBox}.
 	 * 
-	 * @return Chosen mode. <code>null</code> won't be returned due to predefined values within the
-	 * choice box.
+	 * @return Chosen mode.
 	 */
 	private ModeEnum computeModeEnum() {
 		ModeEnum mode = null;
@@ -239,7 +243,7 @@ public class ViewController {
 	/**
 	 * Computes zoom according to {@link #zoomChoiceBox} when a new Wizard task is started.
 	 * 
-	 * @return Chosen zoom.
+	 * @return Chosen zoom, <code>null</code> if "Actual size" or "Fit visible" weren't picked.
 	 */
 	private Double computeZoom() {
 		Double zoom = null;
@@ -256,10 +260,10 @@ public class ViewController {
 	}
 
 	/**
-	 * @return {@link #view}.
+	 * @return {@link #mainView}.
 	 */
-	public Parent getView() {
-		return view;
+	public Parent getMainView() {
+		return mainView;
 	}
 	
 }

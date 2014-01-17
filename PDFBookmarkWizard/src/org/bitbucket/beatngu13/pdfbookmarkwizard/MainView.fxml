@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.ChoiceBox?>
 
-<GridPane fx:id="view" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10.0" vgap="10.0">
+<GridPane fx:id="mainView" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10.0" vgap="10.0">
 	<Label text="Root directory:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
 	<TextField fx:id="directoryTextField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 	<Button fx:id="browseButton" text="Browse" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
@@ -24,7 +24,7 @@
 			<String fx:value="Inherit zoom"/>
 	</ChoiceBox>
 	<Label text="PDF version:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-	<ChoiceBox fx:id="versionChoiceBox" value="1.4" GridPane.rowIndex="2" 
+	<ChoiceBox fx:id="versionChoiceBox" value="Retain existing" GridPane.rowIndex="2" 
 		GridPane.columnIndex="1">
 			<String fx:value="1.0"/>
 			<String fx:value="1.1"/>
@@ -34,6 +34,7 @@
 			<String fx:value="1.5"/>
 			<String fx:value="1.6"/>
 			<String fx:value="1.7"/>
+			<String fx:value="Retain existing"/>
 	</ChoiceBox>
 	<Label text="State:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
 	<Text fx:id="stateText" text="READY" GridPane.rowIndex="3" GridPane.columnIndex="1"/>

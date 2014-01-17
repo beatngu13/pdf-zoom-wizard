@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 /**
- * Opens a modal warning dialog which displays a given message.
+ * Provides a JavaFX-based modal warning dialog, displaying a given message.
  * 
  * @author danielkraus1986@gmail.com
  *
@@ -34,28 +34,28 @@ public class WarningController {
 	 */
 	private Stage stage = new Stage();
 	/**
-	 * Indicates whether the user decided to proceed by clicking the OK button, or to cancel by 
-	 * clicking the cancel button.
+	 * Indicates whether the user decided to proceed by clicking {@link #okButton}, or to cancel by 
+	 * clicking {@link #cancelButton}.
 	 */
 	private boolean proceed = false;
 	
 	/**
-	 * Actual warning dialog content.
+	 * Warning dialog container.
 	 */
 	@FXML
-	private Parent warning;
+	private Parent warningView;
 	/**
 	 * Displays additional warning information.
 	 */
 	@FXML
 	private Text warningText;
 	/**
-	 * Sets {@link #proceed} = <code>true</code> and closes the warning dialog.
+	 * Sets {@link #proceed} to <code>true</code> and closes the warning dialog.
 	 */
 	@FXML
 	private Button okButton;
 	/**
-	 * Closes the warning dialog without any effects.
+	 * Leaves {@link #proceed} being <code>false</code> and closes the warning dialog.
 	 */
 	@FXML
 	private Button cancelButton;
@@ -71,12 +71,12 @@ public class WarningController {
 		stage.initOwner(owner);
 		
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Warning.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("WarningView.fxml"));
 			
-			// FIXME Adding controller within FXML file is not working.
+			// XXX Adding the controller within the FXML file fails.
 			loader.setController(this);
 			loader.load();
-			stage.setScene(new Scene(warning, 365.0, 185.0));
+			stage.setScene(new Scene(warningView, 350.0, 185.0));
 			warningText.wrappingWidthProperty().bind(
 					stage.getScene().widthProperty().subtract(20.0));
 		} catch (IOException e) {
@@ -105,8 +105,7 @@ public class WarningController {
 	 * Shows the modal warning dialog and blocks the calling Window.
 	 * 
 	 * @param message Warning message to be displayed.
-	 * @return <code>true</code> if the user clicks on {@link #okButton}, <code>false</code> if 
-	 * {@link #cancelButton} is being clicked.
+	 * @return {@link #proceed}.
 	 */
 	public boolean show(String message) {
 		proceed = false;
