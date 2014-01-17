@@ -48,7 +48,7 @@ public class MainViewController {
 	/**
 	 * Occurs when {@link #runButton} is being clicked.
 	 */
-	private WarningController warningController;
+	private WarningViewController warningController;
 	
 	/**
 	 * Wizard UI container.
@@ -135,7 +135,7 @@ public class MainViewController {
 				}
 				// TODO Bad style.
 				warningController = warningController == null ? 
-						new WarningController(runButton.getScene().getWindow()) : warningController;
+						new WarningViewController(runButton.getScene().getWindow()) : warningController;
 				String message = "All files in \"" + rootDirectory.getAbsolutePath() 
 						+ "\" will be overwritten! \n\n" + "Are you sure to proceed?";
 				

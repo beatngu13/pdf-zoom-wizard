@@ -22,12 +22,12 @@ import javafx.stage.Window;
  * @author danielkraus1986@gmail.com
  *
  */
-public class WarningController {
+public class WarningViewController {
 	
 	/**
 	 * {@link Logger} instance.
 	 */
-	private static final Logger logger = Logger.getLogger(WarningController.class.getName());
+	private static final Logger logger = Logger.getLogger(WarningViewController.class.getName());
 	
 	/**
 	 * {@link Stage} instance.
@@ -65,7 +65,7 @@ public class WarningController {
 	 * 
 	 * @param owner Calling window.
 	 */
-	public WarningController(Window owner) {
+	public WarningViewController(Window owner) {
 		stage.setTitle("Warning");
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.initOwner(owner);
