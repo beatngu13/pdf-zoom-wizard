@@ -169,7 +169,6 @@ public class MainViewController {
 			thread.start();
 		} else {
 			stateText.setText("INVALID DIRECTORY");
-			
 			logger.severe("\"" + rootDirectory.getAbsolutePath()
 					+ "\" is not a valid directory.");
 		}

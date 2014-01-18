@@ -88,9 +88,7 @@ public class Wizard extends Task<Void> {
 		logger.info("Start working in \"" + rootDirectory.getAbsolutePath()
 				+ "\". All PDF documents will be saved as version " + version
 				+ " with serialization mode " + serializationMode + ".");
-		
 		modifiyFiles(rootDirectory.listFiles());
-		
 		logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " file(s).");
 		
 		return null;
@@ -107,10 +105,10 @@ public class Wizard extends Task<Void> {
 			String filename = file.getName();
 			
 			if (filename.endsWith(".pdf")) {
+				bookmarkCountLocal = 0;
 				logger.info("Processing \"" + filename + "\".");
 				
-				try {
-					File pdf = new File(file.getAbsolutePath());
+				try (File pdf = new File(file.getAbsolutePath())) {
 					Document document = pdf.getDocument();
 					
 					modifyBookmarks(document.getBookmarks());
@@ -119,10 +117,7 @@ public class Wizard extends Task<Void> {
 						document.setVersion(version);
 					}
 					pdf.save(serializationMode);
-					pdf.close();
 					fileCount++;
-					bookmarkCountLocal = 0;
-					
 					logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
 							+ filename + "\".");
 				} catch (FileNotFoundException e) {
@@ -157,7 +152,6 @@ public class Wizard extends Task<Void> {
 				destination.setZoom(zoom);
 				bookmarkCount++;
 				bookmarkCountLocal++;
-				
 				logger.fine("Successfully set \"" + bookmark.getTitle() 
 						+ "\" to use mode " + mode + " and zoom " + zoom + ".");
 			}
