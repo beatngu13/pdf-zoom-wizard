@@ -1,10 +1,11 @@
-package org.bitbucket.beatngu13.pdfbookmarkwizard;
+package org.bitbucket.beatngu13.pdfbookmarkwizard.ui;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bitbucket.beatngu13.pdfbookmarkwizard.core.Wizard;
 import org.pdfclown.Version;
 import org.pdfclown.VersionEnum;
 import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEnum;
@@ -19,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -56,7 +58,7 @@ public class MainViewController {
 	@FXML
 	private Parent mainView;
 	/**
-	 * Displays absolute path of {@link #rootDirectory}.
+	 * <code>TextField</code> for {@link #rootDirectory}.
 	 */
 	@FXML
 	private TextField directoryTextField;
@@ -65,6 +67,17 @@ public class MainViewController {
 	 */
 	@FXML
 	private Button browseButton;
+	/**
+	 * <code>TextField</code> for the infix to use in case of creating copies, <code>null</code> if 
+	 * the original document will be overwritten.
+	 */
+	@FXML
+	private TextField copiesTextField;
+	/**
+	 * Enables the creation of copies.
+	 */
+	@FXML
+	private CheckBox copiesCheckBox;
 	/**
 	 * {@link VersionEnum} to use for modification.
 	 */
@@ -90,27 +103,18 @@ public class MainViewController {
 	 * Creates a new <code>MainViewController</code> instance.
 	 */
 	public MainViewController() {
-		directoryChooser.setTitle("Choose root directory");
-		
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
 			
-			// XXX Adding the controller within the FXML file fails.
+			// TODO Adding the controller within the FXML file fails.
 			loader.setController(this);
 			loader.load();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Could not load FXML file.", e);
 		}
-		
-		directoryTextField.textProperty().addListener(new ChangeListener<String>() {
-
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, 
-					String newValue) {
-				runButton.setDisable(newValue.isEmpty());
-			}
-			
-		});
+		directoryChooser.setTitle("Choose root directory");
+		runButton.disableProperty().bind(directoryTextField.textProperty().isEqualTo(""));
+		copiesTextField.disableProperty().bind(copiesCheckBox.selectedProperty().not());
 		
 		browseButton.setOnAction(new EventHandler<ActionEvent>() {
 			
@@ -129,18 +133,19 @@ public class MainViewController {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				if (rootDirectory == null
-						|| !rootDirectory.getAbsolutePath().equals(directoryTextField.getText())) {
-					rootDirectory = new File(directoryTextField.getText());
-				}
-				// TODO Bad style.
-				warningController = warningController == null ? 
-						new WarningViewController(runButton.getScene().getWindow()) : warningController;
-				String message = "All files in \"" + rootDirectory.getAbsolutePath() 
-						+ "\" will be overwritten! \n\n" + "Are you sure to proceed?";
-				
-				if (warningController.show(message)) {
-					MainViewController.this.run();
+				if (validateInput()) {
+					// TODO Bad style.
+					warningController = warningController == null ? new WarningViewController(
+							runButton.getScene().getWindow()) : warningController;
+					String messagePrefix = "All files in \"" + rootDirectory.getAbsolutePath() 
+							+ "\" will be ";
+					String messageInfix = !copiesCheckBox.isSelected() ? "overwritten!" 
+							: "copied!";
+					String messageSuffix = "\n\nAre you sure to proceed?";
+					
+					if (warningController.show(messagePrefix + messageInfix + messageSuffix)) {
+						MainViewController.this.run();
+					}
 				}
 			}
 			
@@ -148,30 +153,54 @@ public class MainViewController {
 	}
 	
 	/**
+	 * Validates the given UI input.
+	 * 
+	 * @return <code>true</code> if everything is valid, else <code>false</code>.
+	 */
+	private boolean validateInput() {
+		boolean valid = true;
+		
+		if (rootDirectory == null
+				|| !rootDirectory.getAbsolutePath().equals(directoryTextField.getText())) {
+			rootDirectory = new File(directoryTextField.getText());
+		}
+		
+		if (!rootDirectory.isDirectory()) {
+			valid = false;
+			stateText.setText("INVALID DIRECTORY");
+			logger.info("\"" + rootDirectory.getAbsolutePath()
+					+ "\" is an invalid directory.");
+		}
+		
+		if (copiesCheckBox.isSelected() && copiesTextField.getText().isEmpty()) {
+			valid = false;
+			stateText.setText("INVALID COPIES INFIX");
+			logger.info("Invald copies infix.");
+		}
+		
+		return valid;
+	}
+	
+	/**
 	 * Creates a new {@link Wizard} instance and starts modification on {@link #rootDirectory}.
 	 */
 	private void run() {
-		if (rootDirectory.isDirectory()) {
-			Wizard wizard = new Wizard(rootDirectory, computeVersion(), 
-			SerializationModeEnum.Standard, computeModeEnum(), computeZoom());
-			Thread thread = new Thread(wizard);
-			
-			wizard.messageProperty().addListener(new ChangeListener<String>() {
+		String copiesInfix = copiesCheckBox.isSelected() ? copiesTextField.getText() : null;
+		Wizard wizard = new Wizard(rootDirectory, copiesInfix, computeVersion(), 
+		SerializationModeEnum.Standard, computeModeEnum(), computeZoom());
+		Thread thread = new Thread(wizard);
+		
+		wizard.messageProperty().addListener(new ChangeListener<String>() {
 
-				@Override
-				public void changed(ObservableValue<? extends String> observable, String oldValue, 
-						String newValue) {
-					MainViewController.this.stateText.setText(newValue);
-				}
-			});
-			
-			thread.setDaemon(true);
-			thread.start();
-		} else {
-			stateText.setText("INVALID DIRECTORY");
-			logger.severe("\"" + rootDirectory.getAbsolutePath()
-					+ "\" is not a valid directory.");
-		}
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, 
+					String newValue) {
+				MainViewController.this.stateText.setText(newValue);
+			}
+		});
+		
+		thread.setDaemon(true);
+		thread.start();
 	}
 	
 	/**

@@ -1,5 +1,7 @@
 package org.bitbucket.beatngu13.pdfbookmarkwizard;
 
+import org.bitbucket.beatngu13.pdfbookmarkwizard.ui.MainViewController;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -21,7 +23,7 @@ public class Launcher extends Application {
 		MainViewController controller = new MainViewController();
 		
 		primaryStage.setTitle("PDF Bookmark Wizard");
-        primaryStage.setScene(new Scene(controller.getMainView(), 400.0, 185.0));
+        primaryStage.setScene(new Scene(controller.getMainView(), 425.0, 185.0));
         primaryStage.show();
 	}
 

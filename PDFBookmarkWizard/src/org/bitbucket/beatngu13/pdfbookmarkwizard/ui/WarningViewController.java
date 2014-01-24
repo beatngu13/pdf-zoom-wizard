@@ -1,4 +1,4 @@
-package org.bitbucket.beatngu13.pdfbookmarkwizard;
+package org.bitbucket.beatngu13.pdfbookmarkwizard.ui;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -73,7 +73,7 @@ public class WarningViewController {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("WarningView.fxml"));
 			
-			// XXX Adding the controller within the FXML file fails.
+			// TODO Adding the controller within the FXML file fails.
 			loader.setController(this);
 			loader.load();
 			stage.setScene(new Scene(warningView, 350.0, 185.0));

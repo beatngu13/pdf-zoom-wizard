@@ -1,4 +1,4 @@
-package org.bitbucket.beatngu13.pdfbookmarkwizard;
+package org.bitbucket.beatngu13.pdfbookmarkwizard.core;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,6 +18,7 @@ import org.pdfclown.util.parsers.ParseException;
 
 import javafx.concurrent.Task;
 
+// TODO Extract interface and consider a shell version.
 /**
  * Modifies all PDF files within a given directory and its enclosing subdirectories. Each bookmark 
  * will be set to use {@link #mode} and {@link #zoom}.
@@ -37,7 +38,13 @@ public class Wizard extends Task<Void> {
 	 */
 	private final java.io.File rootDirectory;
 	/**
-	 * Version number to use for serialization.
+	 * Infix to use in case of creating copies, <code>null</code> if the original document will be
+	 * overwritten.
+	 */
+	private final String copiesInfix;
+	/**
+	 * Version number to use for serialization, <code>null</code> if the original version will be
+	 * inherited.
 	 */
 	private final Version version;
 	/**
@@ -69,14 +76,16 @@ public class Wizard extends Task<Void> {
 	 * Creates a new <code>Wizard</code> instance.
 	 * 
 	 * @param rootDirectory {@link #rootDirectory}.
+	 * @param copiesInfix {@link #copiesInfix}.
 	 * @param version {@link #version}.
 	 * @param serializationMode {@link #serializationMode}.
 	 * @param mode {@link #mode}.
 	 * @param zoom {@link #zoom}.
 	 */
-	public Wizard(java.io.File rootDirectory, Version version, 
+	public Wizard(java.io.File rootDirectory, String copiesInfix, Version version, 
 			SerializationModeEnum serializationMode, ModeEnum mode, Double zoom) {
 		this.rootDirectory = rootDirectory;
+		this.copiesInfix = copiesInfix;
 		this.version = version;
 		this.serializationMode = serializationMode;
 		this.mode = mode;
@@ -110,13 +119,20 @@ public class Wizard extends Task<Void> {
 				
 				try (File pdf = new File(file.getAbsolutePath())) {
 					Document document = pdf.getDocument();
-					
 					modifyBookmarks(document.getBookmarks());
+					
 					// FIXME Broken PDF versioning, probably caused by a PDF Clown bug.
 					if (version != null) {
 						document.setVersion(version);
 					}
-					pdf.save(serializationMode);
+					
+					if (copiesInfix != null) {
+						java.io.File output = new java.io.File(file.getAbsolutePath()
+								.replace(".pdf", copiesInfix + ".pdf"));
+						pdf.save(output, serializationMode);
+					} else {
+						pdf.save(serializationMode);
+					}
 					fileCount++;
 					logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
 							+ filename + "\".");
@@ -124,10 +140,10 @@ public class Wizard extends Task<Void> {
 					logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
 							+ " instance of \"" + file.getAbsolutePath() + "\".", e);
 				} catch (ParseException e) {
-					logger.log(Level.SEVERE, "\"" + file.getAbsolutePath() 
-							+ "\" is not a PDF file.");
+					logger.log(Level.SEVERE, "Could not parse \"" + file.getAbsolutePath() 
+							+ "\".", e);
 				} catch (IOException e) {
-					logger.log(Level.SEVERE, "Could not save modified \"" + file.getAbsolutePath() 
+					logger.log(Level.SEVERE, "Could not save \"" + file.getAbsolutePath() 
 							+ "\".", e);
 				}
 			} else if (file.isDirectory()) {
@@ -145,6 +161,9 @@ public class Wizard extends Task<Void> {
 	private void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
 			if (bookmark.getTarget() instanceof GoToDestination<?>) {
+				// FIXME PDFs containing bookmarks with broken destinations won't serialize at all.
+				// TODO Track on Bitbucket.
+				try { 
 				Destination destination = ((GoToDestination<?>) bookmark.getTarget())
 						.getDestination();
 
@@ -154,6 +173,9 @@ public class Wizard extends Task<Void> {
 				bookmarkCountLocal++;
 				logger.fine("Successfully set \"" + bookmark.getTitle() 
 						+ "\" to use mode " + mode + " and zoom " + zoom + ".");
+				} catch (Exception e) {
+					logger.severe("\"" + bookmark.getTitle() + "\" has a broken destination.");
+				}
 			}
 			
 			if (bookmark.getBookmarks().size() != 0) {
@@ -174,7 +196,6 @@ public class Wizard extends Task<Void> {
 		updateMessage(State.SUCCEEDED.toString());
 	}
 	
-	// TODO Update counters.
 	@Override
 	protected void failed() {
 		super.failed();
