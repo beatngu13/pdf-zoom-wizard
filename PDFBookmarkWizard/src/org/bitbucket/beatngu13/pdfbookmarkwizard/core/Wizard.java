@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.pdfclown.Version;
+import org.pdfclown.VersionEnum;
 import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
@@ -18,7 +19,6 @@ import org.pdfclown.util.parsers.ParseException;
 
 import javafx.concurrent.Task;
 
-// TODO Extract interface and consider a shell version.
 /**
  * Modifies all PDF files within a given directory and its enclosing subdirectories. Each bookmark 
  * will be set to use {@link #mode} and {@link #zoom}.
@@ -32,33 +32,11 @@ public class Wizard extends Task<Void> {
 	 * {@link Logger} instance.
 	 */
 	private static final Logger logger = Logger.getLogger(Wizard.class.getName());
-	
-	/**
-	 * Root directory to work with.
-	 */
-	private final java.io.File rootDirectory;
-	/**
-	 * Infix to use in case of creating copies, <code>null</code> if the original document will be
-	 * overwritten.
-	 */
-	private final String copiesInfix;
-	/**
-	 * Version number to use for serialization, <code>null</code> if the original version will be
-	 * inherited.
-	 */
-	private final Version version;
+
 	/**
 	 * Serialization mode.
 	 */
-	private final SerializationModeEnum serializationMode;
-	/**
-	 * Mode to apply to all bookmarks.
-	 */
-	private final ModeEnum mode;
-	/**
-	 * Zoom to apply to all bookmarks.
-	 */
-	private final Double zoom;
+	private final SerializationModeEnum serializationMode = SerializationModeEnum.Standard;
 	/**
 	 * Total number of modified files. 
 	 */
@@ -73,25 +51,44 @@ public class Wizard extends Task<Void> {
 	private int bookmarkCountLocal;
 	
 	/**
+	 * Root directory to work with.
+	 */
+	private java.io.File rootDirectory;
+	/**
+	 * Infix to use in case of creating copies, <code>null</code> if the original document will be
+	 * overwritten.
+	 */
+	private String filenameInfix;
+	/**
+	 * Zoom to apply to all bookmarks.
+	 */
+	private Double zoom;
+	/**
+	 * Mode to apply to all bookmarks.
+	 */
+	private ModeEnum mode;
+	/**
+	 * Version number to use for serialization, <code>null</code> if the original version will be
+	 * inherited.
+	 */
+	private Version version;
+	
+	/**
 	 * Creates a new <code>Wizard</code> instance.
 	 * 
 	 * @param rootDirectory {@link #rootDirectory}.
-	 * @param copiesInfix {@link #copiesInfix}.
-	 * @param version {@link #version}.
-	 * @param serializationMode {@link #serializationMode}.
-	 * @param mode {@link #mode}.
+	 * @param filenameInfix {@link #filenameInfix}.
 	 * @param zoom {@link #zoom}.
+	 * @param version version {@link #version}.
 	 */
-	public Wizard(java.io.File rootDirectory, String copiesInfix, Version version, 
-			SerializationModeEnum serializationMode, ModeEnum mode, Double zoom) {
+	public Wizard(java.io.File rootDirectory, String filenameInfix, String zoom, String version) {
 		this.rootDirectory = rootDirectory;
-		this.copiesInfix = copiesInfix;
-		this.version = version;
-		this.serializationMode = serializationMode;
-		this.mode = mode;
-		this.zoom = zoom;
+		this.filenameInfix = filenameInfix;
+		
+		computeZoom(zoom);
+		computeVersion(version);
 	}
-
+	
 	@Override
 	protected Void call() throws Exception {
 		logger.info("Start working in \"" + rootDirectory.getAbsolutePath()
@@ -102,7 +99,66 @@ public class Wizard extends Task<Void> {
 		
 		return null;
 	}
+
+	/**
+	 * Computes {@link #version}.
+	 * 
+	 * @param version Value given by the calling instance.
+	 */
+	private void computeVersion(String version) {
+		switch (version) {
+		case "1.0":
+			this.version = VersionEnum.PDF10.getVersion();
+			break;
+		case "1.1":
+			this.version = VersionEnum.PDF11.getVersion();
+			break;
+		case "1.2":
+			this.version = VersionEnum.PDF12.getVersion();
+			break;
+		case "1.3":
+			this.version = VersionEnum.PDF13.getVersion();
+			break;
+		case "1.4":
+			this.version = VersionEnum.PDF14.getVersion();
+			break;
+		case "1.5":
+			this.version = VersionEnum.PDF15.getVersion();
+			break;
+		case "1.6":
+			this.version = VersionEnum.PDF16.getVersion();
+			break;
+		case "1.7":
+			this.version = VersionEnum.PDF17.getVersion();
+		}
+	}
 	
+	/**
+	 * Computes {@link #zoom} and {@link #mode}.
+	 * 
+	 * @param zoom Value given by the calling instance.
+	 */
+	private void computeZoom(String zoom) {
+		switch (zoom) {
+		case "Fit page":
+			mode = ModeEnum.Fit;
+			break;
+		case "Actual size":
+			this.zoom = 1.0;
+			mode = ModeEnum.XYZ;
+			break;
+		case "Fit width":
+			mode = ModeEnum.FitHorizontal;
+			break;
+		case "Fit visible":
+			this.zoom = 0.0;
+			mode = ModeEnum.FitBoundingBoxHorizontal;
+			break;
+		case "Inherit zoom":
+			mode = ModeEnum.XYZ;
+		}
+	}
+
 	/**
 	 * Modifies each PDF file which is found by depth-first seach, starting from the given 
 	 * list of files, and calls {@link #modifyBookmarks(Bookmarks)}.
@@ -126,9 +182,9 @@ public class Wizard extends Task<Void> {
 						document.setVersion(version);
 					}
 					
-					if (copiesInfix != null) {
+					if (filenameInfix != null) {
 						java.io.File output = new java.io.File(file.getAbsolutePath()
-								.replace(".pdf", copiesInfix + ".pdf"));
+								.replace(".pdf", filenameInfix + ".pdf"));
 						pdf.save(output, serializationMode);
 					} else {
 						pdf.save(serializationMode);
@@ -161,18 +217,18 @@ public class Wizard extends Task<Void> {
 	private void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
 			if (bookmark.getTarget() instanceof GoToDestination<?>) {
-				// FIXME PDFs containing bookmarks with broken destinations won't serialize at all.
+				// FIXME PDFs containing bookmarks with broken destinations sometimes don't serialize.
 				// TODO Track on Bitbucket.
 				try { 
-				Destination destination = ((GoToDestination<?>) bookmark.getTarget())
-						.getDestination();
-
-				destination.setMode(mode);
-				destination.setZoom(zoom);
-				bookmarkCount++;
-				bookmarkCountLocal++;
-				logger.fine("Successfully set \"" + bookmark.getTitle() 
-						+ "\" to use mode " + mode + " and zoom " + zoom + ".");
+					Destination destination = ((GoToDestination<?>) bookmark.getTarget())
+							.getDestination();
+		
+					destination.setMode(mode);
+					destination.setZoom(zoom);
+					bookmarkCount++;
+					bookmarkCountLocal++;
+					logger.fine("Successfully set \"" + bookmark.getTitle() 
+							+ "\" to use mode " + mode + " and zoom " + zoom + ".");
 				} catch (Exception e) {
 					logger.severe("\"" + bookmark.getTitle() + "\" has a broken destination.");
 				}
