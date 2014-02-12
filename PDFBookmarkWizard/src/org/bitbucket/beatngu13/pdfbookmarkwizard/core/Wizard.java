@@ -218,7 +218,6 @@ public class Wizard extends Task<Void> {
 		for (Bookmark bookmark : bookmarks) {
 			if (bookmark.getTarget() instanceof GoToDestination<?>) {
 				// FIXME PDFs containing bookmarks with broken destinations sometimes don't serialize.
-				// TODO Track on Bitbucket.
 				try { 
 					Destination destination = ((GoToDestination<?>) bookmark.getTarget())
 							.getDestination();
