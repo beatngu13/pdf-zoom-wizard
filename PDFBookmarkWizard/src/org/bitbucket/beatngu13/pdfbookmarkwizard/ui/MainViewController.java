@@ -134,7 +134,7 @@ public class MainViewController {
 					warningController = warningController == null ? new WarningViewController(
 							runButton.getScene().getWindow()) : warningController;
 					String messagePrefix = "All files in \"" + rootDirectory.getAbsolutePath() 
-							+ "\" will be ";
+							+ "\" and its enclosing subdirectories will be ";
 					String messageInfix = !copiesCheckBox.isSelected() ? "overwritten!" 
 							: "copied!";
 					String messageSuffix = "\n\nAre you sure to proceed?";
