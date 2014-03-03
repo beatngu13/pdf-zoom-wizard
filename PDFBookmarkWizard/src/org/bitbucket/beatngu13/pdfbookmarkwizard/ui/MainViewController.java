@@ -18,7 +18,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 
@@ -53,6 +56,11 @@ public class MainViewController {
 	 */
 	@FXML
 	private Parent mainView;
+	/*
+	 * TODO Add Javadoc.
+	 */
+	@FXML
+	private ToggleGroup modeToggleGroup;
 	/**
 	 * <code>TextField</code> for {@link #rootDirectory}.
 	 */
@@ -107,10 +115,21 @@ public class MainViewController {
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Could not load FXML file.", e);
 		}
+
 		directoryChooser.setTitle("Choose root directory");
 		runButton.disableProperty().bind(directoryTextField.textProperty().isEqualTo("").or(
 				stateText.textProperty().isEqualTo(State.RUNNING.toString())));
 		copiesTextField.disableProperty().bind(copiesCheckBox.selectedProperty().not());
+		
+		modeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+				RadioButton radioButton = (RadioButton) newValue;
+				
+				// TODO Action!
+			}
+		});
 		
 		browseButton.setOnAction(new EventHandler<ActionEvent>() {
 			
