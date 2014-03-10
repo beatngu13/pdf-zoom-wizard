@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import org.bitbucket.beatngu13.pdfbookmarkwizard.core.Wizard;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
@@ -18,12 +19,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 /**
  * Provides a JavaFX-based Wizard UI.
@@ -39,48 +42,61 @@ public class MainViewController {
 	private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
 	
 	/**
-	 * @see #browseButton
+	 * Sets {@link #root}.
 	 */
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
 	/**
-	 * Root directory to work with.
+	 * Sets {@link #root}.
 	 */
-	private File rootDirectory;
+	private FileChooser fileChooser = new FileChooser();
+	/**
+	 * Root directory or file to work with.
+	 */
+	private File root;
 	/**
 	 * Occurs when {@link #runButton} is being clicked.
 	 */
 	private WarningViewController warningController;
+	/**
+	 * Indicates whether multiple or single files will be processed.
+	 */
+	private boolean multipleMode = true;
 	
 	/**
 	 * Wizard UI container.
 	 */
 	@FXML
 	private Parent mainView;
-	/*
-	 * TODO Add Javadoc.
+	/**
+	 * Switches between the processing of multiple or single files.
 	 */
 	@FXML
 	private ToggleGroup modeToggleGroup;
 	/**
-	 * <code>TextField</code> for {@link #rootDirectory}.
+	 * <code>Label</code> for {@link #rootTextField}. 
 	 */
 	@FXML
-	private TextField directoryTextField;
+	private Label rootLabel;
 	/**
-	 * Uses {@link #directoryChooser} to set {@link #rootDirectory}.
+	 * <code>TextField</code> for {@link #root}.
+	 */
+	@FXML
+	private TextField rootTextField;
+	/**
+	 * Uses {@link #directoryChooser} respectively {@link #fileChooser} to set {@link #root}.
 	 */
 	@FXML
 	private Button browseButton;
 	/**
-	 * <code>TextField</code> for the infix which is used in case of creating copies.
+	 * <code>TextField</code> which is used for the copies infix.
 	 */
 	@FXML
-	private TextField copiesTextField;
+	private TextField copyTextField;
 	/**
 	 * Enables the creation of copies.
 	 */
 	@FXML
-	private CheckBox copiesCheckBox;
+	private CheckBox copyCheckBox;
 	/**
 	 * {@link VersionEnum} to use for modification.
 	 */
@@ -115,19 +131,40 @@ public class MainViewController {
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Could not load FXML file.", e);
 		}
-
-		directoryChooser.setTitle("Choose root directory");
-		runButton.disableProperty().bind(directoryTextField.textProperty().isEqualTo("").or(
-				stateText.textProperty().isEqualTo(State.RUNNING.toString())));
-		copiesTextField.disableProperty().bind(copiesCheckBox.selectedProperty().not());
 		
+		runButton.disableProperty().bind(rootTextField.textProperty().isEqualTo("").or(
+				stateText.textProperty().isEqualTo(State.RUNNING.toString())));
+		copyTextField.disableProperty().bind(copyCheckBox.selectedProperty().not());
+
+		directoryChooser.setTitle("Choose a directory");
+		fileChooser.setTitle("Choose a file");
+		
+		// TODO Best practice?
 		modeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 
 			@Override
-			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-				RadioButton radioButton = (RadioButton) newValue;
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue,
+					Toggle newValue) {
+				multipleMode = !rootLabel.getText().equals("Directory:");
 				
-				// TODO Action!
+				FadeTransition fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
+				fadeOut.setFromValue(1.0);
+				fadeOut.setToValue(0.0);
+				fadeOut.play();
+				
+				fadeOut.setOnFinished(new EventHandler<ActionEvent>() {
+					
+					@Override
+					public void handle(ActionEvent event) {
+						rootLabel.setText(multipleMode ? "Directory:" : "File");
+						
+						FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), 
+								rootLabel);
+						fadeIn.setFromValue(0.0);
+						fadeIn.setToValue(1.0);
+						fadeIn.play();
+					}
+				});
 			}
 		});
 		
@@ -135,10 +172,15 @@ public class MainViewController {
 			
 			@Override
 			public void handle(ActionEvent arg0) {
-				rootDirectory = directoryChooser.showDialog(mainView.getScene().getWindow());
+				root = multipleMode ? directoryChooser.showDialog(mainView.getScene().getWindow()) 
+						: fileChooser.showOpenDialog(mainView.getScene().getWindow());
 				
-				if (rootDirectory != null) {
-					directoryTextField.setText(rootDirectory.getAbsolutePath());
+				if (root != null) {
+					File parentFile = root.getParentFile();
+					
+					rootTextField.setText(root.getAbsolutePath());
+					directoryChooser.setInitialDirectory(parentFile);
+					fileChooser.setInitialDirectory(parentFile);
 				}
 			}
 
@@ -149,12 +191,14 @@ public class MainViewController {
 			@Override
 			public void handle(ActionEvent arg0) {
 				if (validateInput()) {
-					// TODO Bad style.
+					// TODO Best practice?
 					warningController = warningController == null ? new WarningViewController(
 							runButton.getScene().getWindow()) : warningController;
-					String messagePrefix = "All files in \"" + rootDirectory.getAbsolutePath() 
-							+ "\" and its enclosing subdirectories will be ";
-					String messageInfix = !copiesCheckBox.isSelected() ? "overwritten!" 
+					
+					String messagePrefix = multipleMode ? "All files in \"" + root.getAbsolutePath() 
+							+ "\" and its enclosing subdirectories will be " 
+							: "\"" + root.getAbsolutePath() + "\" will be ";
+					String messageInfix = !copyCheckBox.isSelected() ? "overwritten!" 
 							: "copied!";
 					String messageSuffix = "\n\nAre you sure to proceed?";
 					
@@ -175,33 +219,38 @@ public class MainViewController {
 	private boolean validateInput() {
 		boolean valid = true;
 		
-		if (rootDirectory == null
-				|| !rootDirectory.getAbsolutePath().equals(directoryTextField.getText())) {
-			rootDirectory = new File(directoryTextField.getText());
+		if (root == null
+				|| !root.getAbsolutePath().equals(rootTextField.getText())) {
+			root = new File(rootTextField.getText());
 		}
 		
-		if (!rootDirectory.isDirectory()) {
+		if (multipleMode && !root.isDirectory()) {
 			valid = false;
-			stateText.setText("INVALID DIRECTORY");
-			logger.info("\"" + rootDirectory.getAbsolutePath()
-					+ "\" is an invalid directory.");
+			stateText.setText("A FILE IS SELECTED");
+			logger.info("\"" + root.getAbsolutePath()
+					+ "\" is a file.");
+		} else if (!multipleMode && root.isDirectory()) {
+			valid = false;
+			stateText.setText("A DIRECTORY IS SELECTED");
+			logger.info("\"" + root.getAbsolutePath()
+					+ "\" is a directory.");
 		}
 		
-		if (copiesCheckBox.isSelected() && copiesTextField.getText().isEmpty()) {
+		if (copyCheckBox.isSelected() && copyTextField.getText().isEmpty()) {
 			valid = false;
-			stateText.setText("INVALID FILENAME INFIX");
-			logger.info("Invald filename infix.");
+			stateText.setText("FILENAME INFIX IS EMPTY");
+			logger.info("Filename infix is empty.");
 		}
 		
 		return valid;
 	}
 	
 	/**
-	 * Creates a new {@link Wizard} instance and starts modification on {@link #rootDirectory}.
+	 * Creates a new {@link Wizard} instance and starts modification on {@link #root}.
 	 */
 	private void run() {
-		String filenameInfix = copiesCheckBox.isSelected() ? copiesTextField.getText() : null;
-		Wizard wizard = new Wizard(rootDirectory, filenameInfix, zoomChoiceBox.getValue(), 
+		String filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
+		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue(), 
 				versionChoiceBox.getValue());
 		Thread thread = new Thread(wizard);
 		

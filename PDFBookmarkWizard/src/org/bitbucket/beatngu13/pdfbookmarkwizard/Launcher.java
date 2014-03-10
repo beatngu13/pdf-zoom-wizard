@@ -20,10 +20,8 @@ public class Launcher extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		MainViewController controller = new MainViewController();
-		
 		primaryStage.setTitle("PDF Bookmark Wizard");
-        primaryStage.setScene(new Scene(controller.getMainView(), 450.0, 200.0));
+        primaryStage.setScene(new Scene(new MainViewController().getMainView(), 425.0, 250.0));
         primaryStage.show();
 	}
 

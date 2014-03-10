@@ -18,7 +18,7 @@
 		vgap="10.0">
 		
 	<Label text="Mode:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-	<HBox spacing="4.0" GridPane.rowIndex="0" GridPane.columnIndex="1">
+	<HBox spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="1">
 		<fx:define>
 			<ToggleGroup fx:id="modeToggleGroup"/>
 		</fx:define>
@@ -26,16 +26,16 @@
 		<RadioButton text="Single file" toggleGroup="$modeToggleGroup"/>
 	</HBox>
 	
-	<Label text="Root directory:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-	<TextField fx:id="directoryTextField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+	<Label fx:id="rootLabel" text="Directory:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+	<TextField fx:id="rootTextField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 	<Button fx:id="browseButton" text="Browse" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
 
 	<Label text="Filename infix:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-	<TextField fx:id="copiesTextField" disable="true" promptText="Filename&lt;infix&gt;.pdf"
+	<TextField fx:id="copyTextField" disable="true" promptText="Filename&lt;infix&gt;.pdf"
 		GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 	<HBox spacing="4.0" alignment="CENTER" GridPane.rowIndex="2" GridPane.columnIndex="2">
-		<CheckBox fx:id="copiesCheckBox"/>
-		<Label text="Create copies"/>
+		<CheckBox fx:id="copyCheckBox"/>
+		<Label text="Copy"/>
 	</HBox>
 	
 	<Label text="Zoom level:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
