@@ -156,7 +156,7 @@ public class MainViewController {
 					
 					@Override
 					public void handle(ActionEvent event) {
-						rootLabel.setText(multipleMode ? "Directory:" : "File");
+						rootLabel.setText(multipleMode ? "Directory:" : "File:");
 						
 						FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), 
 								rootLabel);
