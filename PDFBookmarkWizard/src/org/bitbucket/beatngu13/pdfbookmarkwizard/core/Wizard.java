@@ -19,6 +19,7 @@ import org.pdfclown.util.parsers.ParseException;
 
 import javafx.concurrent.Task;
 
+// TODO Adapt to multi and single file processing.
 /**
  * Modifies all PDF files within a given directory and its enclosing subdirectories. Each bookmark 
  * will be set to use {@link #mode} and {@link #zoom}.
@@ -51,9 +52,9 @@ public class Wizard extends Task<Void> {
 	private int bookmarkCountLocal;
 	
 	/**
-	 * Root directory to work with.
+	 * Root directory or file to work with.
 	 */
-	private java.io.File rootDirectory;
+	private java.io.File root;
 	/**
 	 * Infix to use in case of creating copies, <code>null</code> if the original document will be
 	 * overwritten.
@@ -76,13 +77,13 @@ public class Wizard extends Task<Void> {
 	/**
 	 * Creates a new <code>Wizard</code> instance.
 	 * 
-	 * @param rootDirectory {@link #rootDirectory}.
+	 * @param root {@link #root}.
 	 * @param filenameInfix {@link #filenameInfix}.
 	 * @param zoom {@link #zoom}.
 	 * @param version version {@link #version}.
 	 */
-	public Wizard(java.io.File rootDirectory, String filenameInfix, String zoom, String version) {
-		this.rootDirectory = rootDirectory;
+	public Wizard(java.io.File root, String filenameInfix, String zoom, String version) {
+		this.root = root;
 		this.filenameInfix = filenameInfix;
 		
 		computeZoom(zoom);
@@ -91,10 +92,16 @@ public class Wizard extends Task<Void> {
 	
 	@Override
 	protected Void call() throws Exception {
-		logger.info("Start working in \"" + rootDirectory.getAbsolutePath()
+		logger.info("Start working in \"" + root.getAbsolutePath()
 				+ "\". All PDF documents will be saved as version " + version
 				+ " with serialization mode " + serializationMode + ".");
-		modifiyFiles(rootDirectory.listFiles());
+		
+		if (root.isDirectory()) {
+			modifiyFiles(root.listFiles());
+		} else {
+			modifyFile(root);
+		}
+		
 		logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " file(s).");
 		
 		return null;
@@ -167,44 +174,50 @@ public class Wizard extends Task<Void> {
 	 */
 	private void modifiyFiles(java.io.File[] files) {
 		for (java.io.File file : files) {
-			String filename = file.getName();
-			
-			if (filename.endsWith(".pdf")) {
-				bookmarkCountLocal = 0;
-				logger.info("Processing \"" + filename + "\".");
-				
-				try (File pdf = new File(file.getAbsolutePath())) {
-					Document document = pdf.getDocument();
-					modifyBookmarks(document.getBookmarks());
-					
-					// FIXME Broken PDF versioning, probably caused by a PDF Clown bug.
-					if (version != null) {
-						document.setVersion(version);
-					}
-					
-					if (filenameInfix != null) {
-						java.io.File output = new java.io.File(file.getAbsolutePath()
-								.replace(".pdf", filenameInfix + ".pdf"));
-						pdf.save(output, serializationMode);
-					} else {
-						pdf.save(serializationMode);
-					}
-					fileCount++;
-					logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
-							+ filename + "\".");
-				} catch (FileNotFoundException e) {
-					logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
-							+ " instance of \"" + file.getAbsolutePath() + "\".", e);
-				} catch (ParseException e) {
-					logger.log(Level.SEVERE, "Could not parse \"" + file.getAbsolutePath() 
-							+ "\".", e);
-				} catch (IOException e) {
-					logger.log(Level.SEVERE, "Could not save \"" + file.getAbsolutePath() 
-							+ "\".", e);
-				}
+			if (file.getName().endsWith(".pdf")) {
+				modifyFile(file);
 			} else if (file.isDirectory()) {
 				modifiyFiles(file.listFiles());
 			}
+		}
+	}
+	
+	/*
+	 * TODO Add Javadoc.
+	 */
+	private void modifyFile(java.io.File file) {
+		bookmarkCountLocal = 0;
+		String filename = file.getName();
+		logger.info("Processing \"" + filename + "\".");
+		
+		try (File pdf = new File(file.getAbsolutePath())) {
+			Document document = pdf.getDocument();
+			modifyBookmarks(document.getBookmarks());
+			
+			// FIXME Broken PDF versioning, probably caused by a PDF Clown bug.
+			if (version != null) {
+				document.setVersion(version);
+			}
+			
+			if (filenameInfix != null) {
+				java.io.File output = new java.io.File(file.getAbsolutePath()
+						.replace(".pdf", filenameInfix + ".pdf"));
+				pdf.save(output, serializationMode);
+			} else {
+				pdf.save(serializationMode);
+			}
+			fileCount++;
+			logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
+					+ filename + "\".");
+		} catch (FileNotFoundException e) {
+			logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
+					+ " instance of \"" + file.getAbsolutePath() + "\".", e);
+		} catch (ParseException e) {
+			logger.log(Level.SEVERE, "Could not parse \"" + file.getAbsolutePath() 
+					+ "\".", e);
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Could not save \"" + file.getAbsolutePath() 
+					+ "\".", e);
 		}
 	}
 	
