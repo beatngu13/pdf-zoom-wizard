@@ -19,10 +19,11 @@ import org.pdfclown.util.parsers.ParseException;
 
 import javafx.concurrent.Task;
 
-// TODO Adapt to multi and single file processing.
 /**
- * Modifies all PDF files within a given directory and its enclosing subdirectories. Each bookmark 
- * will be set to use {@link #mode} and {@link #zoom}.
+ * Applies {@link #mode} and {@link #zoom} to the bookmarks of a single PDF file or a whole 
+ * directory (subdirectories included). This implementation is based on the 
+ * <a href="http://www.stefanochizzolini.it/en/projects/clown/">PDF Clown</a> library by Stefano 
+ * Chizzolini.
  * 
  * @author danielkraus1986@gmail.com
  *
@@ -35,7 +36,7 @@ public class Wizard extends Task<Void> {
 	private static final Logger logger = Logger.getLogger(Wizard.class.getName());
 
 	/**
-	 * Serialization mode.
+	 * @see {@link SerializationModeEnum}
 	 */
 	private final SerializationModeEnum serializationMode = SerializationModeEnum.Standard;
 	/**
@@ -45,19 +46,19 @@ public class Wizard extends Task<Void> {
 	/**
 	 * Total number of modified bookmarks.
 	 */
-	private int bookmarkCount;
+	private int bookmarkCountGlobal;
 	/**
-	 * Number of modified bookmarks within the currently processed PDF file.
+	 * Number of modified bookmarks within the current processed PDF file.
 	 */
 	private int bookmarkCountLocal;
 	
 	/**
-	 * Root directory or file to work with.
+	 * Directory or file to work with.
 	 */
 	private java.io.File root;
 	/**
-	 * Infix to use in case of creating copies, <code>null</code> if the original document will be
-	 * overwritten.
+	 * <i>Filename&lt;infix&gt;.pdf</i> for copies, <code>null</code> if the original document will
+	 * be overwritten.
 	 */
 	private String filenameInfix;
 	/**
@@ -69,7 +70,7 @@ public class Wizard extends Task<Void> {
 	 */
 	private ModeEnum mode;
 	/**
-	 * Version number to use for serialization, <code>null</code> if the original version will be
+	 * Version number for serialization, <code>null</code> if the original version will be
 	 * inherited.
 	 */
 	private Version version;
@@ -77,10 +78,10 @@ public class Wizard extends Task<Void> {
 	/**
 	 * Creates a new <code>Wizard</code> instance.
 	 * 
-	 * @param root {@link #root}.
-	 * @param filenameInfix {@link #filenameInfix}.
-	 * @param zoom {@link #zoom}.
-	 * @param version version {@link #version}.
+	 * @param root Sets {@link #root}.
+	 * @param filenameInfix Sets {@link #filenameInfix}.
+	 * @param zoom Sets {@link #zoom}.
+	 * @param version version Sets {@link #version}.
 	 */
 	public Wizard(java.io.File root, String filenameInfix, String zoom, String version) {
 		this.root = root;
@@ -95,14 +96,8 @@ public class Wizard extends Task<Void> {
 		logger.info("Start working in \"" + root.getAbsolutePath()
 				+ "\". All PDF documents will be saved as version " + version
 				+ " with serialization mode " + serializationMode + ".");
-		
-		if (root.isDirectory()) {
-			modifiyFiles(root.listFiles());
-		} else {
-			modifyFile(root);
-		}
-		
-		logger.info("Modified " + bookmarkCount + " bookmarks in " + fileCount + " file(s).");
+		modifyFiles(root);
+		logger.info("Modified " + bookmarkCountGlobal + " bookmarks in " + fileCount + " file(s).");
 		
 		return null;
 	}
@@ -165,70 +160,70 @@ public class Wizard extends Task<Void> {
 			mode = ModeEnum.XYZ;
 		}
 	}
-
+	
 	/**
-	 * Modifies each PDF file which is found by depth-first seach, starting from the given 
-	 * list of files, and calls {@link #modifyBookmarks(Bookmarks)}.
+	 * Modifies each PDF file which is found by depth-first search and calls 
+	 * {@link #modifyBookmarks(Bookmarks)} on it.
 	 * 
-	 * @param files List of files within the root directory.
+	 * @param file Directory or file to work with.
 	 */
-	private void modifiyFiles(java.io.File[] files) {
-		for (java.io.File file : files) {
-			if (file.getName().endsWith(".pdf")) {
-				modifyFile(file);
-			} else if (file.isDirectory()) {
-				modifiyFiles(file.listFiles());
-			}
-		}
-	}
-	
-	/*
-	 * TODO Add Javadoc.
-	 */
-	private void modifyFile(java.io.File file) {
-		bookmarkCountLocal = 0;
-		String filename = file.getName();
-		logger.info("Processing \"" + filename + "\".");
-		
-		try (File pdf = new File(file.getAbsolutePath())) {
-			Document document = pdf.getDocument();
-			modifyBookmarks(document.getBookmarks());
+	public void modifyFiles(java.io.File file) {
+		if (file.isDirectory()) {
+			java.io.File[] files = file.listFiles();
 			
-			// FIXME Broken PDF versioning, probably caused by a PDF Clown bug.
-			if (version != null) {
-				document.setVersion(version);
+			for (java.io.File f : files) {
+				modifyFiles(f);
 			}
+		} else {
+			String filename = file.getName();
+			logger.info("Processing \"" + filename + "\".");
 			
-			if (filenameInfix != null) {
-				java.io.File output = new java.io.File(file.getAbsolutePath()
-						.replace(".pdf", filenameInfix + ".pdf"));
-				pdf.save(output, serializationMode);
-			} else {
-				pdf.save(serializationMode);
+			try (File pdf = new File(file.getAbsolutePath())) {
+				bookmarkCountLocal = 0;
+				Document document = pdf.getDocument();
+				modifyBookmarks(document.getBookmarks());
+				
+				// FIXME Broken PDF versioning, probably caused by a PDF Clown bug.
+				if (version != null) {
+					document.setVersion(version);
+				}
+				
+				if (filenameInfix != null) {
+					java.io.File output = new java.io.File(file.getAbsolutePath()
+							.replace(".pdf", filenameInfix + ".pdf"));
+					pdf.save(output, serializationMode);
+				} else {
+					pdf.save(serializationMode);
+				}
+				fileCount++;
+				logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
+						+ filename + "\".");
+			} catch (FileNotFoundException e) {
+				logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
+						+ " instance of \"" + file.getAbsolutePath() + "\".", e);
+			} catch (ParseException e) {
+				logger.log(Level.SEVERE, "Could not parse \"" + file.getAbsolutePath() 
+						+ "\".", e);
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, "Could not save \"" + file.getAbsolutePath() 
+						+ "\".", e);
 			}
-			fileCount++;
-			logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
-					+ filename + "\".");
-		} catch (FileNotFoundException e) {
-			logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
-					+ " instance of \"" + file.getAbsolutePath() + "\".", e);
-		} catch (ParseException e) {
-			logger.log(Level.SEVERE, "Could not parse \"" + file.getAbsolutePath() 
-					+ "\".", e);
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Could not save \"" + file.getAbsolutePath() 
-					+ "\".", e);
 		}
 	}
 	
 	/**
-	 * Modifies each bookmark which is found by depth-first seach, starting from the given 
-	 * collection of bookmarks, and applies {@link #mode} and {@link #zoom}.
+	 * Modifies each bookmark which is found by depth-first seach and applies {@link #mode} and 
+	 * {@link #zoom} to it.
 	 * 
 	 * @param bookmarks Collection of bookmarks to modify.
 	 */
 	private void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
+			// TODO Change to bookmark.getBookmarks().isEmpty when it's implemented.
+			if (bookmark.getBookmarks().size() != 0) {
+				modifyBookmarks(bookmark.getBookmarks());
+			}
+			
 			if (bookmark.getTarget() instanceof GoToDestination<?>) {
 				// FIXME PDFs containing bookmarks with broken destinations sometimes don't serialize.
 				try { 
@@ -237,17 +232,13 @@ public class Wizard extends Task<Void> {
 		
 					destination.setMode(mode);
 					destination.setZoom(zoom);
-					bookmarkCount++;
+					bookmarkCountGlobal++;
 					bookmarkCountLocal++;
 					logger.fine("Successfully set \"" + bookmark.getTitle() 
 							+ "\" to use mode " + mode + " and zoom " + zoom + ".");
 				} catch (Exception e) {
 					logger.severe("\"" + bookmark.getTitle() + "\" has a broken destination.");
 				}
-			}
-			
-			if (bookmark.getBookmarks().size() != 0) {
-				modifyBookmarks(bookmark.getBookmarks());
 			}
 		}
 	}
