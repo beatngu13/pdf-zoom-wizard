@@ -4,7 +4,7 @@ The PDF Bookmark Wizard is a lightweight and cross-platform tool, which allows y
 
 If you're a user, you're at the right place. Read down below to check out the features of the Wizard and see how to get started. If you're a developer, please head on to the [wiki](https://bitbucket.org/beatngu13/pdfbookmarkwizard/wiki/) section.
 
-The PDF Bookmark Wizard is free software under [GNU GPLv3](http://www.gnu.org/licenses/), so feel free to have a try on it.
+This is free software under [GNU GPLv3](http://www.gnu.org/licenses/), so feel free to have a try on it.
 
 ## Features ##
 
