@@ -1,6 +1,6 @@
 # PDF Bookmark Wizard #
 
-The PDF Bookmark Wizard is a lightweight and cross-platform tool, which allows you to easily apply various zoom settings (such as *Inherhit zoom*) to a batch of PDF bookmarks.
+The PDF Bookmark Wizard is a lightweight and cross-platform tool which allows you to easily apply various zoom settings (such as *Inherhit zoom*) to a batch of PDF bookmarks.
 
 If you are a user, read down below to check out the features of the Wizard and see how to get started. If you are a developer, please head on to the [wiki](https://bitbucket.org/beatngu13/pdfbookmarkwizard/wiki/) section.
 
