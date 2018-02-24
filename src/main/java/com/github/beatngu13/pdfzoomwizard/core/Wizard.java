@@ -38,16 +38,16 @@ import org.pdfclown.util.parsers.ParseException;
 import javafx.concurrent.Task;
 
 /**
- * Applies {@link #mode} and {@link #zoom} to the bookmarks of a single PDF file or a whole 
- * directory (subdirectories included). This implementation is based on the 
- * <a href="http://www.stefanochizzolini.it/en/projects/clown/">PDF Clown</a> library by Stefano 
- * Chizzolini.
+ * Applies {@link #mode} and {@link #zoom} to the bookmarks of a single PDF file
+ * or a whole directory (subdirectories included). This implementation is based
+ * on the <a href="http://www.stefanochizzolini.it/en/projects/clown/">PDF
+ * Clown</a> library by Stefano Chizzolini.
  * 
  * @author danielkraus1986@gmail.com
  *
  */
 public class Wizard extends Task<Void> {
-	
+
 	/**
 	 * {@link Logger} instance.
 	 */
@@ -58,7 +58,7 @@ public class Wizard extends Task<Void> {
 	 */
 	private final SerializationModeEnum serializationMode = SerializationModeEnum.Standard;
 	/**
-	 * Total number of modified files. 
+	 * Total number of modified files.
 	 */
 	private int fileCount;
 	/**
@@ -69,14 +69,14 @@ public class Wizard extends Task<Void> {
 	 * Number of modified bookmarks within the current processed PDF file.
 	 */
 	private int bookmarkCountLocal;
-	
+
 	/**
 	 * Directory or file to work with.
 	 */
 	private java.io.File root;
 	/**
-	 * <i>Filename&lt;infix&gt;.pdf</i> for copies, <code>null</code> if the original document will
-	 * be overwritten.
+	 * <i>Filename&lt;infix&gt;.pdf</i> for copies, <code>null</code> if the
+	 * original document will be overwritten.
 	 */
 	private String filenameInfix;
 	/**
@@ -88,42 +88,46 @@ public class Wizard extends Task<Void> {
 	 */
 	private ModeEnum mode;
 	/**
-	 * Version number for serialization, <code>null</code> if the original version will be
-	 * inherited.
+	 * Version number for serialization, <code>null</code> if the original version
+	 * will be inherited.
 	 */
 	private Version version;
-	
+
 	/**
 	 * Creates a new <code>Wizard</code> instance.
 	 * 
-	 * @param root Sets {@link #root}.
-	 * @param filenameInfix Sets {@link #filenameInfix}.
-	 * @param zoom Sets {@link #zoom}.
-	 * @param version version Sets {@link #version}.
+	 * @param root
+	 *            Sets {@link #root}.
+	 * @param filenameInfix
+	 *            Sets {@link #filenameInfix}.
+	 * @param zoom
+	 *            Sets {@link #zoom}.
+	 * @param version
+	 *            version Sets {@link #version}.
 	 */
 	public Wizard(java.io.File root, String filenameInfix, String zoom, String version) {
 		this.root = root;
 		this.filenameInfix = filenameInfix;
-		
+
 		computeZoom(zoom);
 		computeVersion(version);
 	}
-	
+
 	@Override
 	protected Void call() throws Exception {
-		logger.info("Start working in \"" + root.getAbsolutePath()
-				+ "\". All PDF documents will be saved as version " + version
-				+ " with serialization mode " + serializationMode + ".");
+		logger.info("Start working in \"" + root.getAbsolutePath() + "\". All PDF documents will be saved as version "
+				+ version + " with serialization mode " + serializationMode + ".");
 		modifyFiles(root);
 		logger.info("Modified " + bookmarkCountGlobal + " bookmarks in " + fileCount + " file(s).");
-		
+
 		return null;
 	}
 
 	/**
 	 * Computes {@link #version}.
 	 * 
-	 * @param version Value given by the calling instance.
+	 * @param version
+	 *            Value given by the calling instance.
 	 */
 	private void computeVersion(String version) {
 		switch (version) {
@@ -152,11 +156,12 @@ public class Wizard extends Task<Void> {
 			this.version = VersionEnum.PDF17.getVersion();
 		}
 	}
-	
+
 	/**
 	 * Computes {@link #zoom} and {@link #mode}.
 	 * 
-	 * @param zoom Value given by the calling instance.
+	 * @param zoom
+	 *            Value given by the calling instance.
 	 */
 	private void computeZoom(String zoom) {
 		switch (zoom) {
@@ -178,62 +183,62 @@ public class Wizard extends Task<Void> {
 			mode = ModeEnum.XYZ;
 		}
 	}
-	
+
 	/**
-	 * Modifies each PDF file which is found by depth-first search and calls 
+	 * Modifies each PDF file which is found by depth-first search and calls
 	 * {@link #modifyBookmarks(Bookmarks)} on it.
 	 * 
-	 * @param file Directory or file to work with.
+	 * @param file
+	 *            Directory or file to work with.
 	 */
 	public void modifyFiles(java.io.File file) {
 		if (file.isDirectory()) {
 			java.io.File[] files = file.listFiles();
-			
+
 			for (java.io.File f : files) {
 				modifyFiles(f);
 			}
 		} else {
 			String filename = file.getName();
 			logger.info("Processing \"" + filename + "\".");
-			
+
 			try (File pdf = new File(file.getAbsolutePath())) {
 				bookmarkCountLocal = 0;
 				Document document = pdf.getDocument();
 				modifyBookmarks(document.getBookmarks());
-				
+
 				// FIXME Broken PDF versioning, probably caused by a PDF Clown bug.
 				if (version != null) {
 					document.setVersion(version);
 				}
-				
+
 				if (filenameInfix != null) {
-					java.io.File output = new java.io.File(file.getAbsolutePath()
-							.replace(".pdf", filenameInfix + ".pdf"));
+					java.io.File output = new java.io.File(
+							file.getAbsolutePath().replace(".pdf", filenameInfix + ".pdf"));
 					pdf.save(output, serializationMode);
 				} else {
 					pdf.save(serializationMode);
 				}
 				fileCount++;
-				logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" 
-						+ filename + "\".");
+				logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" + filename + "\".");
 			} catch (FileNotFoundException e) {
-				logger.log(Level.SEVERE, "Could not create " + File.class.getName() 
-						+ " instance of \"" + file.getAbsolutePath() + "\".", e);
+				logger.log(Level.SEVERE,
+						"Could not create " + File.class.getName() + " instance of \"" + file.getAbsolutePath() + "\".",
+						e);
 			} catch (ParseException e) {
-				logger.log(Level.SEVERE, "Could not parse \"" + file.getAbsolutePath() 
-						+ "\".", e);
+				logger.log(Level.SEVERE, "Could not parse \"" + file.getAbsolutePath() + "\".", e);
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Could not save \"" + file.getAbsolutePath() 
-						+ "\".", e);
+				logger.log(Level.SEVERE, "Could not save \"" + file.getAbsolutePath() + "\".", e);
 			}
 		}
 	}
-	
+
 	/**
-	 * Modifies each bookmark which is found by depth-first seach and applies {@link #mode} and 
-	 * {@link #zoom} to it.
+	 * Modifies each bookmark which is found by depth-first seach and applies
+	 * {@link #mode} and {@link #zoom} to it.
 	 * 
-	 * @param bookmarks Collection of bookmarks to modify.
+	 * @param bookmarks
+	 *            Collection of bookmarks to modify.
 	 */
 	private void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
@@ -241,38 +246,38 @@ public class Wizard extends Task<Void> {
 			if (bookmark.getBookmarks().size() != 0) {
 				modifyBookmarks(bookmark.getBookmarks());
 			}
-			
+
 			if (bookmark.getTarget() instanceof GoToDestination<?>) {
-				// FIXME PDFs containing bookmarks with broken destinations sometimes don't serialize.
-				try { 
-					Destination destination = ((GoToDestination<?>) bookmark.getTarget())
-							.getDestination();
-		
+				// FIXME PDFs containing bookmarks with broken destinations sometimes don't
+				// serialize.
+				try {
+					Destination destination = ((GoToDestination<?>) bookmark.getTarget()).getDestination();
+
 					destination.setMode(mode);
 					destination.setZoom(zoom);
 					bookmarkCountGlobal++;
 					bookmarkCountLocal++;
-					logger.fine("Successfully set \"" + bookmark.getTitle() 
-							+ "\" to use mode " + mode + " and zoom " + zoom + ".");
+					logger.fine("Successfully set \"" + bookmark.getTitle() + "\" to use mode " + mode + " and zoom "
+							+ zoom + ".");
 				} catch (Exception e) {
 					logger.severe("\"" + bookmark.getTitle() + "\" has a broken destination.");
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	protected void running() {
 		super.running();
 		updateMessage(State.RUNNING.toString());
 	}
-	
+
 	@Override
 	protected void succeeded() {
 		super.succeeded();
 		updateMessage(State.SUCCEEDED.toString());
 	}
-	
+
 	@Override
 	protected void failed() {
 		super.failed();

@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
- This file is part of the PDF Zoom Wizard.
- 
- The PDF Zoom Wizard is free software: you can redistribute it and/or 
- modify it under the terms of the GNU General Public License version 3 as 
- published by the Free Software Foundation.
- 
- The PDF Zoom Wizard is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
- Public License for more details.
- 
- You should have received a copy of the GNU General Public License along with 
- the PDF Zoom Wizard. If not, see 
- <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
-
- Copyright 2013-2014 Daniel Kraus
--->
+<!-- This file is part of the PDF Zoom Wizard. The PDF Zoom Wizard is free 
+	software: you can redistribute it and/or modify it under the terms of the 
+	GNU General Public License version 3 as published by the Free Software Foundation. 
+	The PDF Zoom Wizard is distributed in the hope that it will be useful, but 
+	WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+	or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+	more details. You should have received a copy of the GNU General Public License 
+	along with the PDF Zoom Wizard. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 
+	Copyright 2013-2014 Daniel Kraus -->
 
 <?import java.lang.String?>
 
@@ -33,57 +24,68 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="mainView" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10.0" 
-		vgap="10.0">
-		
-	<Label text="Mode:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+<GridPane fx:id="mainView" xmlns:fx="http://javafx.com/fxml"
+	alignment="CENTER" hgap="10.0" vgap="10.0">
+
+	<Label text="Mode:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
 	<HBox spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="1">
 		<fx:define>
-			<ToggleGroup fx:id="modeToggleGroup"/>
+			<ToggleGroup fx:id="modeToggleGroup" />
 		</fx:define>
-		<RadioButton text="Multiple files" selected="true" toggleGroup="$modeToggleGroup"/>
-		<RadioButton text="Single file" toggleGroup="$modeToggleGroup"/>
+		<RadioButton text="Multiple files" selected="true"
+			toggleGroup="$modeToggleGroup" />
+		<RadioButton text="Single file" toggleGroup="$modeToggleGroup" />
 	</HBox>
-	
-	<Label fx:id="rootLabel" text="Directory:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-	<TextField fx:id="rootTextField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-	<Button fx:id="browseButton" text="Browse" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
 
-	<Label text="Filename infix:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-	<TextField fx:id="copyTextField" disable="true" promptText="Filename&lt;infix&gt;.pdf"
-		GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-	<HBox spacing="4.0" alignment="CENTER" GridPane.rowIndex="2" GridPane.columnIndex="2">
-		<CheckBox fx:id="copyCheckBox"/>
-		<Label text="Copy"/>
+	<Label fx:id="rootLabel" text="Directory:" GridPane.rowIndex="1"
+		GridPane.columnIndex="0" />
+	<TextField fx:id="rootTextField" GridPane.rowIndex="1"
+		GridPane.columnIndex="1" />
+	<Button fx:id="browseButton" text="Browse" GridPane.rowIndex="1"
+		GridPane.columnIndex="2" />
+
+	<Label text="Filename infix:" GridPane.rowIndex="2"
+		GridPane.columnIndex="0" />
+	<TextField fx:id="copyTextField" disable="true"
+		promptText="Filename&lt;infix&gt;.pdf" GridPane.rowIndex="2"
+		GridPane.columnIndex="1" />
+	<HBox spacing="4.0" alignment="CENTER" GridPane.rowIndex="2"
+		GridPane.columnIndex="2">
+		<CheckBox fx:id="copyCheckBox" />
+		<Label text="Copy" />
 	</HBox>
-	
-	<Label text="Zoom level:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-	<ChoiceBox fx:id="zoomChoiceBox" value="Inherit zoom" GridPane.rowIndex="3" 
-		GridPane.columnIndex="1">
-			<String fx:value="Fit page"/>
-			<String fx:value="Actual size"/>
-			<String fx:value="Fit width"/>
-			<String fx:value="Fit visible"/>
-			<String fx:value="Inherit zoom"/>
+
+	<Label text="Zoom level:" GridPane.rowIndex="3"
+		GridPane.columnIndex="0" />
+	<ChoiceBox fx:id="zoomChoiceBox" value="Inherit zoom"
+		GridPane.rowIndex="3" GridPane.columnIndex="1">
+		<String fx:value="Fit page" />
+		<String fx:value="Actual size" />
+		<String fx:value="Fit width" />
+		<String fx:value="Fit visible" />
+		<String fx:value="Inherit zoom" />
 	</ChoiceBox>
-	
-	<Label text="PDF version:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-	<ChoiceBox fx:id="versionChoiceBox" value="Retain existing" GridPane.rowIndex="4" 
-		GridPane.columnIndex="1">
-			<String fx:value="1.0"/>
-			<String fx:value="1.1"/>
-			<String fx:value="1.2"/>
-			<String fx:value="1.3"/>
-			<String fx:value="1.4"/>
-			<String fx:value="1.5"/>
-			<String fx:value="1.6"/>
-			<String fx:value="1.7"/>
-			<String fx:value="Retain existing"/>
+
+	<Label text="PDF version:" GridPane.rowIndex="4"
+		GridPane.columnIndex="0" />
+	<ChoiceBox fx:id="versionChoiceBox" value="Retain existing"
+		GridPane.rowIndex="4" GridPane.columnIndex="1">
+		<String fx:value="1.0" />
+		<String fx:value="1.1" />
+		<String fx:value="1.2" />
+		<String fx:value="1.3" />
+		<String fx:value="1.4" />
+		<String fx:value="1.5" />
+		<String fx:value="1.6" />
+		<String fx:value="1.7" />
+		<String fx:value="Retain existing" />
 	</ChoiceBox>
-	
-	<Label text="State:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-	<Text fx:id="stateText" text="READY" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-	<Button fx:id="runButton" text="Run" disable="true" GridPane.halignment="RIGHT" 
-		GridPane.rowIndex="5" GridPane.columnIndex="2"/>
+
+	<Label text="State:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+	<Text fx:id="stateText" text="READY" GridPane.rowIndex="5"
+		GridPane.columnIndex="1" />
+	<Button fx:id="runButton" text="Run" disable="true"
+		GridPane.halignment="RIGHT" GridPane.rowIndex="5"
+		GridPane.columnIndex="2" />
 
 </GridPane>
