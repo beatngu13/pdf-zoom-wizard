@@ -31,16 +31,16 @@ import javafx.stage.Stage;
  *
  */
 public class Launcher extends Application {
-	
+
 	public static void main(String[] args) {
-        launch(args);
-    }
+		launch(args);
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("PDF Zoom Wizard");
-        primaryStage.setScene(new Scene(new MainViewController().getMainView(), 425.0, 250.0));
-        primaryStage.show();
+		primaryStage.setScene(new Scene(new MainViewController().getMainView(), 425.0, 250.0));
+		primaryStage.show();
 	}
 
 }

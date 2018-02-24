@@ -53,12 +53,12 @@ import javafx.util.Duration;
  *
  */
 public class MainViewController {
-	
+
 	/**
 	 * {@link Logger} instance.
 	 */
 	private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
-	
+
 	/**
 	 * Sets {@link #root}.
 	 */
@@ -79,7 +79,7 @@ public class MainViewController {
 	 * Indicates whether multiple or single files will be processed.
 	 */
 	private boolean multipleMode = true;
-	
+
 	/**
 	 * Wizard UI container.
 	 */
@@ -91,7 +91,7 @@ public class MainViewController {
 	@FXML
 	private ToggleGroup modeToggleGroup;
 	/**
-	 * <code>Label</code> for {@link #rootTextField}. 
+	 * <code>Label</code> for {@link #rootTextField}.
 	 */
 	@FXML
 	private Label rootLabel;
@@ -101,7 +101,8 @@ public class MainViewController {
 	@FXML
 	private TextField rootTextField;
 	/**
-	 * Uses {@link #directoryChooser} respectively {@link #fileChooser} to set {@link #root}.
+	 * Uses {@link #directoryChooser} respectively {@link #fileChooser} to set
+	 * {@link #root}.
 	 */
 	@FXML
 	private Button browseButton;
@@ -126,7 +127,8 @@ public class MainViewController {
 	@FXML
 	private ChoiceBox<String> versionChoiceBox;
 	/**
-	 * Displays the current state of the Wizard. Basically the values of {@link State} are used.
+	 * Displays the current state of the Wizard. Basically the values of
+	 * {@link State} are used.
 	 */
 	@FXML
 	private Text stateText;
@@ -135,49 +137,47 @@ public class MainViewController {
 	 */
 	@FXML
 	private Button runButton;
-	
+
 	/**
 	 * Creates a new <code>MainViewController</code> instance.
 	 */
 	public MainViewController() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
-			
+
 			// TODO Adding the controller within the FXML file fails.
 			loader.setController(this);
 			loader.load();
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Could not load FXML file.", e);
 		}
-		
-		runButton.disableProperty().bind(rootTextField.textProperty().isEqualTo("").or(
-				stateText.textProperty().isEqualTo(State.RUNNING.toString())));
+
+		runButton.disableProperty().bind(rootTextField.textProperty().isEqualTo("")
+				.or(stateText.textProperty().isEqualTo(State.RUNNING.toString())));
 		copyTextField.disableProperty().bind(copyCheckBox.selectedProperty().not());
 
 		directoryChooser.setTitle("Choose a directory");
 		fileChooser.setTitle("Choose a file");
-		
+
 		// TODO Best practice?
 		modeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 
 			@Override
-			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue,
-					Toggle newValue) {
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
 				multipleMode = !rootLabel.getText().equals("Directory:");
-				
+
 				FadeTransition fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
 				fadeOut.setFromValue(1.0);
 				fadeOut.setToValue(0.0);
 				fadeOut.play();
-				
+
 				fadeOut.setOnFinished(new EventHandler<ActionEvent>() {
-					
+
 					@Override
 					public void handle(ActionEvent event) {
 						rootLabel.setText(multipleMode ? "Directory:" : "File:");
-						
-						FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), 
-								rootLabel);
+
+						FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
 						fadeIn.setFromValue(0.0);
 						fadeIn.setToValue(1.0);
 						fadeIn.play();
@@ -185,17 +185,17 @@ public class MainViewController {
 				});
 			}
 		});
-		
+
 		browseButton.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
-				root = multipleMode ? directoryChooser.showDialog(mainView.getScene().getWindow()) 
+				root = multipleMode ? directoryChooser.showDialog(mainView.getScene().getWindow())
 						: fileChooser.showOpenDialog(mainView.getScene().getWindow());
-				
+
 				if (root != null) {
 					File parentFile = root.getParentFile();
-					
+
 					rootTextField.setText(root.getAbsolutePath());
 					directoryChooser.setInitialDirectory(parentFile);
 					fileChooser.setInitialDirectory(parentFile);
@@ -203,32 +203,33 @@ public class MainViewController {
 			}
 
 		});
-		
+
 		runButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
 				if (validateInput()) {
 					// TODO Best practice?
-					warningController = warningController == null ? new WarningViewController(
-							runButton.getScene().getWindow()) : warningController;
-					
-					String messagePrefix = multipleMode ? "All files in \"" + root.getAbsolutePath() 
-							+ "\" and its enclosing subdirectories will be " 
+					warningController = warningController == null
+							? new WarningViewController(runButton.getScene().getWindow())
+							: warningController;
+
+					String messagePrefix = multipleMode
+							? "All files in \"" + root.getAbsolutePath()
+									+ "\" and its enclosing subdirectories will be "
 							: "\"" + root.getAbsolutePath() + "\" will be ";
-					String messageInfix = !copyCheckBox.isSelected() ? "overwritten!" 
-							: "copied!";
+					String messageInfix = !copyCheckBox.isSelected() ? "overwritten!" : "copied!";
 					String messageSuffix = "\n\nAre you sure to proceed?";
-					
+
 					if (warningController.show(messagePrefix + messageInfix + messageSuffix)) {
 						MainViewController.this.run();
 					}
 				}
 			}
-			
+
 		});
 	}
-	
+
 	/**
 	 * Validates the given UI input.
 	 * 
@@ -236,51 +237,47 @@ public class MainViewController {
 	 */
 	private boolean validateInput() {
 		boolean valid = true;
-		
-		if (root == null
-				|| !root.getAbsolutePath().equals(rootTextField.getText())) {
+
+		if (root == null || !root.getAbsolutePath().equals(rootTextField.getText())) {
 			root = new File(rootTextField.getText());
 		}
-		
+
 		if (multipleMode && !root.isDirectory()) {
 			valid = false;
 			stateText.setText("A FILE IS SELECTED");
-			logger.info("\"" + root.getAbsolutePath()
-					+ "\" is a file.");
+			logger.info("\"" + root.getAbsolutePath() + "\" is a file.");
 		} else if (!multipleMode && root.isDirectory()) {
 			valid = false;
 			stateText.setText("A DIRECTORY IS SELECTED");
-			logger.info("\"" + root.getAbsolutePath()
-					+ "\" is a directory.");
+			logger.info("\"" + root.getAbsolutePath() + "\" is a directory.");
 		}
-		
+
 		if (copyCheckBox.isSelected() && copyTextField.getText().isEmpty()) {
 			valid = false;
 			stateText.setText("FILENAME INFIX IS EMPTY");
 			logger.info("Filename infix is empty.");
 		}
-		
+
 		return valid;
 	}
-	
+
 	/**
-	 * Creates a new {@link Wizard} instance and starts modification on {@link #root}.
+	 * Creates a new {@link Wizard} instance and starts modification on
+	 * {@link #root}.
 	 */
 	private void run() {
 		String filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
-		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue(), 
-				versionChoiceBox.getValue());
+		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue(), versionChoiceBox.getValue());
 		Thread thread = new Thread(wizard);
-		
+
 		wizard.messageProperty().addListener(new ChangeListener<String>() {
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, 
-					String newValue) {
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				MainViewController.this.stateText.setText(newValue);
 			}
 		});
-		
+
 		thread.setDaemon(true);
 		thread.start();
 	}
@@ -291,5 +288,5 @@ public class MainViewController {
 	public Parent getMainView() {
 		return mainView;
 	}
-	
+
 }

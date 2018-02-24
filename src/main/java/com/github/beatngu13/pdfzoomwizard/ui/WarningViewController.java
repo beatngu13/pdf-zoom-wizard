@@ -41,22 +41,22 @@ import javafx.stage.Window;
  *
  */
 public class WarningViewController {
-	
+
 	/**
 	 * {@link Logger} instance.
 	 */
 	private static final Logger logger = Logger.getLogger(WarningViewController.class.getName());
-	
+
 	/**
 	 * {@link Stage} instance.
 	 */
 	private Stage stage = new Stage();
 	/**
-	 * Indicates whether the user decided to proceed by clicking {@link #okButton}, or to cancel by 
-	 * clicking {@link #cancelButton}.
+	 * Indicates whether the user decided to proceed by clicking {@link #okButton},
+	 * or to cancel by clicking {@link #cancelButton}.
 	 */
 	private boolean proceed = false;
-	
+
 	/**
 	 * Warning dialog container.
 	 */
@@ -73,64 +73,66 @@ public class WarningViewController {
 	@FXML
 	private Button okButton;
 	/**
-	 * Leaves {@link #proceed} being <code>false</code> and closes the warning dialog.
+	 * Leaves {@link #proceed} being <code>false</code> and closes the warning
+	 * dialog.
 	 */
 	@FXML
 	private Button cancelButton;
-	
+
 	/**
 	 * Creates a new <code>WarningController</code> instance.
 	 * 
-	 * @param owner Calling window.
+	 * @param owner
+	 *            Calling window.
 	 */
 	public WarningViewController(Window owner) {
 		stage.setTitle("Warning");
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.initOwner(owner);
-		
+
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("WarningView.fxml"));
-			
+
 			// TODO Adding the controller within the FXML file fails.
 			loader.setController(this);
 			loader.load();
 			stage.setScene(new Scene(warningView, 350.0, 185.0));
-			warningText.wrappingWidthProperty().bind(
-					stage.getScene().widthProperty().subtract(20.0));
+			warningText.wrappingWidthProperty().bind(stage.getScene().widthProperty().subtract(20.0));
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Could not load FXML file.", e);
 		}
-		
+
 		okButton.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
 				proceed = true;
 				stage.close();
 			}
 		});
-		
+
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
 				stage.close();
 			}
 		});
 	}
-	
+
 	/**
 	 * Shows the modal warning dialog and blocks the calling Window.
 	 * 
-	 * @param message Warning message to be displayed.
+	 * @param message
+	 *            Warning message to be displayed.
 	 * @return {@link #proceed}.
 	 */
 	public boolean show(String message) {
 		proceed = false;
-		
+
 		warningText.setText(message);
 		stage.showAndWait();
-		
+
 		return proceed;
 	}
 
