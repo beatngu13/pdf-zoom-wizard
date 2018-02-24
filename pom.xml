@@ -38,6 +38,16 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.fxml</include>
+				</includes>
+			</resource>
+		</resources>
+	
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
