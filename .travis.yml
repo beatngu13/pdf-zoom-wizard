@@ -1,0 +1,4 @@
+language: java
+install: ./install-deps.sh
+notifications:
+    email: false
