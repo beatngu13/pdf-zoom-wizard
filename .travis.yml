@@ -1,1 +1,2 @@
 language: java
+install: ./install-deps.sh
