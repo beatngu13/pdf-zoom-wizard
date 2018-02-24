@@ -7,7 +7,7 @@ This repo will provide a new and extended implementation of the [PDF Bookmark Wi
 ## Roadmap
 
 - [x] Convert to Maven project
-- [ ] Enhanced build process using Travis CI
+- [x] Enhanced build process using Travis CI
 - [ ] Tests (!)
 - [ ] Migrate to OpenJDK 9 and Semantic Versioning
 - [ ] Project-wide refactoring and removal of experimental features
