@@ -6,10 +6,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.bitbucket.beatngu13</groupId>
-	<artifactId>pdfbookmarkwizard</artifactId>
+	<artifactId>pdfzoomwizard</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 
-	<name>PDF Bookmark Wizard</name>
+	<name>PDF Zoom Wizard</name>
 
 	<properties>
 		<java.version>1.8</java.version>
