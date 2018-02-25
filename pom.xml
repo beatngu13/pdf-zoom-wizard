@@ -18,6 +18,12 @@
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
 	</properties>
 
+	<scm>
+		<url>https://github.com/beatngu13/pdf-zoom-wizard/</url>
+		<connection>scm:git:https://github.com/beatngu13/pdf-zoom-wizard.git</connection>
+		<developerConnection>scm:git:https://github.com/beatngu13/pdf-zoom-wizard.git</developerConnection>
+	</scm>
+
 	<repositories>
 		<repository>
 			<id>local-maven-repo</id>
@@ -49,7 +55,7 @@
 				</includes>
 			</resource>
 		</resources>
-	
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
