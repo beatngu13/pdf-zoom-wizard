@@ -1,4 +1,18 @@
 language: java
-install: ./install-deps.sh
+
 notifications:
-    email: false
+  email: false
+  
+install: ./install-deps.sh
+  
+before_deploy: "mvn package -DskipTests"
+
+deploy:
+  provider: releases
+  api_key: "${GH_TOKEN}"
+  file_glob: true
+  file: "./target/pdfzoomwizard-*.jar"
+  skip_cleanup: true
+  on:
+    tags: true
+    branch: master
