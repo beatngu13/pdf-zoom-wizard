@@ -21,7 +21,7 @@
 	<repositories>
 		<repository>
 			<id>local-maven-repo</id>
-			<url>file:///${basedir}/lib</url>
+			<url>file:///${basedir}/deps</url>
 			<releases>
 				<updatePolicy>always</updatePolicy>
 			</releases>
