@@ -13,13 +13,21 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<encoding>UTF-8</encoding>
+		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
 	</properties>
+
+	<scm>
+		<url>https://github.com/beatngu13/pdf-zoom-wizard/</url>
+		<connection>scm:git:https://github.com/beatngu13/pdf-zoom-wizard.git</connection>
+		<developerConnection>scm:git:https://github.com/beatngu13/pdf-zoom-wizard.git</developerConnection>
+	</scm>
 
 	<repositories>
 		<repository>
 			<id>local-maven-repo</id>
-			<url>file:///${basedir}/lib</url>
+			<url>file:///${basedir}/deps</url>
 			<releases>
 				<updatePolicy>always</updatePolicy>
 			</releases>
@@ -40,14 +48,13 @@
 	<build>
 		<resources>
 			<resource>
-				<filtering>false</filtering>
 				<directory>src/main/java</directory>
 				<includes>
 					<include>**/*.fxml</include>
 				</includes>
 			</resource>
 		</resources>
-	
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -73,12 +80,27 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.github.beatngu13.pdfzoomwizard.Launcher</mainClass>
+									<manifestEntries>
+										<Main-Class>com.github.beatngu13.pdfzoomwizard.Launcher</Main-Class>
+										<Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+										<Implementation-Title>${project.artifactId}</Implementation-Title>
+										<Implementation-Version>${project.version}</Implementation-Version>
+									</manifestEntries>
 								</transformer>
 							</transformers>
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<goals>install</goals>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
