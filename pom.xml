@@ -81,7 +81,12 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.github.beatngu13.pdfzoomwizard.Launcher</mainClass>
+									<manifestEntries>
+										<Main-Class>com.github.beatngu13.pdfzoomwizard.Launcher</Main-Class>
+										<Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+										<Implementation-Title>${project.artifactId}</Implementation-Title>
+										<Implementation-Version>${project.version}</Implementation-Version>
+									</manifestEntries>
 								</transformer>
 							</transformers>
 						</configuration>
