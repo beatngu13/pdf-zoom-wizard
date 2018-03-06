@@ -6,6 +6,8 @@ A new and extended implementation of the [PDF Bookmark Wizard](https://bitbucket
 
 The [roadmap](#roadmap) below shows the current project status. Release `v0.1.0` is a simple GitHub port of the former PDF Bookmark Wizard (`v0.0.4.1`) that offers the same functionality. Have a look at the [changelog](https://github.com/beatngu13/pdf-zoom-wizard/blob/master/CHANGELOG.md) for the changes in subsequent releases.
 
+To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf-zoom-wizard/wiki/).
+
 ## Roadmap
 
 - [x] Convert to Maven project
