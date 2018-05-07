@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Removed
+
+- Experimental (and partly broken) feature for setting the PDF version.
+
 ## [0.1.1] - 2018-05-27
 
 ### Fixed
