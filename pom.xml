@@ -16,6 +16,7 @@
 		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
 		<junit.platform.version>1.2.0</junit.platform.version>
+		<itext.version>7.1.2</itext.version>
 	</properties>
 
 	<scm>
@@ -68,6 +69,13 @@
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<version>3.9.1</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>kernel</artifactId>
+			<version>${itext.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
