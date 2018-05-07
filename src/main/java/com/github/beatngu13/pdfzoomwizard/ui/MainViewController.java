@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.pdfclown.VersionEnum;
+
 import com.github.beatngu13.pdfzoomwizard.core.Wizard;
 
 import javafx.animation.FadeTransition;
@@ -121,11 +123,6 @@ public class MainViewController {
 	 */
 	@FXML
 	private ChoiceBox<String> zoomChoiceBox;
-	/**
-	 * {@link SerializationModeEnum} to use for modification.
-	 */
-	@FXML
-	private ChoiceBox<String> versionChoiceBox;
 	/**
 	 * Displays the current state of the Wizard. Basically the values of
 	 * {@link State} are used.
