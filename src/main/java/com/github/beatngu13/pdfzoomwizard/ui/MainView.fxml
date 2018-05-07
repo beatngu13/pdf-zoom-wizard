@@ -27,14 +27,17 @@
 <GridPane fx:id="mainView" xmlns:fx="http://javafx.com/fxml"
 	alignment="CENTER" hgap="10.0" vgap="10.0">
 
-	<Label text="Mode:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-	<HBox spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="1">
+	<Label text="Mode:" GridPane.rowIndex="0"
+		GridPane.columnIndex="0" />
+	<HBox spacing="10.0" GridPane.rowIndex="0"
+		GridPane.columnIndex="1">
 		<fx:define>
 			<ToggleGroup fx:id="modeToggleGroup" />
 		</fx:define>
 		<RadioButton text="Multiple files" selected="true"
 			toggleGroup="$modeToggleGroup" />
-		<RadioButton text="Single file" toggleGroup="$modeToggleGroup" />
+		<RadioButton text="Single file"
+			toggleGroup="$modeToggleGroup" />
 	</HBox>
 
 	<Label fx:id="rootLabel" text="Directory:" GridPane.rowIndex="1"
@@ -66,7 +69,8 @@
 		<String fx:value="Inherit zoom" />
 	</ChoiceBox>
 
-	<Label text="State:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+	<Label text="State:" GridPane.rowIndex="4"
+		GridPane.columnIndex="0" />
 	<Text fx:id="stateText" text="READY" GridPane.rowIndex="4"
 		GridPane.columnIndex="1" />
 	<Button fx:id="runButton" text="Run" disable="true"
