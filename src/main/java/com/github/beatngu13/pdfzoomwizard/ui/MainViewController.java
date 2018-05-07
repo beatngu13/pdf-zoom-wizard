@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.pdfclown.VersionEnum;
-
 import com.github.beatngu13.pdfzoomwizard.core.Wizard;
 
 import javafx.animation.FadeTransition;
@@ -119,7 +117,7 @@ public class MainViewController {
 	@FXML
 	private CheckBox copyCheckBox;
 	/**
-	 * {@link VersionEnum} to use for modification.
+	 * Value to use for bookmarks zoom level.
 	 */
 	@FXML
 	private ChoiceBox<String> zoomChoiceBox;
