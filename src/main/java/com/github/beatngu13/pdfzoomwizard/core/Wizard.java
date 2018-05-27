@@ -56,7 +56,7 @@ public class Wizard extends Task<Void> {
 	/**
 	 * @see {@link SerializationModeEnum}
 	 */
-	private final SerializationModeEnum serializationMode = SerializationModeEnum.Standard;
+	private final SerializationModeEnum serializationMode = SerializationModeEnum.Incremental;
 	/**
 	 * Total number of modified files.
 	 */
