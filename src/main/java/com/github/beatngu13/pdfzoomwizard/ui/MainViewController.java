@@ -78,7 +78,7 @@ public class MainViewController {
 	/**
 	 * Indicates whether multiple or single files will be processed.
 	 */
-	private boolean multipleMode = true;
+	private boolean multipleMode = false;
 
 	/**
 	 * Wizard UI container.
