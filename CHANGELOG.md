@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## [0.1.1] - 2018-05-27
+
+### Fixed
+
+- Fix serialization issues by switching to incremental mode, leaving the original data intact (see PDF Reference v1.6, section 2.2.7).
+
 ## [0.1.0] - 2018-02-27
 
 ### Added
