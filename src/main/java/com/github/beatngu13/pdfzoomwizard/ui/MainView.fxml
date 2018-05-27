@@ -27,14 +27,17 @@
 <GridPane fx:id="mainView" xmlns:fx="http://javafx.com/fxml"
 	alignment="CENTER" hgap="10.0" vgap="10.0">
 
-	<Label text="Mode:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-	<HBox spacing="10.0" GridPane.rowIndex="0" GridPane.columnIndex="1">
+	<Label text="Mode:" GridPane.rowIndex="0"
+		GridPane.columnIndex="0" />
+	<HBox spacing="10.0" GridPane.rowIndex="0"
+		GridPane.columnIndex="1">
 		<fx:define>
 			<ToggleGroup fx:id="modeToggleGroup" />
 		</fx:define>
 		<RadioButton text="Multiple files" selected="true"
 			toggleGroup="$modeToggleGroup" />
-		<RadioButton text="Single file" toggleGroup="$modeToggleGroup" />
+		<RadioButton text="Single file"
+			toggleGroup="$modeToggleGroup" />
 	</HBox>
 
 	<Label fx:id="rootLabel" text="Directory:" GridPane.rowIndex="1"
@@ -66,26 +69,12 @@
 		<String fx:value="Inherit zoom" />
 	</ChoiceBox>
 
-	<Label text="PDF version:" GridPane.rowIndex="4"
+	<Label text="State:" GridPane.rowIndex="4"
 		GridPane.columnIndex="0" />
-	<ChoiceBox fx:id="versionChoiceBox" value="Retain existing"
-		GridPane.rowIndex="4" GridPane.columnIndex="1">
-		<String fx:value="1.0" />
-		<String fx:value="1.1" />
-		<String fx:value="1.2" />
-		<String fx:value="1.3" />
-		<String fx:value="1.4" />
-		<String fx:value="1.5" />
-		<String fx:value="1.6" />
-		<String fx:value="1.7" />
-		<String fx:value="Retain existing" />
-	</ChoiceBox>
-
-	<Label text="State:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
-	<Text fx:id="stateText" text="READY" GridPane.rowIndex="5"
+	<Text fx:id="stateText" text="READY" GridPane.rowIndex="4"
 		GridPane.columnIndex="1" />
 	<Button fx:id="runButton" text="Run" disable="true"
-		GridPane.halignment="RIGHT" GridPane.rowIndex="5"
+		GridPane.halignment="RIGHT" GridPane.rowIndex="4"
 		GridPane.columnIndex="2" />
 
 </GridPane>

@@ -117,15 +117,10 @@ public class MainViewController {
 	@FXML
 	private CheckBox copyCheckBox;
 	/**
-	 * {@link VersionEnum} to use for modification.
+	 * Value to use for bookmarks zoom level.
 	 */
 	@FXML
 	private ChoiceBox<String> zoomChoiceBox;
-	/**
-	 * {@link SerializationModeEnum} to use for modification.
-	 */
-	@FXML
-	private ChoiceBox<String> versionChoiceBox;
 	/**
 	 * Displays the current state of the Wizard. Basically the values of
 	 * {@link State} are used.
@@ -267,7 +262,7 @@ public class MainViewController {
 	 */
 	private void run() {
 		String filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
-		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue(), versionChoiceBox.getValue());
+		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
 		Thread thread = new Thread(wizard);
 
 		wizard.messageProperty().addListener(new ChangeListener<String>() {

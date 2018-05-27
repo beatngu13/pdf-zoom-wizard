@@ -21,8 +21,8 @@
 	<Text fx:id="warningText" GridPane.rowIndex="0"
 		GridPane.columnIndex="0" />
 
-	<HBox spacing="10.0" alignment="BOTTOM_RIGHT" GridPane.rowIndex="1"
-		GridPane.columnIndex="0">
+	<HBox spacing="10.0" alignment="BOTTOM_RIGHT"
+		GridPane.rowIndex="1" GridPane.columnIndex="0">
 		<Button fx:id="okButton" text="OK" />
 		<Button fx:id="cancelButton" text="Cancel" />
 	</HBox>
