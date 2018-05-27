@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Changed
+
+- Set single file mode as default.
+
 ### Removed
 
 - Experimental (and partly broken) feature for setting the PDF version.
