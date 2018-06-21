@@ -1,10 +1,17 @@
 language: java
+sudo: false
 
 notifications:
   email: false
-  
-install: ./install-deps.sh
-  
+
+cache:
+  directories:
+    - ${HOME}/.m2/
+
+install: true
+
+before_script: ./install-deps.sh
+
 before_deploy: "mvn package -DskipTests"
 
 deploy:
