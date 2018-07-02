@@ -39,8 +39,6 @@
 	</repositories>
 
 	<dependencies>
-		<!-- prod -->
-	
 		<dependency>
 			<groupId>org.pdfclown</groupId>
 			<artifactId>pdfclown</artifactId>
