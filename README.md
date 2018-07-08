@@ -11,14 +11,14 @@ To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf
 ## Road map
 
 - [x] Convert to Maven project
-- [x] Enhanced build process using Travis CI
+- [x] Enhance build process with Travis CI
 - [x] Add changelog and Semantic Versioning
 - [ ] Tests (!)
 - [ ] Create self-contained app
 - [ ] Migrate to Java 9
-- [ ] Project-wide refactoring
-- [ ] Advanced logging using SLF4J and Logback
-- [ ] ControlsFX for (modal) dialogs
-- [ ] Dynamically resizing GUI content
-- [ ] Wizard interface for new implementation with iText
+- [ ] Refactor entire project
+- [ ] Improve logging using SLF4J and Logback
+- [ ] Add ControlsFX for (modal) dialogs
+- [ ] Offer dynamically resizing GUI content
+- [ ] Extract Wizard interface for new implementation with iText
 - [ ] Implement zoom settings for links
