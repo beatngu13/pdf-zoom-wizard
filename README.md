@@ -14,11 +14,11 @@ To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf
 - [x] Enhance build process with Travis CI
 - [x] Add changelog and Semantic Versioning
 - [ ] Tests (!)
-- [ ] Create self-contained app
-- [ ] Migrate to Java 9
-- [ ] Refactor entire project
 - [ ] Improve logging using SLF4J and Logback
-- [ ] Add ControlsFX for (modal) dialogs
-- [ ] Offer dynamically resizing GUI content
+- [ ] Refactor entire project
 - [ ] Extract Wizard interface for new implementation with iText
 - [ ] Implement zoom settings for links
+- [ ] Create self-contained app
+- [ ] Migrate to current OpenJDK
+- [ ] Add ControlsFX for (modal) dialogs
+- [ ] Offer dynamically resizing GUI content
