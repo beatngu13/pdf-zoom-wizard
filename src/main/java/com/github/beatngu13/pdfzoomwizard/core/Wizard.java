@@ -257,10 +257,10 @@ public class Wizard extends Task<Void> {
 					destination.setZoom(zoom);
 					bookmarkCountGlobal++;
 					bookmarkCountLocal++;
-					logger.fine("Successfully set \"" + bookmark.getTitle() + "\" to use mode " + mode + " and zoom "
-							+ zoom + ".");
+					logger.fine("Successfully set \"" + BookmarkUtil.getTitle(bookmark) + "\" to use mode " + mode
+							+ " and zoom " + zoom + ".");
 				} catch (Exception e) {
-					logger.severe("\"" + bookmark.getTitle() + "\" has a broken destination.");
+					logger.severe("\"" + BookmarkUtil.getTitle(bookmark) + "\" has a broken destination.");
 				}
 			}
 		}
