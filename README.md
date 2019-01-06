@@ -22,3 +22,9 @@ To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf
 - [ ] Migrate to current OpenJDK
 - [ ] Add ControlsFX for (modal) dialogs
 - [ ] Offer dynamically resizing GUI content
+
+## Donation
+
+The Wizard is free software under [GNU GPLv3](https://gnu.org/licenses/gpl-3.0.en.html). If you like, you can support its development with a donation:
+
+[![PayPal](https://paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SYDFV6342B4T4)
