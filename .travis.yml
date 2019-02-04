@@ -29,6 +29,6 @@ deploy:
   file_glob: true
   file: "./target/pdfzoomwizard-*.jar"
   skip_cleanup: true
+  draft: true
   on:
     tags: true
-    branch: master
