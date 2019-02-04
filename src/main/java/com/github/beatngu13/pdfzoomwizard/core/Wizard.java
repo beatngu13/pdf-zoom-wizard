@@ -198,10 +198,9 @@ public class Wizard extends Task<Void> {
 				modifyBookmarks(bookmark.getBookmarks());
 			}
 
-			if (bookmark.getTarget() instanceof GoToDestination<?>) {
-				// FIXME PDFs containing bookmarks with broken destinations sometimes don't
-				// serialize.
-				try {
+			// FIXME Bookmarks with broken destinations sometimes cause trouble.
+			try {
+				if (bookmark.getTarget() instanceof GoToDestination<?>) {
 					Destination destination = ((GoToDestination<?>) bookmark.getTarget()).getDestination();
 
 					destination.setMode(mode);
@@ -210,9 +209,9 @@ public class Wizard extends Task<Void> {
 					bookmarkCountLocal++;
 					logger.fine("Successfully set \"" + BookmarkUtil.getTitle(bookmark) + "\" to use mode " + mode
 							+ " and zoom " + zoom + ".");
-				} catch (Exception e) {
-					logger.severe("\"" + BookmarkUtil.getTitle(bookmark) + "\" has a broken destination.");
 				}
+			} catch (Exception e) {
+				logger.severe("\"" + BookmarkUtil.getTitle(bookmark) + "\" has a broken destination.");
 			}
 		}
 	}
