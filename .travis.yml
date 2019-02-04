@@ -5,7 +5,7 @@ notifications:
   
 install: ./install-deps.sh
   
-before_deploy: "mvn package -DskipTests"
+before_deploy: mvn package -DskipTests
 
 deploy:
   provider: releases
