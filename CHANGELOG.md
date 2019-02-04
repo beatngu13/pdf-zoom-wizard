@@ -16,4 +16,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Added
 
-- GitHub port of the former PDF Bookmark Wizard (`v0.0.4.1`) that offers the same functionality.
+- GitHub port of the former PDF Bookmark Wizard (v0.0.4.1) that offers the same functionality.
