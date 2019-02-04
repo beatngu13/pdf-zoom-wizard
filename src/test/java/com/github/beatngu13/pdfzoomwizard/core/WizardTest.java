@@ -41,7 +41,7 @@ public class WizardTest {
 	@Test
 	public void only_bookmark_zoom_level_should_change() throws Exception {
 		// Given.
-		Wizard cut = new Wizard(tempSamplePdf, null, "Inherit zoom", "Retain existing");
+		Wizard cut = new Wizard(tempSamplePdf, null, "Inherit zoom");
 
 		// When.
 		cut.call();

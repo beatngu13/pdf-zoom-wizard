@@ -1,10 +1,26 @@
 language: java
+sudo: false
+
+addons:
+  sonarcloud:
+    organization: beatngu13-github
+    token:
+      secure: "${SC_TOKEN}"
 
 notifications:
   email: false
-  
-install: ./install-deps.sh
-  
+
+cache:
+  directories:
+    - "${HOME}/.m2/"
+    - "${HOME}/.sonar/cache/"
+
+install: true
+
+before_script: ./install-deps.sh
+
+script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+
 before_deploy: mvn package -DskipTests
 
 deploy:

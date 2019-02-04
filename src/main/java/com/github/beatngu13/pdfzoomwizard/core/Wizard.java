@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.pdfclown.Version;
-import org.pdfclown.VersionEnum;
 import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
@@ -87,11 +85,6 @@ public class Wizard extends Task<Void> {
 	 * Mode to apply to all bookmarks.
 	 */
 	private ModeEnum mode;
-	/**
-	 * Version number for serialization, <code>null</code> if the original version
-	 * will be inherited.
-	 */
-	private Version version;
 
 	/**
 	 * Creates a new <code>Wizard</code> instance.
@@ -102,59 +95,22 @@ public class Wizard extends Task<Void> {
 	 *            Sets {@link #filenameInfix}.
 	 * @param zoom
 	 *            Sets {@link #zoom}.
-	 * @param version
-	 *            version Sets {@link #version}.
 	 */
-	public Wizard(java.io.File root, String filenameInfix, String zoom, String version) {
+	public Wizard(java.io.File root, String filenameInfix, String zoom) {
 		this.root = root;
 		this.filenameInfix = filenameInfix;
 
 		computeZoom(zoom);
-		computeVersion(version);
 	}
 
 	@Override
 	protected Void call() throws Exception {
-		logger.info("Start working in \"" + root.getAbsolutePath() + "\". All PDF documents will be saved as version "
-				+ version + " with serialization mode " + serializationMode + ".");
+		logger.info("Start working in \"" + root.getAbsolutePath()
+				+ "\". All PDF documents will be saved with serialization mode " + serializationMode + ".");
 		modifyFiles(root);
 		logger.info("Modified " + bookmarkCountGlobal + " bookmarks in " + fileCount + " file(s).");
 
 		return null;
-	}
-
-	/**
-	 * Computes {@link #version}.
-	 * 
-	 * @param version
-	 *            Value given by the calling instance.
-	 */
-	private void computeVersion(String version) {
-		switch (version) {
-		case "1.0":
-			this.version = VersionEnum.PDF10.getVersion();
-			break;
-		case "1.1":
-			this.version = VersionEnum.PDF11.getVersion();
-			break;
-		case "1.2":
-			this.version = VersionEnum.PDF12.getVersion();
-			break;
-		case "1.3":
-			this.version = VersionEnum.PDF13.getVersion();
-			break;
-		case "1.4":
-			this.version = VersionEnum.PDF14.getVersion();
-			break;
-		case "1.5":
-			this.version = VersionEnum.PDF15.getVersion();
-			break;
-		case "1.6":
-			this.version = VersionEnum.PDF16.getVersion();
-			break;
-		case "1.7":
-			this.version = VersionEnum.PDF17.getVersion();
-		}
 	}
 
 	/**
@@ -206,11 +162,6 @@ public class Wizard extends Task<Void> {
 				bookmarkCountLocal = 0;
 				Document document = pdf.getDocument();
 				modifyBookmarks(document.getBookmarks());
-
-				// FIXME Broken PDF versioning, probably caused by a PDF Clown bug.
-				if (version != null) {
-					document.setVersion(version);
-				}
 
 				if (filenameInfix != null) {
 					java.io.File output = new java.io.File(
