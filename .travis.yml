@@ -19,7 +19,7 @@ install: true
 
 before_script: ./install-deps.sh
 
-script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar
 
 before_deploy: mvn package -DskipTests
 

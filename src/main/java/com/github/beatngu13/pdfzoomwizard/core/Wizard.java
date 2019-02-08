@@ -29,8 +29,10 @@ import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
 import org.pdfclown.documents.interaction.navigation.document.Destination;
 import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEnum;
+import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.File;
 import org.pdfclown.files.SerializationModeEnum;
+import org.pdfclown.objects.PdfObjectWrapper;
 import org.pdfclown.util.parsers.ParseException;
 
 import javafx.concurrent.Task;
@@ -191,30 +193,49 @@ public class Wizard extends Task<Void> {
 	 * @param bookmarks
 	 *            Collection of bookmarks to modify.
 	 */
-	private void modifyBookmarks(Bookmarks bookmarks) {
+	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
 			// TODO Change to bookmark.getBookmarks().isEmpty when it's implemented.
 			if (bookmark.getBookmarks().size() != 0) {
 				modifyBookmarks(bookmark.getBookmarks());
 			}
 
-			if (bookmark.getTarget() instanceof GoToDestination<?>) {
-				// FIXME PDFs containing bookmarks with broken destinations sometimes don't
-				// serialize.
-				try {
-					Destination destination = ((GoToDestination<?>) bookmark.getTarget()).getDestination();
+			// FIXME Bookmarks with broken destinations sometimes cause trouble.
+			try {
+				PdfObjectWrapper<?> target = bookmark.getTarget();
 
-					destination.setMode(mode);
-					destination.setZoom(zoom);
-					bookmarkCountGlobal++;
-					bookmarkCountLocal++;
-					logger.fine("Successfully set \"" + BookmarkUtil.getTitle(bookmark) + "\" to use mode " + mode
-							+ " and zoom " + zoom + ".");
-				} catch (Exception e) {
-					logger.severe("\"" + BookmarkUtil.getTitle(bookmark) + "\" has a broken destination.");
+				if (target instanceof GoToDestination<?>) {
+					Destination destination = ((GoToDestination<?>) target).getDestination();
+					modifyDestination(bookmark, destination);
+				} else if (target instanceof LocalDestination) {
+					Destination destination = (LocalDestination) target;
+					modifyDestination(bookmark, destination);
+				} else {
+					logger.warning("Bookmark \"" + BookmarkUtil.getTitle(bookmark) + "\" has an unknown target type: "
+							+ target.getClass() + ".");
 				}
+			} catch (Exception e) {
+				logger.severe("\"" + BookmarkUtil.getTitle(bookmark) + "\" has a broken destination.");
 			}
 		}
+	}
+
+	/**
+	 * Modifies the given destination and applies {@link #mode} and {@link #zoom}
+	 * to it.
+	 * 
+	 * @param bookmark
+	 *            Bookmark the given destination belongs to.
+	 * @param destination
+	 *            Destination to modify.
+	 */
+	private void modifyDestination(Bookmark bookmark, Destination destination) {
+		destination.setMode(mode);
+		destination.setZoom(zoom);
+		bookmarkCountGlobal++;
+		bookmarkCountLocal++;
+		logger.fine("Successfully set \"" + BookmarkUtil.getTitle(bookmark) + "\" to use mode " + mode + " and zoom "
+				+ zoom + ".");
 	}
 
 	@Override
