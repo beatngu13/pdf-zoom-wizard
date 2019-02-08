@@ -1,10 +1,12 @@
 <configuration>
 
+	<property name="defaultPattern"
+		value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n" />
+
 	<appender name="STDOUT"
 		class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n
-			</pattern>
+			<pattern>${defaultPattern}</pattern>
 		</encoder>
 	</appender>
 
@@ -12,8 +14,7 @@
 		<file>${user.home}/.pdfzoomwizard/log</file>
 		<append>false</append>
 		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n
-			</pattern>
+			<pattern>${defaultPattern}</pattern>
 		</encoder>
 	</appender>
 
