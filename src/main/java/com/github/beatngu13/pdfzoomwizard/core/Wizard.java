@@ -18,10 +18,7 @@
  */
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
@@ -33,9 +30,9 @@ import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.File;
 import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
-import org.pdfclown.util.parsers.ParseException;
 
 import javafx.concurrent.Task;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Applies {@link #mode} and {@link #zoom} to the bookmarks of a single PDF file
@@ -46,12 +43,8 @@ import javafx.concurrent.Task;
  * @author Daniel Kraus
  *
  */
+@Slf4j
 public class Wizard extends Task<Void> {
-
-	/**
-	 * {@link Logger} instance.
-	 */
-	private static final Logger logger = Logger.getLogger(Wizard.class.getName());
 
 	/**
 	 * @see {@link SerializationModeEnum}
@@ -91,12 +84,9 @@ public class Wizard extends Task<Void> {
 	/**
 	 * Creates a new <code>Wizard</code> instance.
 	 * 
-	 * @param root
-	 *            Sets {@link #root}.
-	 * @param filenameInfix
-	 *            Sets {@link #filenameInfix}.
-	 * @param zoom
-	 *            Sets {@link #zoom}.
+	 * @param root          Sets {@link #root}.
+	 * @param filenameInfix Sets {@link #filenameInfix}.
+	 * @param zoom          Sets {@link #zoom}.
 	 */
 	public Wizard(java.io.File root, String filenameInfix, String zoom) {
 		this.root = root;
@@ -107,10 +97,10 @@ public class Wizard extends Task<Void> {
 
 	@Override
 	protected Void call() throws Exception {
-		logger.info("Start working in \"" + root.getAbsolutePath()
-				+ "\". All PDF documents will be saved with serialization mode " + serializationMode + ".");
+		log.info("Start working in '{}'. All PDF documents will be saved with serialization mode '{}'.",
+				root.getAbsolutePath(), serializationMode);
 		modifyFiles(root);
-		logger.info("Modified " + bookmarkCountGlobal + " bookmarks in " + fileCount + " file(s).");
+		log.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
 
 		return null;
 	}
@@ -118,8 +108,7 @@ public class Wizard extends Task<Void> {
 	/**
 	 * Computes {@link #zoom} and {@link #mode}.
 	 * 
-	 * @param zoom
-	 *            Value given by the calling instance.
+	 * @param zoom Value given by the calling instance.
 	 */
 	private void computeZoom(String zoom) {
 		switch (zoom) {
@@ -146,8 +135,7 @@ public class Wizard extends Task<Void> {
 	 * Modifies each PDF file which is found by depth-first search and calls
 	 * {@link #modifyBookmarks(Bookmarks)} on it.
 	 * 
-	 * @param file
-	 *            Directory or file to work with.
+	 * @param file Directory or file to work with.
 	 */
 	public void modifyFiles(java.io.File file) {
 		if (file.isDirectory()) {
@@ -158,7 +146,7 @@ public class Wizard extends Task<Void> {
 			}
 		} else {
 			String filename = file.getName();
-			logger.info("Processing \"" + filename + "\".");
+			log.info("Processing '{}'.", filename);
 
 			try (File pdf = new File(file.getAbsolutePath())) {
 				bookmarkCountLocal = 0;
@@ -173,15 +161,9 @@ public class Wizard extends Task<Void> {
 					pdf.save(serializationMode);
 				}
 				fileCount++;
-				logger.info("Successfully modified " + bookmarkCountLocal + " bookmarks in \"" + filename + "\".");
-			} catch (FileNotFoundException e) {
-				logger.log(Level.SEVERE,
-						"Could not create " + File.class.getName() + " instance of \"" + file.getAbsolutePath() + "\".",
-						e);
-			} catch (ParseException e) {
-				logger.log(Level.SEVERE, "Could not parse \"" + file.getAbsolutePath() + "\".", e);
+				log.info("Successfully modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Could not save \"" + file.getAbsolutePath() + "\".", e);
+				log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
 			}
 		}
 	}
@@ -190,8 +172,7 @@ public class Wizard extends Task<Void> {
 	 * Modifies each bookmark which is found by depth-first seach and applies
 	 * {@link #mode} and {@link #zoom} to it.
 	 * 
-	 * @param bookmarks
-	 *            Collection of bookmarks to modify.
+	 * @param bookmarks Collection of bookmarks to modify.
 	 */
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
@@ -200,7 +181,7 @@ public class Wizard extends Task<Void> {
 				modifyBookmarks(bookmark.getBookmarks());
 			}
 
-			// FIXME Bookmarks with broken destinations sometimes cause trouble.
+			// XXX Bookmarks with broken destinations sometimes cause trouble.
 			try {
 				PdfObjectWrapper<?> target = bookmark.getTarget();
 
@@ -211,31 +192,28 @@ public class Wizard extends Task<Void> {
 					Destination destination = (LocalDestination) target;
 					modifyDestination(bookmark, destination);
 				} else {
-					logger.warning("Bookmark \"" + BookmarkUtil.getTitle(bookmark) + "\" has an unknown target type: "
-							+ target.getClass() + ".");
+					log.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
+							target.getClass());
 				}
 			} catch (Exception e) {
-				logger.severe("\"" + BookmarkUtil.getTitle(bookmark) + "\" has a broken destination.");
+				log.error("Exception while processing bookmark '{}'.", BookmarkUtil.getTitle(bookmark), e);
 			}
 		}
 	}
 
 	/**
-	 * Modifies the given destination and applies {@link #mode} and {@link #zoom}
-	 * to it.
+	 * Modifies the given destination and applies {@link #mode} and {@link #zoom} to
+	 * it.
 	 * 
-	 * @param bookmark
-	 *            Bookmark the given destination belongs to.
-	 * @param destination
-	 *            Destination to modify.
+	 * @param bookmark    Bookmark the given destination belongs to.
+	 * @param destination Destination to modify.
 	 */
 	private void modifyDestination(Bookmark bookmark, Destination destination) {
 		destination.setMode(mode);
 		destination.setZoom(zoom);
 		bookmarkCountGlobal++;
 		bookmarkCountLocal++;
-		logger.fine("Successfully set \"" + BookmarkUtil.getTitle(bookmark) + "\" to use mode " + mode + " and zoom "
-				+ zoom + ".");
+		log.info("Set bookmark '{}' to use mode '{)' and zoom '{}'.", BookmarkUtil.getTitle(bookmark), mode, zoom);
 	}
 
 	@Override

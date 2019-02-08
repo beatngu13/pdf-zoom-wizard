@@ -20,8 +20,6 @@ package com.github.beatngu13.pdfzoomwizard.ui;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.github.beatngu13.pdfzoomwizard.core.Wizard;
 
@@ -45,6 +43,7 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Provides a JavaFX-based Wizard UI.
@@ -52,12 +51,8 @@ import javafx.util.Duration;
  * @author Daniel Kraus
  *
  */
+@Slf4j
 public class MainViewController {
-
-	/**
-	 * {@link Logger} instance.
-	 */
-	private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
 
 	/**
 	 * Sets {@link #root}.
@@ -144,7 +139,7 @@ public class MainViewController {
 			loader.setController(this);
 			loader.load();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Could not load FXML file.", e);
+			log.error("Could not load FXML file.", e);
 		}
 
 		runButton.disableProperty().bind(rootTextField.textProperty().isEqualTo("")
@@ -240,17 +235,17 @@ public class MainViewController {
 		if (multipleMode && !root.isDirectory()) {
 			valid = false;
 			stateText.setText("A FILE IS SELECTED");
-			logger.info("\"" + root.getAbsolutePath() + "\" is a file.");
+			log.warn("'{}' is a file.", root.getAbsolutePath());
 		} else if (!multipleMode && root.isDirectory()) {
 			valid = false;
 			stateText.setText("A DIRECTORY IS SELECTED");
-			logger.info("\"" + root.getAbsolutePath() + "\" is a directory.");
+			log.warn("'{}' is a directory.", root.getAbsolutePath());
 		}
 
 		if (copyCheckBox.isSelected() && copyTextField.getText().isEmpty()) {
 			valid = false;
 			stateText.setText("FILENAME INFIX IS EMPTY");
-			logger.info("Filename infix is empty.");
+			log.warn("Filename infix is empty.");
 		}
 
 		return valid;
