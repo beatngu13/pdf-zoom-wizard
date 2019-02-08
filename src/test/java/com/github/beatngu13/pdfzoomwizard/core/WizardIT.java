@@ -21,7 +21,7 @@ import com.itextpdf.kernel.pdf.PdfNull;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfReader;
 
-public class WizardTest {
+public class WizardIT {
 
 	@Rule
 	public TemporaryFolder temp = new TemporaryFolder();
