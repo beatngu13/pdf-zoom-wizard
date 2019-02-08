@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ### Added
 
 - Support for [`LocalDestination`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/LocalDestination.html)s (see [#22](https://github.com/beatngu13/pdf-zoom-wizard/issues/22)).
+- Better logging experience with an improved console logger and a new file logger, which creates a log file under `${HOME}/.pdfzoomwizard/log`.
 
 ### Fixed
 

@@ -1,0 +1,26 @@
+<configuration>
+
+	<property name="defaultPattern"
+		value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n" />
+
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${defaultPattern}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${user.home}/.pdfzoomwizard/log</file>
+		<append>false</append>
+		<encoder>
+			<pattern>${defaultPattern}</pattern>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>

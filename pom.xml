@@ -48,6 +48,19 @@
 			<version>0.1.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.4</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- test -->
 
 		<dependency>
@@ -92,6 +105,12 @@
 				<directory>src/main/java</directory>
 				<includes>
 					<include>**/*.fxml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
 				</includes>
 			</resource>
 		</resources>
