@@ -49,7 +49,7 @@ import javafx.util.Duration;
 /**
  * Provides a JavaFX-based Wizard UI.
  * 
- * @author danielkraus1986@gmail.com
+ * @author Daniel Kraus
  *
  */
 public class MainViewController {

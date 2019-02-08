@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 /**
  * Launches the Wizard.
  * 
- * @author danielkraus1986@gmail.com
+ * @author Daniel Kraus
  *
  */
 public class Launcher extends Application {

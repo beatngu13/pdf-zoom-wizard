@@ -37,7 +37,7 @@ import javafx.stage.Window;
 /**
  * Provides a JavaFX-based modal warning dialog, displaying a given message.
  * 
- * @author danielkraus1986@gmail.com
+ * @author Daniel Kraus
  *
  */
 public class WarningViewController {

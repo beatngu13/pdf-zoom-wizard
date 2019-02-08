@@ -43,7 +43,7 @@ import javafx.concurrent.Task;
  * on the <a href="http://www.stefanochizzolini.it/en/projects/clown/">PDF
  * Clown</a> library by Stefano Chizzolini.
  * 
- * @author danielkraus1986@gmail.com
+ * @author Daniel Kraus
  *
  */
 public class Wizard extends Task<Void> {
