@@ -8,8 +8,18 @@
 		</encoder>
 	</appender>
 
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${user.home}/.pdfzoomwizard/log</file>
+		<append>false</append>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
 	<root level="info">
 		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
 	</root>
 
 </configuration>
