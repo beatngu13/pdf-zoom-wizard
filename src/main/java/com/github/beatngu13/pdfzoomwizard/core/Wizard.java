@@ -29,8 +29,10 @@ import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
 import org.pdfclown.documents.interaction.navigation.document.Destination;
 import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEnum;
+import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.File;
 import org.pdfclown.files.SerializationModeEnum;
+import org.pdfclown.objects.PdfObjectWrapper;
 import org.pdfclown.util.parsers.ParseException;
 
 import javafx.concurrent.Task;
@@ -200,20 +202,40 @@ public class Wizard extends Task<Void> {
 
 			// FIXME Bookmarks with broken destinations sometimes cause trouble.
 			try {
-				if (bookmark.getTarget() instanceof GoToDestination<?>) {
-					Destination destination = ((GoToDestination<?>) bookmark.getTarget()).getDestination();
+				PdfObjectWrapper<?> target = bookmark.getTarget();
 
-					destination.setMode(mode);
-					destination.setZoom(zoom);
-					bookmarkCountGlobal++;
-					bookmarkCountLocal++;
-					logger.fine("Successfully set \"" + BookmarkUtil.getTitle(bookmark) + "\" to use mode " + mode
-							+ " and zoom " + zoom + ".");
+				if (target instanceof GoToDestination<?>) {
+					Destination destination = ((GoToDestination<?>) target).getDestination();
+					modifyDestination(bookmark, destination);
+				} else if (target instanceof LocalDestination) {
+					Destination destination = (LocalDestination) target;
+					modifyDestination(bookmark, destination);
+				} else {
+					logger.warning("Bookmark \"" + BookmarkUtil.getTitle(bookmark) + "\" has an unknown target type: "
+							+ target.getClass() + ".");
 				}
 			} catch (Exception e) {
 				logger.severe("\"" + BookmarkUtil.getTitle(bookmark) + "\" has a broken destination.");
 			}
 		}
+	}
+
+	/**
+	 * Modifies the given destination and applies {@link #mode} and {@link #zoom}
+	 * to it.
+	 * 
+	 * @param bookmark
+	 *            Bookmark the given destination belongs to.
+	 * @param destination
+	 *            Destination to modify.
+	 */
+	private void modifyDestination(Bookmark bookmark, Destination destination) {
+		destination.setMode(mode);
+		destination.setZoom(zoom);
+		bookmarkCountGlobal++;
+		bookmarkCountLocal++;
+		logger.fine("Successfully set \"" + BookmarkUtil.getTitle(bookmark) + "\" to use mode " + mode + " and zoom "
+				+ zoom + ".");
 	}
 
 	@Override
