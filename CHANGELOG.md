@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## [0.2.0] - 2019-02-08
+
 ### Added
 
 - Support for [`LocalDestination`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/LocalDestination.html)s (see [#22](https://github.com/beatngu13/pdf-zoom-wizard/issues/22)).
