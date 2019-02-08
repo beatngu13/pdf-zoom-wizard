@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Added
+
+- Support for [`LocalDestination`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/LocalDestination.html)s (see [#22](https://github.com/beatngu13/pdf-zoom-wizard/issues/22)).
+
+### Fixed
+
+- Exception on [`Bookmark#getTarget()`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/Bookmark.html#getTarget()) crashing execution (see [#20](https://github.com/beatngu13/pdf-zoom-wizard/issues/20)).
+
 ### Changed
 
 - Set single file mode as default.
