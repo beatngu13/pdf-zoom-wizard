@@ -14,7 +14,7 @@
  * the PDF Zoom Wizard. If not, see 
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. <br><br>
  * 
- * Copyright 2013-2014 Daniel Kraus
+ * Copyright 2013-2019 Daniel Kraus
  */
 package com.github.beatngu13.pdfzoomwizard;
 
