@@ -14,7 +14,7 @@ To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf
 - [x] Enhance build process with Travis CI
 - [x] Add changelog and Semantic Versioning
 - [ ] Tests (!)
-- [ ] Improve logging using SLF4J and Logback
+- [X] Improve logging using SLF4J and Logback
 - [ ] Refactor entire project
 - [ ] Extract Wizard interface for new implementation (e.g. with [iText](https://itextpdf.com/) or [PDFBox](https://pdfbox.apache.org/))
 - [ ] Implement zoom settings for links
