@@ -193,7 +193,7 @@ public class Wizard extends Task<Void> {
 	 * @param bookmarks
 	 *            Collection of bookmarks to modify.
 	 */
-	private void modifyBookmarks(Bookmarks bookmarks) {
+	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
 			// TODO Change to bookmark.getBookmarks().isEmpty when it's implemented.
 			if (bookmark.getBookmarks().size() != 0) {
