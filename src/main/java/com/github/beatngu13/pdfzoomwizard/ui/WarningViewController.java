@@ -20,8 +20,6 @@ package com.github.beatngu13.pdfzoomwizard.ui;
 
 import java.io.IOException;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -96,21 +94,13 @@ public class WarningViewController {
 			log.error("Could not load FXML file.", e);
 		}
 
-		okButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				proceed = true;
-				stage.close();
-			}
+		okButton.setOnAction(event -> {
+			proceed = true;
+			stage.close();
 		});
 
-		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				stage.close();
-			}
+		cancelButton.setOnAction(event -> {
+			stage.close();
 		});
 	}
 

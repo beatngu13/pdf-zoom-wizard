@@ -24,11 +24,7 @@ import java.io.IOException;
 import com.github.beatngu13.pdfzoomwizard.core.Wizard;
 
 import javafx.animation.FadeTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,7 +33,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
@@ -150,73 +145,54 @@ public class MainViewController {
 		fileChooser.setTitle("Choose a file");
 
 		// TODO Best practice?
-		modeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+		modeToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+			multipleMode = !rootLabel.getText().equals("Directory:");
 
-			@Override
-			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-				multipleMode = !rootLabel.getText().equals("Directory:");
+			FadeTransition fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
+			fadeOut.setFromValue(1.0);
+			fadeOut.setToValue(0.0);
+			fadeOut.play();
 
-				FadeTransition fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
-				fadeOut.setFromValue(1.0);
-				fadeOut.setToValue(0.0);
-				fadeOut.play();
+			fadeOut.setOnFinished(event -> {
+				rootLabel.setText(multipleMode ? "Directory:" : "File:");
 
-				fadeOut.setOnFinished(new EventHandler<ActionEvent>() {
+				FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
+				fadeIn.setFromValue(0.0);
+				fadeIn.setToValue(1.0);
+				fadeIn.play();
+			});
+		});
 
-					@Override
-					public void handle(ActionEvent event) {
-						rootLabel.setText(multipleMode ? "Directory:" : "File:");
+		browseButton.setOnAction(event -> {
+			root = multipleMode ? directoryChooser.showDialog(mainView.getScene().getWindow())
+					: fileChooser.showOpenDialog(mainView.getScene().getWindow());
 
-						FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
-						fadeIn.setFromValue(0.0);
-						fadeIn.setToValue(1.0);
-						fadeIn.play();
-					}
-				});
+			if (root != null) {
+				File parentFile = root.getParentFile();
+
+				rootTextField.setText(root.getAbsolutePath());
+				directoryChooser.setInitialDirectory(parentFile);
+				fileChooser.setInitialDirectory(parentFile);
 			}
 		});
 
-		browseButton.setOnAction(new EventHandler<ActionEvent>() {
+		runButton.setOnAction(event -> {
+			if (validateInput()) {
+				// TODO Best practice?
+				warningController = warningController == null
+						? new WarningViewController(runButton.getScene().getWindow())
+						: warningController;
 
-			@Override
-			public void handle(ActionEvent arg0) {
-				root = multipleMode ? directoryChooser.showDialog(mainView.getScene().getWindow())
-						: fileChooser.showOpenDialog(mainView.getScene().getWindow());
+				String messagePrefix = multipleMode
+						? "All files in \"" + root.getAbsolutePath() + "\" and its enclosing subdirectories will be "
+						: "\"" + root.getAbsolutePath() + "\" will be ";
+				String messageInfix = !copyCheckBox.isSelected() ? "overwritten!" : "copied!";
+				String messageSuffix = "\n\nAre you sure to proceed?";
 
-				if (root != null) {
-					File parentFile = root.getParentFile();
-
-					rootTextField.setText(root.getAbsolutePath());
-					directoryChooser.setInitialDirectory(parentFile);
-					fileChooser.setInitialDirectory(parentFile);
+				if (warningController.show(messagePrefix + messageInfix + messageSuffix)) {
+					MainViewController.this.run();
 				}
 			}
-
-		});
-
-		runButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				if (validateInput()) {
-					// TODO Best practice?
-					warningController = warningController == null
-							? new WarningViewController(runButton.getScene().getWindow())
-							: warningController;
-
-					String messagePrefix = multipleMode
-							? "All files in \"" + root.getAbsolutePath()
-									+ "\" and its enclosing subdirectories will be "
-							: "\"" + root.getAbsolutePath() + "\" will be ";
-					String messageInfix = !copyCheckBox.isSelected() ? "overwritten!" : "copied!";
-					String messageSuffix = "\n\nAre you sure to proceed?";
-
-					if (warningController.show(messagePrefix + messageInfix + messageSuffix)) {
-						MainViewController.this.run();
-					}
-				}
-			}
-
 		});
 	}
 
@@ -260,12 +236,8 @@ public class MainViewController {
 		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
 		Thread thread = new Thread(wizard);
 
-		wizard.messageProperty().addListener(new ChangeListener<String>() {
-
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				MainViewController.this.stateText.setText(newValue);
-			}
+		wizard.messageProperty().addListener((observable, oldValue, newValue) -> {
+			MainViewController.this.stateText.setText(newValue);
 		});
 
 		thread.setDaemon(true);
