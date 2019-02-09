@@ -49,7 +49,7 @@ public class Wizard extends Task<Void> {
 	/**
 	 * @see {@link SerializationModeEnum}
 	 */
-	private final SerializationModeEnum serializationMode = SerializationModeEnum.Incremental;
+	private static final SerializationModeEnum SERIALIZATION_MODE = SerializationModeEnum.Incremental;
 	/**
 	 * Total number of modified files.
 	 */
@@ -98,7 +98,7 @@ public class Wizard extends Task<Void> {
 	@Override
 	protected Void call() throws Exception {
 		log.info("Start working in '{}'. All PDF documents will be saved with serialization mode '{}'.",
-				root.getAbsolutePath(), serializationMode);
+				root.getAbsolutePath(), SERIALIZATION_MODE);
 		modifyFiles(root);
 		log.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
 
@@ -156,9 +156,9 @@ public class Wizard extends Task<Void> {
 				if (filenameInfix != null) {
 					java.io.File output = new java.io.File(
 							file.getAbsolutePath().replace(".pdf", filenameInfix + ".pdf"));
-					pdf.save(output, serializationMode);
+					pdf.save(output, SERIALIZATION_MODE);
 				} else {
-					pdf.save(serializationMode);
+					pdf.save(SERIALIZATION_MODE);
 				}
 				fileCount++;
 				log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
