@@ -128,6 +128,9 @@ public class Wizard extends Task<Void> {
 			break;
 		case "Inherit zoom":
 			mode = ModeEnum.XYZ;
+			break;
+		default:
+			throw new IllegalStateException("Unkown zoom: " + zoom + ".");
 		}
 	}
 
