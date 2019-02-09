@@ -125,23 +125,19 @@ public class MainViewController {
 		directoryChooser.setTitle("Choose a directory");
 		fileChooser.setTitle("Choose a file");
 
-		// TODO Best practice?
 		modeToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 			multipleMode = !rootLabel.getText().equals("Directory:");
+			rootLabel.setText(multipleMode ? "Directory:" : "File:");
 
 			FadeTransition fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
 			fadeOut.setFromValue(1.0);
 			fadeOut.setToValue(0.0);
 			fadeOut.play();
 
-			fadeOut.setOnFinished(event -> {
-				rootLabel.setText(multipleMode ? "Directory:" : "File:");
-
-				FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
-				fadeIn.setFromValue(0.0);
-				fadeIn.setToValue(1.0);
-				fadeIn.play();
-			});
+			FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
+			fadeIn.setFromValue(0.0);
+			fadeIn.setToValue(1.0);
+			fadeIn.play();
 		});
 
 		browseButton.setOnAction(event -> {
