@@ -9,6 +9,9 @@ class BookmarkUtil {
 
 	static final String BOOKMARK_TITLE_FALLBACK = "N/A";
 
+	private BookmarkUtil() {
+	}
+
 	public static String getTitle(Bookmark bm) {
 		try {
 			return bm.getTitle();
