@@ -28,7 +28,10 @@ import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -61,10 +64,6 @@ public class MainViewController {
 	 * Root directory or file to work with.
 	 */
 	private File root;
-	/**
-	 * Occurs when {@link #runButton} is being clicked.
-	 */
-	private WarningViewController warningController;
 	/**
 	 * Indicates whether multiple or single files will be processed.
 	 */
@@ -178,20 +177,13 @@ public class MainViewController {
 
 		runButton.setOnAction(event -> {
 			if (validateInput()) {
-				// TODO Best practice?
-				warningController = warningController == null
-						? new WarningViewController(runButton.getScene().getWindow())
-						: warningController;
-
-				String messagePrefix = multipleMode
-						? "All files in \"" + root.getAbsolutePath() + "\" and its enclosing subdirectories will be "
-						: "\"" + root.getAbsolutePath() + "\" will be ";
-				String messageInfix = !copyCheckBox.isSelected() ? "overwritten!" : "copied!";
-				String messageSuffix = "\n\nAre you sure to proceed?";
-
-				if (warningController.show(messagePrefix + messageInfix + messageSuffix)) {
-					MainViewController.this.run();
-				}
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Confirmation Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText(getConfirmationMessage());
+				alert.showAndWait() //
+						.filter(response -> response == ButtonType.OK) //
+						.ifPresent(response -> MainViewController.this.run());
 			}
 		});
 	}
@@ -225,6 +217,20 @@ public class MainViewController {
 		}
 
 		return valid;
+	}
+
+	/**
+	 * Creates the message for the confirmation dialog.
+	 * 
+	 * @return Confirmation message for directory/file to be overwritten/copied.
+	 */
+	private String getConfirmationMessage() {
+		String prefix = multipleMode
+				? "All files in \"" + root.getAbsolutePath() + "\" and its enclosing subdirectories will be "
+				: "\"" + root.getAbsolutePath() + "\" will be ";
+		String infix = !copyCheckBox.isSelected() ? "overwritten." : "copied.";
+		String suffix = "\n\nAre you sure to proceed?";
+		return prefix + infix + suffix;
 	}
 
 	/**
