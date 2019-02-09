@@ -241,11 +241,8 @@ public class MainViewController {
 		String filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
 		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
 		Thread thread = new Thread(wizard);
-
-		wizard.messageProperty().addListener((observable, oldValue, newValue) -> {
-			MainViewController.this.stateText.setText(newValue);
-		});
-
+		wizard.messageProperty()
+				.addListener((observable, oldValue, newValue) -> MainViewController.this.stateText.setText(newValue));
 		thread.setDaemon(true);
 		thread.start();
 	}
