@@ -161,7 +161,7 @@ public class Wizard extends Task<Void> {
 					pdf.save(serializationMode);
 				}
 				fileCount++;
-				log.info("Successfully modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
+				log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
 			} catch (IOException e) {
 				log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
 			}
@@ -213,7 +213,7 @@ public class Wizard extends Task<Void> {
 		destination.setZoom(zoom);
 		bookmarkCountGlobal++;
 		bookmarkCountLocal++;
-		log.info("Set bookmark '{}' to use mode '{)' and zoom '{}'.", BookmarkUtil.getTitle(bookmark), mode, zoom);
+		log.info("Modified bookmark '{}' to use mode '{)' and zoom '{}'.", BookmarkUtil.getTitle(bookmark), mode, zoom);
 	}
 
 	@Override
