@@ -136,7 +136,7 @@ public class MainViewController {
 			log.error("Could not load FXML file.", e);
 		}
 
-		runButton.disableProperty().bind(rootTextField.textProperty().isEqualTo("")
+		runButton.disableProperty().bind(rootTextField.textProperty().isEmpty()
 				.or(stateText.textProperty().isEqualTo(State.RUNNING.toString())));
 		copyTextField.disableProperty().bind(copyCheckBox.selectedProperty().not());
 
