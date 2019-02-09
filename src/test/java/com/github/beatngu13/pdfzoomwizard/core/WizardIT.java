@@ -7,58 +7,65 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.assertj.core.api.SoftAssertions;
+import org.approvaltests.Approvals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import com.itextpdf.kernel.pdf.PdfArray;
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfName;
-import com.itextpdf.kernel.pdf.PdfNull;
+import com.itextpdf.kernel.pdf.PdfObject;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.navigation.PdfDestination;
 
 class WizardIT {
 
 	File tempSamplePdf;
-	List<PdfOutline> bookmarksBefore;
 
 	@BeforeEach
-	void setUp(@TempDir Path tmp) throws Exception {
+	void setUp(@TempDir Path temp) throws Exception {
 		Path samplePdf = Paths.get("src/test/resources/sample.pdf");
-		tempSamplePdf = tmp.resolve("temp-sample.pdf").toFile();
+		tempSamplePdf = temp.resolve("temp-sample.pdf").toFile();
 		Files.copy(samplePdf, tempSamplePdf.toPath(), StandardCopyOption.REPLACE_EXISTING);
+	}
 
-		bookmarksBefore = getAllBookmarks(tempSamplePdf);
+	// ParameterizedTest currently not supported by ApprovalTests (see
+	// https://github.com/approvals/ApprovalTests.Java/issues/36/).
+
+	@Test
+	void fit_page_should_be_applied_properly() throws Exception {
+		test("Fit page");
 	}
 
 	@Test
-	void only_bookmark_zoom_level_should_change() throws Exception {
-		// Given.
-		Wizard cut = new Wizard(tempSamplePdf, null, "Inherit zoom");
+	void actual_size_should_be_applied_properly() throws Exception {
+		test("Actual size");
+	}
 
-		// When.
-		cut.call();
+	@Test
+	void fit_width_should_be_applied_properly() throws Exception {
+		test("Fit width");
+	}
 
-		// Then.
-		List<PdfOutline> bookmarksAfter = getAllBookmarks(tempSamplePdf);
-		SoftAssertions softly = new SoftAssertions();
-		for (int i = 0; i < bookmarksBefore.size(); i++) {
-			PdfOutline bmBefore = bookmarksBefore.get(i);
-			PdfOutline bmAfter = bookmarksAfter.get(i);
-			PdfArray arrBefore = (PdfArray) bmBefore.getDestination().getPdfObject();
-			PdfArray arrAfter = (PdfArray) bmAfter.getDestination().getPdfObject();
+	@Test
+	void fit_visible_should_be_applied_properly() throws Exception {
+		test("Fit visible");
+	}
 
-			// PdfIndirectReference#equals compares memory address.
-			softly.assertThat(arrAfter.get(0)).hasToString(arrBefore.get(0).toString());
-			softly.assertThat(arrAfter.get(2)).isEqualTo(arrBefore.get(2));
-			softly.assertThat(arrAfter.get(1)).isEqualTo(PdfName.XYZ);
-			softly.assertThat(arrAfter.get(3)).isEqualTo(PdfNull.PDF_NULL);
-			softly.assertThat(arrAfter.get(4)).isEqualTo(PdfNull.PDF_NULL);
-		}
-		softly.assertAll();
+	@Test
+	void inherit_zoom_should_be_applied_properly() throws Exception {
+		test("Inherit zoom");
+	}
+
+	void test(String zoom) throws Exception {
+		new Wizard(tempSamplePdf, null, zoom).call();
+		List<PdfObject> pdfObjects = getAllBookmarks(tempSamplePdf).stream() //
+				.map(PdfOutline::getDestination) //
+				.map(PdfDestination::getPdfObject) //
+				.collect(Collectors.toList());
+		Approvals.verify(pdfObjects);
 	}
 
 	List<PdfOutline> getAllBookmarks(File pdf) throws Exception {
