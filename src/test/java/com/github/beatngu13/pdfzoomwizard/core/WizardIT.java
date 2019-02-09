@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.assertj.core.api.SoftAssertions;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import com.itextpdf.kernel.pdf.PdfArray;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -21,25 +20,22 @@ import com.itextpdf.kernel.pdf.PdfNull;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfReader;
 
-public class WizardIT {
-
-	@Rule
-	public TemporaryFolder temp = new TemporaryFolder();
+class WizardIT {
 
 	File tempSamplePdf;
 	List<PdfOutline> bookmarksBefore;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	void setUp(@TempDir Path tmp) throws Exception {
 		Path samplePdf = Paths.get("src/test/resources/sample.pdf");
-		tempSamplePdf = temp.newFile("temp-sample.pdf");
+		tempSamplePdf = tmp.resolve("temp-sample.pdf").toFile();
 		Files.copy(samplePdf, tempSamplePdf.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
 		bookmarksBefore = getAllBookmarks(tempSamplePdf);
 	}
 
 	@Test
-	public void only_bookmark_zoom_level_should_change() throws Exception {
+	void only_bookmark_zoom_level_should_change() throws Exception {
 		// Given.
 		Wizard cut = new Wizard(tempSamplePdf, null, "Inherit zoom");
 
