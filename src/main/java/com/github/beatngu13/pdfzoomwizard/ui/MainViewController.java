@@ -19,15 +19,12 @@
 package com.github.beatngu13.pdfzoomwizard.ui;
 
 import java.io.File;
-import java.io.IOException;
 
 import com.github.beatngu13.pdfzoomwizard.core.Wizard;
 
 import javafx.animation.FadeTransition;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -69,11 +66,6 @@ public class MainViewController {
 	 */
 	private boolean multipleMode = false;
 
-	/**
-	 * Wizard UI container.
-	 */
-	@FXML
-	private Parent mainView;
 	/**
 	 * Switches between the processing of multiple or single files.
 	 */
@@ -123,19 +115,9 @@ public class MainViewController {
 	private Button runButton;
 
 	/**
-	 * Creates a new <code>MainViewController</code> instance.
+	 * Initializes FXML and bindings.
 	 */
-	public MainViewController() {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
-
-			// TODO Adding the controller within the FXML file fails.
-			loader.setController(this);
-			loader.load();
-		} catch (IOException e) {
-			log.error("Could not load FXML file.", e);
-		}
-
+	public void initialize() {
 		runButton.disableProperty().bind(rootTextField.textProperty().isEmpty()
 				.or(stateText.textProperty().isEqualTo(State.RUNNING.toString())));
 		copyTextField.disableProperty().bind(copyCheckBox.selectedProperty().not());
@@ -163,8 +145,8 @@ public class MainViewController {
 		});
 
 		browseButton.setOnAction(event -> {
-			root = multipleMode ? directoryChooser.showDialog(mainView.getScene().getWindow())
-					: fileChooser.showOpenDialog(mainView.getScene().getWindow());
+			root = multipleMode ? directoryChooser.showDialog(browseButton.getScene().getWindow())
+					: fileChooser.showOpenDialog(browseButton.getScene().getWindow());
 
 			if (root != null) {
 				File parentFile = root.getParentFile();
@@ -245,13 +227,6 @@ public class MainViewController {
 				.addListener((observable, oldValue, newValue) -> MainViewController.this.stateText.setText(newValue));
 		thread.setDaemon(true);
 		thread.start();
-	}
-
-	/**
-	 * @return {@link #mainView}.
-	 */
-	public Parent getMainView() {
-		return mainView;
 	}
 
 }

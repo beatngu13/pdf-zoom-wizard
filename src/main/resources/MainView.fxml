@@ -24,8 +24,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="mainView" xmlns:fx="http://javafx.com/fxml"
-	alignment="CENTER" hgap="10.0" vgap="10.0">
+<GridPane
+	fx:controller="com.github.beatngu13.pdfzoomwizard.ui.MainViewController"
+	xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10.0"
+	vgap="10.0">
 
 	<Label text="Mode:" GridPane.rowIndex="0"
 		GridPane.columnIndex="0" />
