@@ -176,29 +176,35 @@ public class MainViewController {
 	 * @return <code>true</code> if everything is valid, else <code>false</code>.
 	 */
 	private boolean validateInput() {
-		boolean valid = true;
-
 		if (root == null || !root.getAbsolutePath().equals(rootTextField.getText())) {
 			root = new File(rootTextField.getText());
 		}
 
 		if (multipleMode && !root.isDirectory()) {
-			valid = false;
-			stateText.setText("A FILE IS SELECTED");
-			log.warn("'{}' is a file.", root.getAbsolutePath());
-		} else if (!multipleMode && root.isDirectory()) {
-			valid = false;
-			stateText.setText("A DIRECTORY IS SELECTED");
-			log.warn("'{}' is a directory.", root.getAbsolutePath());
+			return handleInvalidInput("Multiple files mode selected but file is selected.");
+		}
+
+		if (!multipleMode && root.isDirectory()) {
+			return handleInvalidInput("Singe file mode selected but directory is selected.");
 		}
 
 		if (copyCheckBox.isSelected() && copyTextField.getText().isEmpty()) {
-			valid = false;
-			stateText.setText("FILENAME INFIX IS EMPTY");
-			log.warn("Filename infix is empty.");
+			return handleInvalidInput("Copy selected but filename infix is empty.");
 		}
 
-		return valid;
+		return true;
+	}
+
+	/**
+	 * Handles invalid UI input.
+	 * 
+	 * @param msg Warning message to log and show.
+	 * @return Always <code>false</code>.
+	 */
+	private boolean handleInvalidInput(String msg) {
+		log.warn(msg);
+		stateText.setText(msg);
+		return false;
 	}
 
 	/**
