@@ -15,11 +15,13 @@ To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf
 - [x] Convert to Maven project
 - [x] Enhance build process with Travis CI
 - [x] Add changelog and Semantic Versioning
-- [ ] Tests (!)
+- [x] Tests (!)
 - [x] Improve logging using SLF4J and Logback
 - [ ] Refactor entire project
 - [ ] Extract Wizard interface for new implementation (e.g. with [iText](https://itextpdf.com/) or [PDFBox](https://pdfbox.apache.org/))
 - [ ] Implement zoom settings for links
+- [ ] Implement command-line interface (CLI)
+- [ ] Add integration tests for GUI and CLI
 - [ ] Create self-contained app
 - [ ] Migrate to current OpenJDK
 - [x] Add ControlsFX for (modal) dialogs
