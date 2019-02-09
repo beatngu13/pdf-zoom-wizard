@@ -179,8 +179,8 @@ public class Wizard extends Task<Void> {
 	 */
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
-			// TODO Change to bookmark.getBookmarks().isEmpty when it's implemented.
-			if (bookmark.getBookmarks().size() != 0) {
+			// Bookmarks#isEmpty() not implemented.
+			if (bookmark.getBookmarks().size() > 0) {
 				modifyBookmarks(bookmark.getBookmarks());
 			}
 
