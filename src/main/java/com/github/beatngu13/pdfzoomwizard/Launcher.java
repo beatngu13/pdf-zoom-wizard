@@ -18,9 +18,8 @@
  */
 package com.github.beatngu13.pdfzoomwizard;
 
-import com.github.beatngu13.pdfzoomwizard.ui.MainViewController;
-
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -38,8 +37,9 @@ public class Launcher extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainView.fxml"));
 		primaryStage.setTitle("PDF Zoom Wizard");
-		primaryStage.setScene(new Scene(new MainViewController().getMainView(), 425.0, 250.0));
+		primaryStage.setScene(new Scene(loader.load(), 425.0, 250.0));
 		primaryStage.show();
 	}
 

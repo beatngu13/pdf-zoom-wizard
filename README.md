@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/beatngu13/pdf-zoom-wizard.svg?branch=master)](https://travis-ci.org/beatngu13/pdf-zoom-wizard)
+[![Build status](https://travis-ci.org/beatngu13/pdf-zoom-wizard.svg?branch=master)](https://travis-ci.org/beatngu13/pdf-zoom-wizard)
+[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=com.github.beatngu13%3Apdfzoomwizard&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.github.beatngu13%3Apdfzoomwizard)
+[![Total downloads status](https://img.shields.io/github/downloads/beatngu13/pdf-zoom-wizard/total.svg?style=flat)](https://travis-ci.org/beatngu13/pdf-zoom-wizard/releases)
 
 # PDF Zoom Wizard
 
@@ -14,13 +16,13 @@ To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf
 - [x] Enhance build process with Travis CI
 - [x] Add changelog and Semantic Versioning
 - [ ] Tests (!)
-- [X] Improve logging using SLF4J and Logback
+- [x] Improve logging using SLF4J and Logback
 - [ ] Refactor entire project
 - [ ] Extract Wizard interface for new implementation (e.g. with [iText](https://itextpdf.com/) or [PDFBox](https://pdfbox.apache.org/))
 - [ ] Implement zoom settings for links
 - [ ] Create self-contained app
 - [ ] Migrate to current OpenJDK
-- [ ] Add ControlsFX for (modal) dialogs
+- [x] Add ControlsFX for (modal) dialogs
 - [ ] Offer dynamically resizing GUI content
 
 ## Donation

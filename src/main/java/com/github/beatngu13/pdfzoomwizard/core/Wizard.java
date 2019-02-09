@@ -49,7 +49,7 @@ public class Wizard extends Task<Void> {
 	/**
 	 * @see {@link SerializationModeEnum}
 	 */
-	private final SerializationModeEnum serializationMode = SerializationModeEnum.Incremental;
+	private static final SerializationModeEnum SERIALIZATION_MODE = SerializationModeEnum.Incremental;
 	/**
 	 * Total number of modified files.
 	 */
@@ -98,7 +98,7 @@ public class Wizard extends Task<Void> {
 	@Override
 	protected Void call() throws Exception {
 		log.info("Start working in '{}'. All PDF documents will be saved with serialization mode '{}'.",
-				root.getAbsolutePath(), serializationMode);
+				root.getAbsolutePath(), SERIALIZATION_MODE);
 		modifyFiles(root);
 		log.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
 
@@ -128,6 +128,9 @@ public class Wizard extends Task<Void> {
 			break;
 		case "Inherit zoom":
 			mode = ModeEnum.XYZ;
+			break;
+		default:
+			throw new IllegalStateException("Unkown zoom: " + zoom + ".");
 		}
 	}
 
@@ -156,12 +159,12 @@ public class Wizard extends Task<Void> {
 				if (filenameInfix != null) {
 					java.io.File output = new java.io.File(
 							file.getAbsolutePath().replace(".pdf", filenameInfix + ".pdf"));
-					pdf.save(output, serializationMode);
+					pdf.save(output, SERIALIZATION_MODE);
 				} else {
-					pdf.save(serializationMode);
+					pdf.save(SERIALIZATION_MODE);
 				}
 				fileCount++;
-				log.info("Successfully modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
+				log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
 			} catch (IOException e) {
 				log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
 			}
@@ -176,8 +179,8 @@ public class Wizard extends Task<Void> {
 	 */
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
-			// TODO Change to bookmark.getBookmarks().isEmpty when it's implemented.
-			if (bookmark.getBookmarks().size() != 0) {
+			// Bookmarks#isEmpty() not implemented.
+			if (bookmark.getBookmarks().size() > 0) {
 				modifyBookmarks(bookmark.getBookmarks());
 			}
 
@@ -213,7 +216,7 @@ public class Wizard extends Task<Void> {
 		destination.setZoom(zoom);
 		bookmarkCountGlobal++;
 		bookmarkCountLocal++;
-		log.info("Set bookmark '{}' to use mode '{)' and zoom '{}'.", BookmarkUtil.getTitle(bookmark), mode, zoom);
+		log.info("Modified bookmark '{}' to use mode '{)' and zoom '{}'.", BookmarkUtil.getTitle(bookmark), mode, zoom);
 	}
 
 	@Override
