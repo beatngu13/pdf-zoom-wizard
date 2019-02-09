@@ -180,6 +180,10 @@ public class MainViewController {
 			root = new File(rootTextField.getText());
 		}
 
+		if (!root.exists()) {
+			return handleInvalidInput("Selected file/directory doesn't exist.");
+		}
+
 		if (multipleMode && !root.isDirectory()) {
 			return handleInvalidInput("Multiple files mode selected but file is selected.");
 		}
