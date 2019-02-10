@@ -47,6 +47,10 @@ import lombok.extern.slf4j.Slf4j;
 public class Wizard extends Task<Void> {
 
 	/**
+	 * File extension for PDFs.
+	 */
+	private static final String PDF_FILE_EXTENSION = ".pdf";
+	/**
 	 * @see {@link SerializationModeEnum}
 	 */
 	private static final SerializationModeEnum SERIALIZATION_MODE = SerializationModeEnum.Incremental;
@@ -97,7 +101,7 @@ public class Wizard extends Task<Void> {
 
 	@Override
 	protected Void call() throws Exception {
-		log.info("Start working in '{}'. All PDF documents will be saved with serialization mode '{}'.",
+		log.info("Start working on '{}'. PDF document(s) will be saved with serialization mode '{}'.",
 				root.getAbsolutePath(), SERIALIZATION_MODE);
 		modifyFiles(root);
 		log.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
@@ -149,6 +153,12 @@ public class Wizard extends Task<Void> {
 			}
 		} else {
 			String filename = file.getName();
+
+			if (!filename.endsWith(PDF_FILE_EXTENSION)) {
+				log.warn("Skipping '{}'.", filename);
+				return;
+			}
+
 			log.info("Processing '{}'.", filename);
 
 			try (File pdf = new File(file.getAbsolutePath())) {
@@ -158,7 +168,7 @@ public class Wizard extends Task<Void> {
 
 				if (filenameInfix != null) {
 					java.io.File output = new java.io.File(
-							file.getAbsolutePath().replace(".pdf", filenameInfix + ".pdf"));
+							file.getAbsolutePath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION));
 					pdf.save(output, SERIALIZATION_MODE);
 				} else {
 					pdf.save(SERIALIZATION_MODE);

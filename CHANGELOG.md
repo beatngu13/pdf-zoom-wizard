@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 - Use native confirmation dialog before execution instead of a custom warning dialog.
 - Rename label / text field "State" to "Info" and improve the corresponding messages.
 
+### Fixed
+
+- Non-PDF files crashing execution (see [#29](https://github.com/beatngu13/pdf-zoom-wizard/issues/29)).
+
 ## [0.2.0] - 2019-02-08
 
 ### Added
@@ -22,13 +26,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 - Support for [`LocalDestination`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/LocalDestination.html)s (see [#22](https://github.com/beatngu13/pdf-zoom-wizard/issues/22)).
 - Better logging experience with an improved console logger and a new file logger, which creates a log file under `${HOME}/.pdfzoomwizard/log`.
 
-### Fixed
-
-- Exception on [`Bookmark#getTarget()`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/Bookmark.html#getTarget()) crashing execution (see [#20](https://github.com/beatngu13/pdf-zoom-wizard/issues/20)).
-
 ### Changed
 
 - Set single file mode as default.
+
+### Fixed
+
+- Exception on [`Bookmark#getTarget()`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/Bookmark.html#getTarget()) crashing execution (see [#20](https://github.com/beatngu13/pdf-zoom-wizard/issues/20)).
 
 ### Removed
 
