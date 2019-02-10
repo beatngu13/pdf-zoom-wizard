@@ -23,7 +23,6 @@ import java.io.File;
 import com.github.beatngu13.pdfzoomwizard.core.Wizard;
 
 import javafx.animation.FadeTransition;
-import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -103,11 +102,10 @@ public class MainViewController {
 	@FXML
 	private ChoiceBox<String> zoomChoiceBox;
 	/**
-	 * Displays the current state of the Wizard. Basically the values of
-	 * {@link State} are used.
+	 * Displays general information to the user.
 	 */
 	@FXML
-	private Text stateText;
+	private Text infoText;
 	/**
 	 * Calls {@link #run()} if the user confirms to proceed.
 	 */
@@ -119,7 +117,7 @@ public class MainViewController {
 	 */
 	public void initialize() {
 		runButton.disableProperty()
-				.bind(rootTextField.textProperty().isEmpty().or(stateText.textProperty().isEqualTo("Processing")));
+				.bind(rootTextField.textProperty().isEmpty().or(infoText.textProperty().isEqualTo("Processing")));
 		copyTextField.disableProperty().bind(copyCheckBox.selectedProperty().not());
 
 		directoryChooser.setTitle("Choose a directory");
@@ -203,7 +201,7 @@ public class MainViewController {
 	 */
 	private boolean handleInvalidInput(String msg) {
 		log.warn(msg);
-		stateText.setText(msg);
+		infoText.setText(msg);
 		return false;
 	}
 
@@ -229,7 +227,7 @@ public class MainViewController {
 		String filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
 		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
 		Thread thread = new Thread(wizard);
-		wizard.messageProperty().addListener((observable, oldValue, newValue) -> stateText.setText(newValue));
+		wizard.messageProperty().addListener((observable, oldValue, newValue) -> infoText.setText(newValue));
 		thread.setDaemon(true);
 		thread.start();
 	}

@@ -75,9 +75,9 @@
 		<String fx:value="Inherit zoom" />
 	</ChoiceBox>
 
-	<Label text="State:" GridPane.rowIndex="4"
+	<Label text="Info:" GridPane.rowIndex="4"
 		GridPane.columnIndex="0" />
-	<Text fx:id="stateText" text="Ready" GridPane.rowIndex="4"
+	<Text fx:id="infoText" text="Ready" GridPane.rowIndex="4"
 		GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
 	<Button fx:id="runButton" text="Run" disable="true"
 		GridPane.halignment="RIGHT" GridPane.rowIndex="4"
