@@ -121,6 +121,7 @@ public class Wizard extends Task<Void> {
 			mode = ModeEnum.XYZ;
 			break;
 		case FIT_PAGE:
+			this.zoom = null;
 			mode = ModeEnum.Fit;
 			break;
 		case FIT_VISIBLE:
@@ -128,9 +129,11 @@ public class Wizard extends Task<Void> {
 			mode = ModeEnum.FitBoundingBoxHorizontal;
 			break;
 		case FIT_WIDTH:
+			this.zoom = null;
 			mode = ModeEnum.FitHorizontal;
 			break;
 		case INHERIT_ZOOM:
+			this.zoom = null;
 			mode = ModeEnum.XYZ;
 			break;
 		default:
