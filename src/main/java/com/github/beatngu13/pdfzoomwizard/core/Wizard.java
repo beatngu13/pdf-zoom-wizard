@@ -134,7 +134,7 @@ public class Wizard extends Task<Void> {
 			mode = ModeEnum.XYZ;
 			break;
 		default:
-			throw new IllegalStateException("Unkown zoom: " + zoom + ".");
+			throw new IllegalArgumentException("Unkown zoom: " + zoom + ".");
 		}
 	}
 
