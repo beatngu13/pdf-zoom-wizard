@@ -35,31 +35,31 @@ class WizardIT {
 	// https://github.com/approvals/ApprovalTests.Java/issues/36/).
 
 	@Test
-	void fit_page_should_be_applied_properly() throws Exception {
-		test("Fit page");
-	}
-
-	@Test
 	void actual_size_should_be_applied_properly() throws Exception {
-		test("Actual size");
+		test(Zoom.ACTUAL_SIZE);
 	}
 
 	@Test
-	void fit_width_should_be_applied_properly() throws Exception {
-		test("Fit width");
+	void fit_page_should_be_applied_properly() throws Exception {
+		test(Zoom.FIT_PAGE);
 	}
 
 	@Test
 	void fit_visible_should_be_applied_properly() throws Exception {
-		test("Fit visible");
+		test(Zoom.FIT_VISIBLE);
+	}
+
+	@Test
+	void fit_width_should_be_applied_properly() throws Exception {
+		test(Zoom.FIT_WIDTH);
 	}
 
 	@Test
 	void inherit_zoom_should_be_applied_properly() throws Exception {
-		test("Inherit zoom");
+		test(Zoom.INHERIT_ZOOM);
 	}
 
-	void test(String zoom) throws Exception {
+	void test(Zoom zoom) throws Exception {
 		new Wizard(tempSamplePdf, null, zoom).call();
 		List<PdfObject> pdfObjects = getAllBookmarks(tempSamplePdf).stream() //
 				.map(PdfOutline::getDestination) //

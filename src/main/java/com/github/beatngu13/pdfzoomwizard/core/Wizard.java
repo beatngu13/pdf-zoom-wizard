@@ -92,7 +92,7 @@ public class Wizard extends Task<Void> {
 	 * @param filenameInfix Sets {@link #filenameInfix}.
 	 * @param zoom          Sets {@link #zoom}.
 	 */
-	public Wizard(java.io.File root, String filenameInfix, String zoom) {
+	public Wizard(java.io.File root, String filenameInfix, Zoom zoom) {
 		this.root = root;
 		this.filenameInfix = filenameInfix;
 
@@ -114,23 +114,23 @@ public class Wizard extends Task<Void> {
 	 * 
 	 * @param zoom Value given by the calling instance.
 	 */
-	private void computeZoom(String zoom) {
+	private void computeZoom(Zoom zoom) {
 		switch (zoom) {
-		case "Fit page":
-			mode = ModeEnum.Fit;
-			break;
-		case "Actual size":
+		case ACTUAL_SIZE:
 			this.zoom = 1.0;
 			mode = ModeEnum.XYZ;
 			break;
-		case "Fit width":
-			mode = ModeEnum.FitHorizontal;
+		case FIT_PAGE:
+			mode = ModeEnum.Fit;
 			break;
-		case "Fit visible":
+		case FIT_VISIBLE:
 			this.zoom = 0.0;
 			mode = ModeEnum.FitBoundingBoxHorizontal;
 			break;
-		case "Inherit zoom":
+		case FIT_WIDTH:
+			mode = ModeEnum.FitHorizontal;
+			break;
+		case INHERIT_ZOOM:
 			mode = ModeEnum.XYZ;
 			break;
 		default:
