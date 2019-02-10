@@ -21,6 +21,7 @@ package com.github.beatngu13.pdfzoomwizard.ui;
 import java.io.File;
 
 import com.github.beatngu13.pdfzoomwizard.core.Wizard;
+import com.github.beatngu13.pdfzoomwizard.core.Zoom;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
@@ -100,7 +101,7 @@ public class MainViewController {
 	 * Value to use for bookmarks zoom level.
 	 */
 	@FXML
-	private ChoiceBox<String> zoomChoiceBox;
+	private ChoiceBox<Zoom> zoomChoiceBox;
 	/**
 	 * Displays general information to the user.
 	 */

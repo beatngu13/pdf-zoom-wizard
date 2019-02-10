@@ -10,7 +10,7 @@
 	along with the PDF Zoom Wizard. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. 
 	Copyright 2013-2019 Daniel Kraus -->
 
-<?import java.lang.String?>
+<?import com.github.beatngu13.pdfzoomwizard.core.Zoom?>
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -66,13 +66,16 @@
 
 	<Label text="Zoom level:" GridPane.rowIndex="3"
 		GridPane.columnIndex="0" />
-	<ChoiceBox fx:id="zoomChoiceBox" value="Inherit zoom"
-		GridPane.rowIndex="3" GridPane.columnIndex="1">
-		<String fx:value="Fit page" />
-		<String fx:value="Actual size" />
-		<String fx:value="Fit width" />
-		<String fx:value="Fit visible" />
-		<String fx:value="Inherit zoom" />
+	<ChoiceBox fx:id="zoomChoiceBox" GridPane.rowIndex="3"
+		GridPane.columnIndex="1">
+		<value>
+			<Zoom fx:constant="INHERIT_ZOOM" />
+		</value>
+		<Zoom fx:constant="ACTUAL_SIZE" />
+		<Zoom fx:constant="FIT_PAGE" />
+		<Zoom fx:constant="FIT_VISIBLE" />
+		<Zoom fx:constant="FIT_WIDTH" />
+		<Zoom fx:constant="INHERIT_ZOOM" />
 	</ChoiceBox>
 
 	<Label text="Info:" GridPane.rowIndex="4"
