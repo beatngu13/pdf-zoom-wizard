@@ -6,9 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Added
+
+- Dynamically resizing GUI content for a better UX.
+
 ### Changed
 
 - Use native confirmation dialog before execution instead of a custom warning dialog.
+- Rename label / text field "State" to "Info" and improve the corresponding messages.
 
 ## [0.2.0] - 2019-02-08
 
