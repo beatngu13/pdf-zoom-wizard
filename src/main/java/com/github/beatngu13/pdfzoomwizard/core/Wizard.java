@@ -47,6 +47,10 @@ import lombok.extern.slf4j.Slf4j;
 public class Wizard extends Task<Void> {
 
 	/**
+	 * File extension for PDFs.
+	 */
+	private static final String PDF_FILE_EXTENSION = ".pdf";
+	/**
 	 * @see {@link SerializationModeEnum}
 	 */
 	private static final SerializationModeEnum SERIALIZATION_MODE = SerializationModeEnum.Incremental;
@@ -150,7 +154,7 @@ public class Wizard extends Task<Void> {
 		} else {
 			String filename = file.getName();
 
-			if (!filename.endsWith(".pdf")) {
+			if (!filename.endsWith(PDF_FILE_EXTENSION)) {
 				log.warn("Skipping '{}'.", filename);
 				return;
 			}
@@ -164,7 +168,7 @@ public class Wizard extends Task<Void> {
 
 				if (filenameInfix != null) {
 					java.io.File output = new java.io.File(
-							file.getAbsolutePath().replace(".pdf", filenameInfix + ".pdf"));
+							file.getAbsolutePath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION));
 					pdf.save(output, SERIALIZATION_MODE);
 				} else {
 					pdf.save(SERIALIZATION_MODE);
