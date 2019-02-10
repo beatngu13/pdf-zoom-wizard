@@ -149,6 +149,12 @@ public class Wizard extends Task<Void> {
 			}
 		} else {
 			String filename = file.getName();
+
+			if (!filename.endsWith(".pdf")) {
+				log.warn("Skipping '{}'.", filename);
+				return;
+			}
+
 			log.info("Processing '{}'.", filename);
 
 			try (File pdf = new File(file.getAbsolutePath())) {
