@@ -25,7 +25,7 @@ To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf
 - [ ] Create self-contained app
 - [ ] Migrate to current OpenJDK
 - [x] Add ControlsFX for (modal) dialogs
-- [ ] Offer dynamically resizing GUI content
+- [x] Offer dynamically resizing GUI content
 
 ## Donation
 
