@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 - Dynamically resizing GUI content for a better UX.
 
+### Fixed
+
+- Non-PDF files crashing execution (see [#29](https://github.com/beatngu13/pdf-zoom-wizard/issues/29)).
+
 ### Changed
 
 - Use native confirmation dialog before execution instead of a custom warning dialog.
