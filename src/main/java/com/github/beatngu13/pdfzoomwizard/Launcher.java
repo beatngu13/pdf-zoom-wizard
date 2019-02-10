@@ -39,7 +39,7 @@ public class Launcher extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainView.fxml"));
 		primaryStage.setTitle("PDF Zoom Wizard");
-		primaryStage.setScene(new Scene(loader.load(), 425.0, 250.0));
+		primaryStage.setScene(new Scene(loader.load()));
 		primaryStage.show();
 	}
 

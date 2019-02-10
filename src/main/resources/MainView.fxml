@@ -20,6 +20,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
@@ -27,7 +28,10 @@
 <GridPane
 	fx:controller="com.github.beatngu13.pdfzoomwizard.ui.MainViewController"
 	xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10.0"
-	vgap="10.0">
+	vgap="10.0" maxWidth="Infinity">
+	<padding>
+		<Insets top="25.0" right="25.0" bottom="25.0" left="25.0" />
+	</padding>
 
 	<Label text="Mode:" GridPane.rowIndex="0"
 		GridPane.columnIndex="0" />
@@ -45,7 +49,7 @@
 	<Label fx:id="rootLabel" text="File:" GridPane.rowIndex="1"
 		GridPane.columnIndex="0" />
 	<TextField fx:id="rootTextField" GridPane.rowIndex="1"
-		GridPane.columnIndex="1" />
+		GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" prefWidth="350.0" />
 	<Button fx:id="browseButton" text="Browse" GridPane.rowIndex="1"
 		GridPane.columnIndex="2" />
 
@@ -53,7 +57,7 @@
 		GridPane.columnIndex="0" />
 	<TextField fx:id="copyTextField" disable="true"
 		promptText="Filename&lt;infix&gt;.pdf" GridPane.rowIndex="2"
-		GridPane.columnIndex="1" />
+		GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" prefWidth="350.0" />
 	<HBox spacing="4.0" alignment="CENTER" GridPane.rowIndex="2"
 		GridPane.columnIndex="2">
 		<CheckBox fx:id="copyCheckBox" />
@@ -74,7 +78,7 @@
 	<Label text="State:" GridPane.rowIndex="4"
 		GridPane.columnIndex="0" />
 	<Text fx:id="stateText" text="Ready" GridPane.rowIndex="4"
-		GridPane.columnIndex="1" />
+		GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
 	<Button fx:id="runButton" text="Run" disable="true"
 		GridPane.halignment="RIGHT" GridPane.rowIndex="4"
 		GridPane.columnIndex="2" />
