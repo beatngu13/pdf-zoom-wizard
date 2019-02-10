@@ -101,7 +101,7 @@ public class Wizard extends Task<Void> {
 
 	@Override
 	protected Void call() throws Exception {
-		log.info("Start working in '{}'. All PDF documents will be saved with serialization mode '{}'.",
+		log.info("Start working on '{}'. PDF document(s) will be saved with serialization mode '{}'.",
 				root.getAbsolutePath(), SERIALIZATION_MODE);
 		modifyFiles(root);
 		log.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
