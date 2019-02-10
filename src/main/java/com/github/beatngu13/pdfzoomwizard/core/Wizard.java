@@ -222,19 +222,19 @@ public class Wizard extends Task<Void> {
 	@Override
 	protected void running() {
 		super.running();
-		updateMessage(State.RUNNING.toString());
+		updateMessage("Processing");
 	}
 
 	@Override
 	protected void succeeded() {
 		super.succeeded();
-		updateMessage(State.SUCCEEDED.toString());
+		updateMessage("Succeeded");
 	}
 
 	@Override
 	protected void failed() {
 		super.failed();
-		updateMessage(State.FAILED.toString());
+		updateMessage("Failed");
 	}
 
 }

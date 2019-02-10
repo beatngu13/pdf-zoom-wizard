@@ -23,7 +23,6 @@ import java.io.File;
 import com.github.beatngu13.pdfzoomwizard.core.Wizard;
 
 import javafx.animation.FadeTransition;
-import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -103,11 +102,10 @@ public class MainViewController {
 	@FXML
 	private ChoiceBox<String> zoomChoiceBox;
 	/**
-	 * Displays the current state of the Wizard. Basically the values of
-	 * {@link State} are used.
+	 * Displays general information to the user.
 	 */
 	@FXML
-	private Text stateText;
+	private Text infoText;
 	/**
 	 * Calls {@link #run()} if the user confirms to proceed.
 	 */
@@ -118,30 +116,26 @@ public class MainViewController {
 	 * Initializes FXML and bindings.
 	 */
 	public void initialize() {
-		runButton.disableProperty().bind(rootTextField.textProperty().isEmpty()
-				.or(stateText.textProperty().isEqualTo(State.RUNNING.toString())));
+		runButton.disableProperty()
+				.bind(rootTextField.textProperty().isEmpty().or(infoText.textProperty().isEqualTo("Processing")));
 		copyTextField.disableProperty().bind(copyCheckBox.selectedProperty().not());
 
 		directoryChooser.setTitle("Choose a directory");
 		fileChooser.setTitle("Choose a file");
 
-		// TODO Best practice?
 		modeToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 			multipleMode = !rootLabel.getText().equals("Directory:");
+			rootLabel.setText(multipleMode ? "Directory:" : "File:");
 
 			FadeTransition fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
 			fadeOut.setFromValue(1.0);
 			fadeOut.setToValue(0.0);
 			fadeOut.play();
 
-			fadeOut.setOnFinished(event -> {
-				rootLabel.setText(multipleMode ? "Directory:" : "File:");
-
-				FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
-				fadeIn.setFromValue(0.0);
-				fadeIn.setToValue(1.0);
-				fadeIn.play();
-			});
+			FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
+			fadeIn.setFromValue(0.0);
+			fadeIn.setToValue(1.0);
+			fadeIn.play();
 		});
 
 		browseButton.setOnAction(event -> {
@@ -165,7 +159,7 @@ public class MainViewController {
 				alert.setContentText(getConfirmationMessage());
 				alert.showAndWait() //
 						.filter(response -> response == ButtonType.OK) //
-						.ifPresent(response -> MainViewController.this.run());
+						.ifPresent(response -> run());
 			}
 		});
 	}
@@ -176,29 +170,39 @@ public class MainViewController {
 	 * @return <code>true</code> if everything is valid, else <code>false</code>.
 	 */
 	private boolean validateInput() {
-		boolean valid = true;
-
 		if (root == null || !root.getAbsolutePath().equals(rootTextField.getText())) {
 			root = new File(rootTextField.getText());
 		}
 
+		if (!root.exists()) {
+			return handleInvalidInput("Selected file/directory doesn't exist");
+		}
+
 		if (multipleMode && !root.isDirectory()) {
-			valid = false;
-			stateText.setText("A FILE IS SELECTED");
-			log.warn("'{}' is a file.", root.getAbsolutePath());
-		} else if (!multipleMode && root.isDirectory()) {
-			valid = false;
-			stateText.setText("A DIRECTORY IS SELECTED");
-			log.warn("'{}' is a directory.", root.getAbsolutePath());
+			return handleInvalidInput("Multiple files mode selected but file is selected");
+		}
+
+		if (!multipleMode && root.isDirectory()) {
+			return handleInvalidInput("Singe file mode selected but directory is selected");
 		}
 
 		if (copyCheckBox.isSelected() && copyTextField.getText().isEmpty()) {
-			valid = false;
-			stateText.setText("FILENAME INFIX IS EMPTY");
-			log.warn("Filename infix is empty.");
+			return handleInvalidInput("Copy selected but filename infix is empty");
 		}
 
-		return valid;
+		return true;
+	}
+
+	/**
+	 * Handles invalid UI input.
+	 * 
+	 * @param msg Warning message to log and show.
+	 * @return Always <code>false</code>.
+	 */
+	private boolean handleInvalidInput(String msg) {
+		log.warn(msg);
+		infoText.setText(msg);
+		return false;
 	}
 
 	/**
@@ -208,8 +212,8 @@ public class MainViewController {
 	 */
 	private String getConfirmationMessage() {
 		String prefix = multipleMode
-				? "All files in \"" + root.getAbsolutePath() + "\" and its enclosing subdirectories will be "
-				: "\"" + root.getAbsolutePath() + "\" will be ";
+				? "All files in '" + root.getAbsolutePath() + "' and its enclosing subdirectories will be "
+				: "File '" + root.getAbsolutePath() + "' will be ";
 		String infix = !copyCheckBox.isSelected() ? "overwritten." : "copied.";
 		String suffix = "\n\nAre you sure to proceed?";
 		return prefix + infix + suffix;
@@ -223,8 +227,7 @@ public class MainViewController {
 		String filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
 		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
 		Thread thread = new Thread(wizard);
-		wizard.messageProperty()
-				.addListener((observable, oldValue, newValue) -> MainViewController.this.stateText.setText(newValue));
+		wizard.messageProperty().addListener((observable, oldValue, newValue) -> infoText.setText(newValue));
 		thread.setDaemon(true);
 		thread.start();
 	}
