@@ -73,7 +73,7 @@
 
 	<Label text="State:" GridPane.rowIndex="4"
 		GridPane.columnIndex="0" />
-	<Text fx:id="stateText" text="READY" GridPane.rowIndex="4"
+	<Text fx:id="stateText" text="Ready" GridPane.rowIndex="4"
 		GridPane.columnIndex="1" />
 	<Button fx:id="runButton" text="Run" disable="true"
 		GridPane.halignment="RIGHT" GridPane.rowIndex="4"

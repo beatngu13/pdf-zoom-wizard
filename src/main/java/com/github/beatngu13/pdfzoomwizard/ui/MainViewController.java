@@ -118,8 +118,8 @@ public class MainViewController {
 	 * Initializes FXML and bindings.
 	 */
 	public void initialize() {
-		runButton.disableProperty().bind(rootTextField.textProperty().isEmpty()
-				.or(stateText.textProperty().isEqualTo(State.RUNNING.toString())));
+		runButton.disableProperty()
+				.bind(rootTextField.textProperty().isEmpty().or(stateText.textProperty().isEqualTo("Processing")));
 		copyTextField.disableProperty().bind(copyCheckBox.selectedProperty().not());
 
 		directoryChooser.setTitle("Choose a directory");
@@ -177,19 +177,19 @@ public class MainViewController {
 		}
 
 		if (!root.exists()) {
-			return handleInvalidInput("Selected file/directory doesn't exist.");
+			return handleInvalidInput("Selected file/directory doesn't exist");
 		}
 
 		if (multipleMode && !root.isDirectory()) {
-			return handleInvalidInput("Multiple files mode selected but file is selected.");
+			return handleInvalidInput("Multiple files mode selected but file is selected");
 		}
 
 		if (!multipleMode && root.isDirectory()) {
-			return handleInvalidInput("Singe file mode selected but directory is selected.");
+			return handleInvalidInput("Singe file mode selected but directory is selected");
 		}
 
 		if (copyCheckBox.isSelected() && copyTextField.getText().isEmpty()) {
-			return handleInvalidInput("Copy selected but filename infix is empty.");
+			return handleInvalidInput("Copy selected but filename infix is empty");
 		}
 
 		return true;
@@ -214,8 +214,8 @@ public class MainViewController {
 	 */
 	private String getConfirmationMessage() {
 		String prefix = multipleMode
-				? "All files in \"" + root.getAbsolutePath() + "\" and its enclosing subdirectories will be "
-				: "\"" + root.getAbsolutePath() + "\" will be ";
+				? "All files in '" + root.getAbsolutePath() + "' and its enclosing subdirectories will be "
+				: "File '" + root.getAbsolutePath() + "' will be ";
 		String infix = !copyCheckBox.isSelected() ? "overwritten." : "copied.";
 		String suffix = "\n\nAre you sure to proceed?";
 		return prefix + infix + suffix;
