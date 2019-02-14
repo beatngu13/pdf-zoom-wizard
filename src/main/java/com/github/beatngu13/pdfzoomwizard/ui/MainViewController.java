@@ -215,7 +215,7 @@ public class MainViewController {
 		String prefix = multipleMode
 				? "All files in '" + root.getAbsolutePath() + "' and its enclosing subdirectories will be "
 				: "File '" + root.getAbsolutePath() + "' will be ";
-		String infix = !copyCheckBox.isSelected() ? "overwritten." : "copied.";
+		String infix = copyCheckBox.isSelected() ? "copied." : "overwritten.";
 		String suffix = "\n\nAre you sure to proceed?";
 		return prefix + infix + suffix;
 	}
