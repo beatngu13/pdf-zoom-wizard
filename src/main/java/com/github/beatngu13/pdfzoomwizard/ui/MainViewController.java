@@ -215,7 +215,7 @@ public class MainViewController {
 		String prefix = multipleMode
 				? "All files in '" + root.getAbsolutePath() + "' and its enclosing subdirectories will be "
 				: "File '" + root.getAbsolutePath() + "' will be ";
-		String infix = !copyCheckBox.isSelected() ? "overwritten." : "copied.";
+		String infix = copyCheckBox.isSelected() ? "copied." : "overwritten.";
 		String suffix = "\n\nAre you sure to proceed?";
 		return prefix + infix + suffix;
 	}
@@ -228,6 +228,7 @@ public class MainViewController {
 		String filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
 		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
 		Thread thread = new Thread(wizard);
+		// Can't be bound because infoText is also set within here.
 		wizard.messageProperty().addListener((observable, oldValue, newValue) -> infoText.setText(newValue));
 		thread.setDaemon(true);
 		thread.start();
