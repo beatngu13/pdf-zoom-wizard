@@ -228,6 +228,7 @@ public class MainViewController {
 		String filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
 		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
 		Thread thread = new Thread(wizard);
+		// Can't be bound because infoText is also set within here.
 		wizard.messageProperty().addListener((observable, oldValue, newValue) -> infoText.setText(newValue));
 		thread.setDaemon(true);
 		thread.start();
