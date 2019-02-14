@@ -26,7 +26,7 @@ Add the log file from `${HOME}/.pdfzoomwizard/log.txt`.
 **Desktop (please complete the following information):**
  - OS: [e.g. macOS 10.14.2]
  - Java version: [e.g. result of `java -version`]
- - PDF Zoom Wizard version: [e.g. 0.2.0]
+ - PDF Zoom Wizard version: [e.g. 1.2.3]
 
 **Additional context**
 Add any other context about the problem here.
