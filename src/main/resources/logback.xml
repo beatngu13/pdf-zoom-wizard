@@ -13,7 +13,7 @@
 	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>${user.home}/.pdfzoomwizard/log</file>
+		<file>${user.home}/.pdfzoomwizard/log.txt</file>
 		<append>false</append>
 		<encoder>
 			<pattern>${defaultPattern}</pattern>
