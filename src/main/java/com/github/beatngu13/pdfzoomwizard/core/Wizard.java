@@ -178,7 +178,7 @@ public class Wizard extends Task<Void> {
 				}
 				fileCount++;
 				log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
 			}
 		}
