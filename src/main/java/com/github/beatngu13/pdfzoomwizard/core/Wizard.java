@@ -18,7 +18,7 @@
  */
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import java.io.IOException;
+import java.io.File;
 
 import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
@@ -27,7 +27,6 @@ import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
 import org.pdfclown.documents.interaction.navigation.document.Destination;
 import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEnum;
 import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
-import org.pdfclown.files.File;
 import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
 
@@ -70,7 +69,7 @@ public class Wizard extends Task<Void> {
 	/**
 	 * Directory or file to work with.
 	 */
-	private java.io.File root;
+	private File root;
 	/**
 	 * <i>Filename&lt;infix&gt;.pdf</i> for copies, <code>null</code> if the
 	 * original document will be overwritten.
@@ -92,7 +91,7 @@ public class Wizard extends Task<Void> {
 	 * @param filenameInfix Sets {@link #filenameInfix}.
 	 * @param zoom          Sets {@link #zoom}.
 	 */
-	public Wizard(java.io.File root, String filenameInfix, Zoom zoom) {
+	public Wizard(File root, String filenameInfix, Zoom zoom) {
 		this.root = root;
 		this.filenameInfix = filenameInfix;
 
@@ -147,11 +146,11 @@ public class Wizard extends Task<Void> {
 	 * 
 	 * @param file Directory or file to work with.
 	 */
-	public void modifyFiles(java.io.File file) {
+	public void modifyFiles(File file) {
 		if (file.isDirectory()) {
-			java.io.File[] files = file.listFiles();
+			File[] files = file.listFiles();
 
-			for (java.io.File f : files) {
+			for (File f : files) {
 				modifyFiles(f);
 			}
 		} else {
@@ -164,13 +163,13 @@ public class Wizard extends Task<Void> {
 
 			log.info("Processing '{}'.", filename);
 
-			try (File pdf = new File(file.getAbsolutePath())) {
+			try (org.pdfclown.files.File pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
 				bookmarkCountLocal = 0;
 				Document document = pdf.getDocument();
 				modifyBookmarks(document.getBookmarks());
 
 				if (filenameInfix != null) {
-					java.io.File output = new java.io.File(
+					File output = new File(
 							file.getAbsolutePath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION));
 					pdf.save(output, SERIALIZATION_MODE);
 				} else {
@@ -178,7 +177,7 @@ public class Wizard extends Task<Void> {
 				}
 				fileCount++;
 				log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
 			}
 		}
