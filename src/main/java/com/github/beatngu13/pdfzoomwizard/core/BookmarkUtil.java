@@ -15,7 +15,7 @@ class BookmarkUtil {
 	public static String getTitle(Bookmark bm) {
 		try {
 			return bm.getTitle();
-		} catch (ClassCastException e) {
+		} catch (RuntimeException e) {
 			log.warn("Exception while getting bookmark title, using '{}'.", BOOKMARK_TITLE_FALLBACK, e);
 			return BOOKMARK_TITLE_FALLBACK;
 		}
