@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ### Fixed
 
 - Encrypted PDF files crashing execution (see [#34](https://github.com/beatngu13/pdf-zoom-wizard/issues/34)).
+- `NullPointerException` on [`Bookmark#getTarget()`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/Bookmark.html#getTarget()) crashing execution (see [#46](https://github.com/beatngu13/pdf-zoom-wizard/issues/46)).
 
 ### Changed
 
@@ -43,7 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Fixed
 
-- Exception on [`Bookmark#getTarget()`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/Bookmark.html#getTarget()) crashing execution (see [#20](https://github.com/beatngu13/pdf-zoom-wizard/issues/20)).
+- `ClassCastException` on [`Bookmark#getTarget()`](http://clown.sourceforge.net/docs/api/org/pdfclown/documents/interaction/navigation/document/Bookmark.html#getTarget()) crashing execution (see [#20](https://github.com/beatngu13/pdf-zoom-wizard/issues/20)).
 
 ### Removed
 
