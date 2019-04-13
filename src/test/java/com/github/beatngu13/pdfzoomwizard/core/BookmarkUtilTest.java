@@ -20,7 +20,7 @@ class BookmarkUtilTest {
 	@Test
 	void fallback_title_should_be_used_when_exception_occurs() throws Exception {
 		Bookmark bm = mock(Bookmark.class);
-		when(bm.getTitle()).thenThrow(ClassCastException.class);
+		when(bm.getTitle()).thenThrow(RuntimeException.class);
 		assertThat(BookmarkUtil.getTitle(bm)).isEqualTo(BookmarkUtil.BOOKMARK_TITLE_FALLBACK);
 	}
 
