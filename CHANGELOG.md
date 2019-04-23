@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Fixed
+
+- Closed bookmarks not being modified (see [#50](https://github.com/beatngu13/pdf-zoom-wizard/issues/50)).
+
 ## [0.4.0] - 2019-04-13
 
 ### Fixed
