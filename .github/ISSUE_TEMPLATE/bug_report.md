@@ -11,7 +11,7 @@ assignees: beatngu13
 A clear and concise description of what the bug is.
 
 **To Reproduce**
-Steps to reproduce the behavior:
+If possible, please provide a sample PDF and describe the steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
