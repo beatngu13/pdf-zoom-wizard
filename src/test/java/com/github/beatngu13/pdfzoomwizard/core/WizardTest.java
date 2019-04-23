@@ -1,6 +1,8 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
+import org.pdfclown.objects.PdfObjectWrapper;
 
 class WizardTest {
 
@@ -38,6 +41,34 @@ class WizardTest {
 		nonPdf.createNewFile();
 		Wizard cut = new Wizard(nonPdf, null, Zoom.ACTUAL_SIZE);
 		cut.call();
+	}
+
+	@Test
+	void closed_bookmarks_should_be_modified() throws Exception {
+		Wizard cut = spy(new Wizard(null, null, Zoom.ACTUAL_SIZE));
+
+		Iterator<Bookmark> childrenIter = mock(Iterator.class);
+		when(childrenIter.hasNext()).thenReturn(false);
+
+		Bookmarks children = mock(Bookmarks.class);
+		when(children.iterator()).thenReturn(childrenIter);
+		// Negative count means closed bookmark.
+		when(children.size()).thenReturn(-1);
+
+		Bookmark bookmark = mock(Bookmark.class);
+		when(bookmark.getBookmarks()).thenReturn(children);
+		when(bookmark.getTarget()).thenReturn(mock(PdfObjectWrapper.class));
+
+		Iterator<Bookmark> bookmarksIter = mock(Iterator.class);
+		when(bookmarksIter.hasNext()).thenReturn(true, false);
+		when(bookmarksIter.next()).thenReturn(bookmark);
+
+		Bookmarks bookmarks = mock(Bookmarks.class);
+		when(bookmarks.iterator()).thenReturn(bookmarksIter);
+
+		cut.modifyBookmarks(bookmarks);
+		
+		verify(cut).modifyBookmarks(children);
 	}
 
 }
