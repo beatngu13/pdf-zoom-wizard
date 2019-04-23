@@ -192,8 +192,8 @@ public class Wizard extends Task<Void> {
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
 			Bookmarks children = bookmark.getBookmarks();
-			// Bookmarks#isEmpty() not implemented.
-			if (children.size() > 0) {
+			// Bookmarks#isEmpty() not implemented, size might be positive (bookmark open) or negative (bookmark closed).
+			if (children.size() != 0) {
 				modifyBookmarks(children);
 			}
 
