@@ -15,7 +15,7 @@
 		<encoding>UTF-8</encoding>
 		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
-		<maven.surefire.version>2.22.1</maven.surefire.version>
+		<maven.surefire.version>2.22.2</maven.surefire.version>
 	</properties>
 
 	<scm>
