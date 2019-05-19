@@ -144,7 +144,7 @@ public class MainViewController {
 					: fileChooser.showOpenDialog(browseButton.getScene().getWindow());
 
 			if (root != null) {
-				File parentFile = root.getParentFile();
+				File parentFile = multipleMode ? root : root.getParentFile();
 
 				rootTextField.setText(root.getAbsolutePath());
 				directoryChooser.setInitialDirectory(parentFile);
