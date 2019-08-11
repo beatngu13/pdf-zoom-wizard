@@ -1,21 +1,3 @@
-/*
- * This file is part of the PDF Zoom Wizard.
- * 
- * The PDF Zoom Wizard is free software: you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License version 3 as 
- * published by the Free Software Foundation. <br><br>
- * 
- * The PDF Zoom Wizard is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
- * Public License for more details. <br><br>
- * 
- * You should have received a copy of the GNU General Public License along with 
- * the PDF Zoom Wizard. If not, see 
- * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. <br><br>
- * 
- * Copyright 2013-2019 Daniel Kraus
- */
 package com.github.beatngu13.pdfzoomwizard.ui;
 
 import java.io.File;
@@ -37,6 +19,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
@@ -140,11 +123,11 @@ public class MainViewController {
 		});
 
 		browseButton.setOnAction(event -> {
-			root = multipleMode ? directoryChooser.showDialog(browseButton.getScene().getWindow())
-					: fileChooser.showOpenDialog(browseButton.getScene().getWindow());
+			Window window = browseButton.getScene().getWindow();
+			root = multipleMode ? directoryChooser.showDialog(window) : fileChooser.showOpenDialog(window);
 
 			if (root != null) {
-				File parentFile = root.getParentFile();
+				File parentFile = multipleMode ? root : root.getParentFile();
 
 				rootTextField.setText(root.getAbsolutePath());
 				directoryChooser.setInitialDirectory(parentFile);

@@ -67,7 +67,7 @@ class WizardTest {
 		when(bookmarks.iterator()).thenReturn(bookmarksIter);
 
 		cut.modifyBookmarks(bookmarks);
-		
+
 		verify(cut).modifyBookmarks(children);
 	}
 
