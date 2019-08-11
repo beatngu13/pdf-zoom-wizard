@@ -19,6 +19,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
@@ -122,8 +123,8 @@ public class MainViewController {
 		});
 
 		browseButton.setOnAction(event -> {
-			root = multipleMode ? directoryChooser.showDialog(browseButton.getScene().getWindow())
-					: fileChooser.showOpenDialog(browseButton.getScene().getWindow());
+			Window window = browseButton.getScene().getWindow();
+			root = multipleMode ? directoryChooser.showDialog(window) : fileChooser.showOpenDialog(window);
 
 			if (root != null) {
 				File parentFile = multipleMode ? root : root.getParentFile();
