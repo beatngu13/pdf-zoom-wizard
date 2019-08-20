@@ -1,5 +1,6 @@
+dist: trusty
+
 language: java
-sudo: false
 
 addons:
   sonarcloud:
@@ -7,13 +8,12 @@ addons:
     token:
       secure: "${SC_TOKEN}"
 
-notifications:
-  email: false
-
 cache:
   directories:
     - "${HOME}/.m2/"
     - "${HOME}/.sonar/cache/"
+
+jdk: oraclejdk8
 
 install: true
 
