@@ -12,6 +12,8 @@ cache:
     - "${HOME}/.m2/"
     - "${HOME}/.sonar/cache/"
 
+jdk: oraclejdk8
+
 install: true
 
 before_script: ./install-deps.sh
