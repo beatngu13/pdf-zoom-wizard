@@ -211,7 +211,7 @@ public class Wizard extends Task<Void> {
 		destination.setZoom(zoom);
 		bookmarkCountGlobal++;
 		bookmarkCountLocal++;
-		log.info("Modified bookmark '{}' to use mode '{}' and zoom '{}'.", BookmarkUtil.getTitle(bookmark), mode, zoom);
+		log.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
 	}
 
 	@Override
