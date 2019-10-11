@@ -51,12 +51,12 @@ public class Wizard extends Task<Void> {
 	/**
 	 * Directory or file to work with.
 	 */
-	private File root;
+	private final File root;
 	/**
 	 * <i>Filename&lt;infix&gt;.pdf</i> for copies, <code>null</code> if the
 	 * original document will be overwritten.
 	 */
-	private String filenameInfix;
+	private final String filenameInfix;
 	/**
 	 * Zoom to apply to all bookmarks.
 	 */
