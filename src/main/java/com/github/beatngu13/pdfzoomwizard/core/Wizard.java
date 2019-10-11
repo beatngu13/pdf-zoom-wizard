@@ -34,18 +34,6 @@ public class Wizard extends Task<Void> {
 	 * @see {@link SerializationModeEnum}
 	 */
 	private static final SerializationModeEnum SERIALIZATION_MODE = SerializationModeEnum.Incremental;
-	/**
-	 * Total number of modified files.
-	 */
-	private int fileCount;
-	/**
-	 * Total number of modified bookmarks.
-	 */
-	private int bookmarkCountGlobal;
-	/**
-	 * Number of modified bookmarks within the current processed PDF file.
-	 */
-	private int bookmarkCountLocal;
 
 	/**
 	 * Directory or file to work with.
@@ -60,6 +48,19 @@ public class Wizard extends Task<Void> {
 	 * Zoom to apply to all bookmarks.
 	 */
 	private final Zoom zoom;
+
+	/**
+	 * Total number of modified files.
+	 */
+	private int fileCount;
+	/**
+	 * Total number of modified bookmarks.
+	 */
+	private int bookmarkCountGlobal;
+	/**
+	 * Number of modified bookmarks within the current processed PDF file.
+	 */
+	private int bookmarkCountLocal;
 
 	/**
 	 * Creates a new <code>Wizard</code> instance.
