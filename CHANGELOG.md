@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ### Changed
 
 - Rename log file under `${HOME}/.pdfzoomwizard/` from `log` to `log.txt`, which makes upload for GitHub issues easier.
-- Improved logging in various places, including a log for the currently used PDF Zoom Wizard version on launch.
+- Improve logging in various places, including a log for the currently used PDF Zoom Wizard version on launch.
 
 ## [0.3.0] - 2019-02-11
 
