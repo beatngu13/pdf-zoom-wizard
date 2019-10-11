@@ -1,8 +1,22 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
+import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEnum;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum Zoom {
 
-	ACTUAL_SIZE, FIT_PAGE, FIT_VISIBLE, FIT_WIDTH, INHERIT_ZOOM;
+	ACTUAL_SIZE(1.0, ModeEnum.XYZ), //
+	FIT_PAGE(null, ModeEnum.Fit), //
+	FIT_VISIBLE(0.0, ModeEnum.FitBoundingBoxHorizontal), //
+	FIT_WIDTH(null, ModeEnum.FitHorizontal), //
+	INHERIT_ZOOM(null, ModeEnum.XYZ);
+
+	private final Double zoom;
+	private final ModeEnum mode;
 
 	@Override
 	public String toString() {
