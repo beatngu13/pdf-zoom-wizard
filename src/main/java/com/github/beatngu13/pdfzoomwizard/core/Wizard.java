@@ -7,7 +7,6 @@ import org.pdfclown.documents.interaction.actions.GoToDestination;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
 import org.pdfclown.documents.interaction.navigation.document.Destination;
-import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEnum;
 import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
@@ -60,11 +59,7 @@ public class Wizard extends Task<Void> {
 	/**
 	 * Zoom to apply to all bookmarks.
 	 */
-	private Double zoom;
-	/**
-	 * Mode to apply to all bookmarks.
-	 */
-	private ModeEnum mode;
+	private final Zoom zoom;
 
 	/**
 	 * Creates a new <code>Wizard</code> instance.
@@ -76,8 +71,7 @@ public class Wizard extends Task<Void> {
 	public Wizard(File root, String filenameInfix, Zoom zoom) {
 		this.root = root;
 		this.filenameInfix = filenameInfix;
-
-		computeZoom(zoom);
+		this.zoom = zoom;
 	}
 
 	@Override
@@ -88,38 +82,6 @@ public class Wizard extends Task<Void> {
 		log.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
 
 		return null;
-	}
-
-	/**
-	 * Computes {@link #zoom} and {@link #mode}.
-	 * 
-	 * @param zoom Value given by the calling instance.
-	 */
-	private void computeZoom(Zoom zoom) {
-		switch (zoom) {
-		case ACTUAL_SIZE:
-			this.zoom = 1.0;
-			mode = ModeEnum.XYZ;
-			break;
-		case FIT_PAGE:
-			this.zoom = null;
-			mode = ModeEnum.Fit;
-			break;
-		case FIT_VISIBLE:
-			this.zoom = 0.0;
-			mode = ModeEnum.FitBoundingBoxHorizontal;
-			break;
-		case FIT_WIDTH:
-			this.zoom = null;
-			mode = ModeEnum.FitHorizontal;
-			break;
-		case INHERIT_ZOOM:
-			this.zoom = null;
-			mode = ModeEnum.XYZ;
-			break;
-		default:
-			throw new IllegalArgumentException("Unkown zoom: " + zoom + ".");
-		}
 	}
 
 	/**
@@ -207,8 +169,8 @@ public class Wizard extends Task<Void> {
 	 * @param destination Destination to modify.
 	 */
 	private void modifyDestination(Bookmark bookmark, Destination destination) {
-		destination.setMode(mode);
-		destination.setZoom(zoom);
+		destination.setMode(zoom.getMode());
+		destination.setZoom(zoom.getZoom());
 		bookmarkCountGlobal++;
 		bookmarkCountLocal++;
 		log.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
