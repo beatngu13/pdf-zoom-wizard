@@ -15,10 +15,10 @@ import javafx.concurrent.Task;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Applies {@link #mode} and {@link #zoom} to the bookmarks of a single PDF file
- * or a whole directory (subdirectories included). This implementation is based
- * on the <a href="http://www.stefanochizzolini.it/en/projects/clown/">PDF
- * Clown</a> library by Stefano Chizzolini.
+ * Applies {@link #zoom} to the bookmarks of a single PDF file or a whole
+ * directory (subdirectories included). This implementation is based on the
+ * <a href="http://www.stefanochizzolini.it/en/projects/clown/">PDF Clown</a>
+ * library by Stefano Chizzolini.
  * 
  * @author Daniel Kraus
  *
