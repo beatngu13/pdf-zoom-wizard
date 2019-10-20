@@ -1,4 +1,4 @@
-[![Build status](https://travis-ci.org/beatngu13/pdf-zoom-wizard.svg?branch=master)](https://travis-ci.org/beatngu13/pdf-zoom-wizard)
+[![Build status](https://travis-ci.com/beatngu13/pdf-zoom-wizard.svg?branch=master)](https://travis-ci.com/beatngu13/pdf-zoom-wizard)
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=com.github.beatngu13%3Apdfzoomwizard&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.github.beatngu13%3Apdfzoomwizard)
 [![Total downloads status](https://img.shields.io/github/downloads/beatngu13/pdf-zoom-wizard/total.svg?style=flat)](https://github.com/beatngu13/pdf-zoom-wizard/releases)
 
