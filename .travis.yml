@@ -5,8 +5,7 @@ language: java
 addons:
   sonarcloud:
     organization: beatngu13-github
-    token:
-      secure: "${SC_TOKEN}"
+    token: "${SC_TOKEN}"
 
 cache:
   directories:
