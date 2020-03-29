@@ -2,15 +2,14 @@ package com.github.beatngu13.pdfzoomwizard.core;
 
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@UtilityClass
 class BookmarkUtil {
 
 	static final String BOOKMARK_TITLE_FALLBACK = "N/A";
-
-	private BookmarkUtil() {
-	}
 
 	public static String getTitle(Bookmark bm) {
 		try {
