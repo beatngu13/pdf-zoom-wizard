@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Added
+
+- Remember last directory (see [#36](https://github.com/beatngu13/pdf-zoom-wizard/issues/36)).
+
 ### Changed
 
 - Improve logging by mentioning applied zoom only once (at the beginning) and using the actual name (rather than exposing internals).
