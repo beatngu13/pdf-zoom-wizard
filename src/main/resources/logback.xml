@@ -10,6 +10,9 @@
 		<encoder>
 			<pattern>${defaultPattern}</pattern>
 		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
 	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
@@ -18,9 +21,12 @@
 		<encoder>
 			<pattern>${defaultPattern}</pattern>
 		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
 	</appender>
 
-	<root level="info">
+	<root>
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>

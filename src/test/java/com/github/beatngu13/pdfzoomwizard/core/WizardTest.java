@@ -17,6 +17,7 @@ import org.pdfclown.objects.PdfObjectWrapper;
 
 class WizardTest {
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void exception_in_get_target_shouldnt_crash_execution() throws Exception {
 		Wizard cut = new Wizard(null, null, Zoom.ACTUAL_SIZE);
@@ -43,6 +44,7 @@ class WizardTest {
 		cut.call();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void closed_bookmarks_should_be_modified() throws Exception {
 		Wizard cut = spy(new Wizard(null, null, Zoom.ACTUAL_SIZE));
