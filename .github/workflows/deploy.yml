@@ -1,0 +1,60 @@
+on:
+  push:
+   tags: v*
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 8 with JavaFX
+      uses: actions/setup-java@v1
+      with:
+        java-version: 8
+        java-package: jdk+fx
+
+    - name: Cache Maven
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository/
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Install dependencies
+      run: |
+        ./install-deps.sh
+
+    - name: Package with Maven
+      id: maven_package
+      run: |
+        mvn package -DskipTests
+        cd ./target/
+        echo "::set-output name=jar_name::$(echo pdfzoomwizard-*.jar)"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
+        draft: true
+
+    - name: Upload release asset
+      id: upload_release_asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./target/${{ steps.maven_package.outputs.jar_name }}
+        asset_name: ${{ steps.maven_package.outputs.jar_name }}
+        asset_content_type: application/java-archive
