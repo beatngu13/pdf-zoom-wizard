@@ -8,6 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.5.0] - 2020-03-30
+
+### Added
+
 - Remember last directory (see [#36](https://github.com/beatngu13/pdf-zoom-wizard/issues/36)).
 
 ### Changed
