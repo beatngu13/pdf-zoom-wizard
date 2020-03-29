@@ -33,6 +33,11 @@ import lombok.extern.slf4j.Slf4j;
 public class MainViewController {
 
 	/**
+	 * Provides the last directory for {@link #directoryChooser} and
+	 * {@link #fileChooser}.
+	 */
+	private LastDirectoryProvider lastDirProvider = new LastDirectoryProvider();
+	/**
 	 * Sets {@link #root}.
 	 */
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -106,6 +111,10 @@ public class MainViewController {
 
 		directoryChooser.setTitle("Choose a directory");
 		fileChooser.setTitle("Choose a file");
+		lastDirProvider.get().ifPresent(lastDir -> {
+			directoryChooser.setInitialDirectory(lastDir);
+			fileChooser.setInitialDirectory(lastDir);
+		});
 
 		modeToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 			multipleMode = !rootLabel.getText().equals("Directory:");
@@ -132,6 +141,7 @@ public class MainViewController {
 				rootTextField.setText(root.getAbsolutePath());
 				directoryChooser.setInitialDirectory(parentFile);
 				fileChooser.setInitialDirectory(parentFile);
+				lastDirProvider.set(parentFile);
 			}
 		});
 
