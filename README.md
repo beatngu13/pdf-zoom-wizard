@@ -10,7 +10,7 @@ The [road map](#road-map) below shows the current project status. Release `v0.1.
 
 To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf-zoom-wizard/wiki/).
 
-## Road map
+## Technical Road Map
 
 - [x] Convert to Maven project
 - [x] Enhance build process with Travis CI
