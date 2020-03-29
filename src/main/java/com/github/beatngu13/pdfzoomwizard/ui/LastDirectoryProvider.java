@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.prefs.Preferences;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -20,6 +22,7 @@ class LastDirectoryProvider {
 		return get(prefs);
 	}
 
+	@VisibleForTesting
 	Optional<File> get(Preferences prefs) {
 		String lastDirPath = prefs.get(LAST_DIRECTORY_PREFERENCES_KEY, null);
 		log.debug("Get last directory: {}", lastDirPath);
@@ -31,6 +34,7 @@ class LastDirectoryProvider {
 		set(lastDir, prefs);
 	}
 
+	@VisibleForTesting
 	void set(File lastDir, Preferences prefs) {
 		validate(lastDir);
 		String lastDirPath = lastDir.getAbsolutePath();
