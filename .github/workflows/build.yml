@@ -1,5 +1,9 @@
 on: push
 
+env:
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   build:
 
@@ -44,6 +48,3 @@ jobs:
         -Dsonar.host.url=https://sonarcloud.io
         -Dsonar.organization=beatngu13-github
         -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
