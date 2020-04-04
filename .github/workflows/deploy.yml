@@ -2,6 +2,9 @@ on:
   push:
    tags: v*
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   build:
 
@@ -32,17 +35,13 @@ jobs:
     - name: Package with Maven
       id: maven_package
       run: |
-        mvn package -DskipTests
+        mvn --batch-mode package -DskipTests
         cd ./target/
         echo "::set-output name=jar_name::$(echo pdfzoomwizard-*.jar)"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
         release_name: ${{ github.ref }}
@@ -51,8 +50,6 @@ jobs:
     - name: Upload release asset
       id: upload_release_asset 
       uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./target/${{ steps.maven_package.outputs.jar_name }}
