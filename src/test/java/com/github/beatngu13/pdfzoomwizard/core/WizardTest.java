@@ -1,5 +1,6 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -33,7 +34,7 @@ class WizardTest {
 		Bookmarks bookmarks = mock(Bookmarks.class);
 		when(bookmarks.iterator()).thenReturn(iter);
 
-		cut.modifyBookmarks(bookmarks);
+		assertThatCode(() -> cut.modifyBookmarks(bookmarks)).doesNotThrowAnyException();
 	}
 
 	@Test
@@ -41,7 +42,7 @@ class WizardTest {
 		File nonPdf = temp.resolve("foo.bar").toFile();
 		nonPdf.createNewFile();
 		Wizard cut = new Wizard(nonPdf, null, Zoom.ACTUAL_SIZE);
-		cut.call();
+		assertThatCode(cut::call).doesNotThrowAnyException();
 	}
 
 	@SuppressWarnings("unchecked")

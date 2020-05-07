@@ -11,10 +11,10 @@
 	<name>PDF Zoom Wizard</name>
 
 	<properties>
-		<java.version>1.8</java.version>
 		<encoding>UTF-8</encoding>
 		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
+		<java.version>1.8</java.version>
 		<maven.surefire.version>2.22.2</maven.surefire.version>
 	</properties>
 
@@ -126,6 +126,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven.surefire.version}</version>
+				<configuration>
+					<properties>
+						<configurationParameters>
+							junit.jupiter.execution.parallel.enabled=true
+							junit.jupiter.execution.parallel.config.dynamic.factor=1
+						</configurationParameters>
+					</properties>
+				</configuration>
 			</plugin>
 
 			<plugin>
