@@ -26,7 +26,9 @@ class LastDirectoryProvider {
 	Optional<File> get(Preferences prefs) {
 		String lastDirPath = prefs.get(LAST_DIRECTORY_PREFERENCES_KEY, null);
 		log.debug("Get last directory: {}", lastDirPath);
-		return Optional.ofNullable(lastDirPath).map(File::new);
+		return Optional.ofNullable(lastDirPath) //
+				.map(File::new) //
+				.filter(File::isDirectory);
 	}
 
 	public void set(File lastDir) {
