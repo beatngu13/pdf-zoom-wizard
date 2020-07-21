@@ -32,7 +32,7 @@ class LastDirectoryProviderTest {
 	void set_should_not_accept_null() throws Exception {
 		assertThatThrownBy(() -> cut.set(null)) //
 				.isInstanceOf(NullPointerException.class) //
-				.hasMessage("Last directory cannot be null.");
+				.hasMessage("Last directory must not be null.");
 	}
 
 	@Test
@@ -41,7 +41,7 @@ class LastDirectoryProviderTest {
 
 		assertThatThrownBy(() -> cut.set(nonExistingFile)) //
 				.isInstanceOf(IllegalArgumentException.class) //
-				.hasMessage("Last directory must be an existing file.");
+				.hasMessage("Last directory must be an existing directory.");
 	}
 
 	@Test
@@ -51,7 +51,7 @@ class LastDirectoryProviderTest {
 
 		assertThatThrownBy(() -> cut.set(nonDirectory)) //
 				.isInstanceOf(IllegalArgumentException.class) //
-				.hasMessage("Last directory must be an actual directory.");
+				.hasMessage("Last directory must be an existing directory.");
 	}
 
 	@Test

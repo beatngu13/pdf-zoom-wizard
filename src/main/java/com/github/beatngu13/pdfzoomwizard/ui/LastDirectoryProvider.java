@@ -45,12 +45,9 @@ class LastDirectoryProvider {
 	}
 
 	private static void validate(File lastDir) {
-		Objects.requireNonNull(lastDir, "Last directory cannot be null.");
-		if (!lastDir.exists()) {
-			throw new IllegalArgumentException("Last directory must be an existing file.");
-		}
+		Objects.requireNonNull(lastDir, "Last directory must not be null.");
 		if (!lastDir.isDirectory()) {
-			throw new IllegalArgumentException("Last directory must be an actual directory.");
+			throw new IllegalArgumentException("Last directory must be an existing directory.");
 		}
 	}
 
