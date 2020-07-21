@@ -71,9 +71,33 @@ class LastDirectoryProviderTest {
 	}
 
 	@Test
-	void get_should_yield_present_optional_if_last_directory_is_present() throws Exception {
+	void get_should_yield_absent_optional_if_last_directory_does_not_exist() throws Exception {
 		Preferences prefs = mock(Preferences.class);
-		String lastDirPath = "directory";
+		String lastDirPath = "non-existing-directory";
+		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirPath);
+
+		assertThat(cut.get(prefs)).isNotPresent();
+	}
+
+	@Test
+	void get_should_yield_absent_optional_if_last_directory_is_not_a_directory(@TempDir Path temp) throws Exception {
+		File nonDirectory = temp.resolve("non-directory").toFile();
+		nonDirectory.createNewFile();
+
+		Preferences prefs = mock(Preferences.class);
+		String lastDirPath = nonDirectory.getAbsolutePath();
+		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirPath);
+
+		assertThat(cut.get(prefs)).isNotPresent();
+	}
+
+	@Test
+	void get_should_yield_present_optional_if_last_directory_exists(@TempDir Path temp) throws Exception {
+		File lastDir = temp.resolve("directory").toFile();
+		lastDir.mkdir();
+
+		Preferences prefs = mock(Preferences.class);
+		String lastDirPath = lastDir.getAbsolutePath();
 		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirPath);
 
 		assertThat(cut.get(prefs)).hasValue(new File(lastDirPath));
