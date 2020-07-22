@@ -128,7 +128,7 @@ public class MainViewController {
 		});
 
 		browseButton.setOnAction(event -> {
-			File lastDir = lastDirProvider.get().orElse(null);
+			File lastDir = lastDirProvider.get();
 			directoryChooser.setInitialDirectory(lastDir);
 			fileChooser.setInitialDirectory(lastDir);
 

@@ -65,38 +65,38 @@ class LastDirectoryProviderTest {
 	}
 
 	@Test
-	void get_should_yield_absent_optional_if_last_directory_is_absent() throws Exception {
-		assertThat(cut.get(prefs)).isNotPresent();
+	void get_should_yield_null_if_last_directory_is_absent() throws Exception {
+		assertThat(cut.get(prefs)).isNull();
 	}
 
 	@Test
-	void get_should_yield_absent_optional_if_last_directory_does_not_exist() throws Exception {
+	void get_should_yield_null_if_last_directory_does_not_exist() throws Exception {
 		String lastDirectoryPath = "non-existing-directory";
 		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirectoryPath);
 
-		assertThat(cut.get(prefs)).isNotPresent();
+		assertThat(cut.get(prefs)).isNull();
 	}
 
 	@Test
-	void get_should_yield_absent_optional_if_last_directory_is_not_a_directory(@TempDir Path temp) throws Exception {
+	void get_should_yield_null_if_last_directory_is_not_a_directory(@TempDir Path temp) throws Exception {
 		File nonDirectory = temp.resolve("non-directory").toFile();
 		nonDirectory.createNewFile();
 
 		String lastDirectoryPath = nonDirectory.getAbsolutePath();
 		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirectoryPath);
 
-		assertThat(cut.get(prefs)).isNotPresent();
+		assertThat(cut.get(prefs)).isNull();
 	}
 
 	@Test
-	void get_should_yield_present_optional_if_last_directory_is_a_directory(@TempDir Path temp) throws Exception {
+	void get_should_yield_last_directory_from_preferences(@TempDir Path temp) throws Exception {
 		File lastDirectory = temp.resolve("directory").toFile();
 		lastDirectory.mkdir();
 
 		String lastDirectoryPath = lastDirectory.getAbsolutePath();
 		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirectoryPath);
 
-		assertThat(cut.get(prefs)).hasValue(new File(lastDirectoryPath));
+		assertThat(cut.get(prefs)).isEqualTo(new File(lastDirectoryPath));
 	}
 
 }
