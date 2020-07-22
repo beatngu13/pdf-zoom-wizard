@@ -16,9 +16,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Fixed
 
-- Invalid last directory (e.g. if deleted) preventing the file/directory chooser from opening (see [#126](https://github.com/beatngu13/pdf-zoom-wizard/issues/126)).
-
 ### Security
+
+## [0.5.1] - 2020-07-23
+
+### Fixed
+
+- Invalid last directory (e.g. if deleted) preventing the file/directory chooser from opening (see [#126](https://github.com/beatngu13/pdf-zoom-wizard/issues/126)).
 
 ## [0.5.0] - 2020-03-30
 
