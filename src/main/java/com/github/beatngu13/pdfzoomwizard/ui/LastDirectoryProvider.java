@@ -2,7 +2,6 @@ package com.github.beatngu13.pdfzoomwizard.ui;
 
 import java.io.File;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.prefs.Preferences;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -17,16 +16,23 @@ class LastDirectoryProvider {
 	 */
 	static final String LAST_DIRECTORY_PREFERENCES_KEY = "last_directory";
 
-	public Optional<File> get() {
+	public File get() {
 		Preferences prefs = Preferences.userNodeForPackage(LastDirectoryProvider.class);
 		return get(prefs);
 	}
 
 	@VisibleForTesting
-	Optional<File> get(Preferences prefs) {
+	File get(Preferences prefs) {
 		String lastDirPath = prefs.get(LAST_DIRECTORY_PREFERENCES_KEY, null);
 		log.debug("Get last directory: {}", lastDirPath);
-		return Optional.ofNullable(lastDirPath).map(File::new);
+		if (lastDirPath == null) {
+			return null;
+		}
+		File lastDir = new File(lastDirPath);
+		if (!lastDir.isDirectory()) {
+			return null;
+		}
+		return lastDir;
 	}
 
 	public void set(File lastDir) {
@@ -43,12 +49,9 @@ class LastDirectoryProvider {
 	}
 
 	private static void validate(File lastDir) {
-		Objects.requireNonNull(lastDir, "Last directory cannot be null.");
-		if (!lastDir.exists()) {
-			throw new IllegalArgumentException("Last directory must be an existing file.");
-		}
+		Objects.requireNonNull(lastDir, "Last directory must not be null.");
 		if (!lastDir.isDirectory()) {
-			throw new IllegalArgumentException("Last directory must be an actual directory.");
+			throw new IllegalArgumentException("Last directory must be an existing directory.");
 		}
 	}
 
