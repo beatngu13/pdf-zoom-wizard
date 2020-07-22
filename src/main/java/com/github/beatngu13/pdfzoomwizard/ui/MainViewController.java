@@ -111,10 +111,6 @@ public class MainViewController {
 
 		directoryChooser.setTitle("Choose a directory");
 		fileChooser.setTitle("Choose a file");
-		lastDirProvider.get().ifPresent(lastDir -> {
-			directoryChooser.setInitialDirectory(lastDir);
-			fileChooser.setInitialDirectory(lastDir);
-		});
 
 		modeToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 			multipleMode = !rootLabel.getText().equals("Directory:");
@@ -132,6 +128,10 @@ public class MainViewController {
 		});
 
 		browseButton.setOnAction(event -> {
+			File lastDir = lastDirProvider.get().orElse(null);
+			directoryChooser.setInitialDirectory(lastDir);
+			fileChooser.setInitialDirectory(lastDir);
+
 			Window window = browseButton.getScene().getWindow();
 			root = multipleMode ? directoryChooser.showDialog(window) : fileChooser.showOpenDialog(window);
 
