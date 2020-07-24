@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>kernel</artifactId>
-			<version>7.1.11</version>
+			<version>7.1.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
