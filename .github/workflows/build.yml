@@ -14,11 +14,9 @@ jobs:
     steps:
     - name: Check out repo
       uses: actions/checkout@v2
-
-      # fetch unshallow to enable blame for Sonar
-    - name: Fetch unshallow
-      run: |
-        git fetch --prune --unshallow
+      with:
+        # fetch unshallow to enable blame for Sonar
+        fetch-depth: 0
 
     - name: Set up JDK 8 with JavaFX
       uses: actions/setup-java@v1
