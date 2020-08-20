@@ -1,3 +1,5 @@
+name: Release build
+
 on:
   push:
    tags: v*
@@ -6,7 +8,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  build:
+  release:
 
     runs-on: ubuntu-latest
 
