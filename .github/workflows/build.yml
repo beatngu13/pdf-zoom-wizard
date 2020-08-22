@@ -42,9 +42,21 @@ jobs:
         run: |
           ./install-deps.sh
 
-      - name: Build with Maven
+      - name: Run Maven compile
         run: >
-          mvn --batch-mode verify sonar:sonar -Pcoverage
+          mvn test-compile --batch-mode
+
+      - name: Run Maven test
+        run: >
+          mvn test --batch-mode
+
+      - name: Run Maven integration test
+        run: >
+          mvn failsafe:integration-test --batch-mode
+
+      - name: Run Sonar
+        run: >
+          mvn sonar:sonar --batch-mode --activate-profiles coverage
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.organization=beatngu13-github
           -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard
