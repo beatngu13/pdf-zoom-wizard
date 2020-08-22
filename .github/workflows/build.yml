@@ -12,39 +12,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out repo
-      uses: actions/checkout@v2
-      with:
-        # fetch unshallow to enable blame for Sonar
-        fetch-depth: 0
+      - name: Check out repo
+        uses: actions/checkout@v2
+        with:
+          # fetch unshallow to enable blame for Sonar
+          fetch-depth: 0
 
-    - name: Set up JDK 8 with JavaFX
-      uses: actions/setup-java@v1
-      with:
-        java-version: 8
-        java-package: jdk+fx
+      - name: Set up JDK 8 with JavaFX
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+          java-package: jdk+fx
 
-    - name: Cache Maven
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository/
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+      - name: Cache Maven
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-    - name: Cache Sonar
-      uses: actions/cache@v2
-      with:
-        path: ~/.sonar/cache/
-        key: ${{ runner.os }}-sonar
+      - name: Cache Sonar
+        uses: actions/cache@v2
+        with:
+          path: ~/.sonar/cache/
+          key: ${{ runner.os }}-sonar
 
-    - name: Install dependencies
-      run: |
-        ./install-deps.sh
+      - name: Install dependencies
+        run: |
+          ./install-deps.sh
 
-    - name: Build with Maven
-      run: >
-        mvn --batch-mode verify sonar:sonar -Pcoverage
-        -Dsonar.host.url=https://sonarcloud.io
-        -Dsonar.organization=beatngu13-github
-        -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard
+      - name: Build with Maven
+        run: >
+          mvn --batch-mode verify sonar:sonar -Pcoverage
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.organization=beatngu13-github
+          -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard
