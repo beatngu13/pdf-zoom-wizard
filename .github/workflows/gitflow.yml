@@ -4,9 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       gitFlowGoal:
-        description: 'Goal (release, hotfix-start or hotfix-finish)'
+        description: 'Goal (release-start, release-finish, hotfix-start or hotfix-finish)'
         required: true
-        default: 'release'
 
 jobs:
   build:
