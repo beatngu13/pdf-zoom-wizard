@@ -26,37 +26,32 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
 
       - name: Cache Sonar
         uses: actions/cache@v2
         with:
           path: ~/.sonar/cache/
-          key: ${{ runner.os }}-sonar
+          key: ${{ runner.os }}-sonar-${{ secrets.CACHE_VERSION }}
 
       - name: Install dependencies
         run: |
           ./install-deps.sh
 
-      - name: Run Maven compile
+      - name: Compile code
         run: >
-          mvn test-compile --batch-mode
+          mvn test-compile -B
 
-      - name: Run Maven test
+      - name: Run tests
         run: >
-          mvn test --batch-mode
+          mvn verify -B
 
-      - name: Run Maven integration test
-        run: >
-          mvn failsafe:integration-test --batch-mode
-
-      - name: Run Sonar
+      - name: Analyze code
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
-          mvn sonar:sonar --batch-mode --activate-profiles coverage
+          mvn sonar:sonar -B
+          -Pcoverage
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.organization=beatngu13-github
           -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard
