@@ -42,21 +42,22 @@ jobs:
 
       - name: Run Maven compile
         run: >
-          mvn test-compile --batch-mode
+          mvn test-compile -B
 
       - name: Run Maven test
         run: >
-          mvn test --batch-mode
+          mvn test -B
 
       - name: Run Maven integration test
         run: >
-          mvn failsafe:integration-test --batch-mode
+          mvn failsafe:integration-test -B
 
       - name: Run Sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
-          mvn sonar:sonar --batch-mode --activate-profiles coverage
+          mvn sonar:sonar -B
+          -Pcoverage
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.organization=beatngu13-github
           -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard

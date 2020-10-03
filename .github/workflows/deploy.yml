@@ -36,7 +36,7 @@ jobs:
       - name: Package with Maven
         id: maven_package
         run: |
-          mvn --batch-mode package -DskipTests
+          mvn package -B -DskipTests
           cd ./target/
           echo "::set-output name=jar_name::$(echo pdfzoomwizard-*.jar)"
 
