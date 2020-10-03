@@ -40,19 +40,15 @@ jobs:
         run: |
           ./install-deps.sh
 
-      - name: Run Maven compile
+      - name: Compile code
         run: >
           mvn test-compile -B
 
-      - name: Run Maven test
+      - name: Run tests
         run: >
-          mvn test -B
+          mvn verify -B
 
-      - name: Run Maven integration test
-        run: >
-          mvn failsafe:integration-test -B
-
-      - name: Run Sonar
+      - name: Analyze code
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
