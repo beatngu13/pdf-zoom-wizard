@@ -1,9 +1,8 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEnum;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEnum;
 
 @Getter
 @RequiredArgsConstructor

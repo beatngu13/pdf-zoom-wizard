@@ -1,7 +1,7 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import java.io.File;
-
+import javafx.concurrent.Task;
+import lombok.extern.slf4j.Slf4j;
 import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
@@ -11,17 +11,15 @@ import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
 
-import javafx.concurrent.Task;
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
 
 /**
  * Applies {@link #zoom} to the bookmarks of a single PDF file or a whole
  * directory (subdirectories included). This implementation is based on the
  * <a href="http://www.stefanochizzolini.it/en/projects/clown/">PDF Clown</a>
  * library by Stefano Chizzolini.
- * 
- * @author Daniel Kraus
  *
+ * @author Daniel Kraus
  */
 @Slf4j
 public class Wizard extends Task<Void> {
@@ -64,7 +62,7 @@ public class Wizard extends Task<Void> {
 
 	/**
 	 * Creates a new <code>Wizard</code> instance.
-	 * 
+	 *
 	 * @param root          Sets {@link #root}.
 	 * @param filenameInfix Sets {@link #filenameInfix}.
 	 * @param zoom          Sets {@link #zoom}.
