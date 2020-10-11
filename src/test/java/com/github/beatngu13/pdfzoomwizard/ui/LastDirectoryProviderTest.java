@@ -1,5 +1,13 @@
 package com.github.beatngu13.pdfzoomwizard.ui;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.util.prefs.Preferences;
+
 import static com.github.beatngu13.pdfzoomwizard.ui.LastDirectoryProvider.LAST_DIRECTORY_PREFERENCES_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -8,14 +16,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.util.prefs.Preferences;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 class LastDirectoryProviderTest {
 

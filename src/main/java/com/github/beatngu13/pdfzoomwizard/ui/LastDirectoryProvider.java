@@ -1,12 +1,11 @@
 package com.github.beatngu13.pdfzoomwizard.ui;
 
+import com.google.common.annotations.VisibleForTesting;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.util.Objects;
 import java.util.prefs.Preferences;
-
-import com.google.common.annotations.VisibleForTesting;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class LastDirectoryProvider {

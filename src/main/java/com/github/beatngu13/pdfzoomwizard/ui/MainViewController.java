@@ -1,10 +1,7 @@
 package com.github.beatngu13.pdfzoomwizard.ui;
 
-import java.io.File;
-
 import com.github.beatngu13.pdfzoomwizard.core.Wizard;
 import com.github.beatngu13.pdfzoomwizard.core.Zoom;
-
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -23,11 +20,12 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
+
 /**
  * Provides a JavaFX-based Wizard UI.
- * 
- * @author Daniel Kraus
  *
+ * @author Daniel Kraus
  */
 @Slf4j
 public class MainViewController {
@@ -160,7 +158,7 @@ public class MainViewController {
 
 	/**
 	 * Validates the given UI input.
-	 * 
+	 *
 	 * @return <code>true</code> if everything is valid, else <code>false</code>.
 	 */
 	private boolean validateInput() {
@@ -189,7 +187,7 @@ public class MainViewController {
 
 	/**
 	 * Handles invalid UI input.
-	 * 
+	 *
 	 * @param msg Warning message to log and show.
 	 * @return Always <code>false</code>.
 	 */
@@ -201,7 +199,7 @@ public class MainViewController {
 
 	/**
 	 * Creates the message for the confirmation dialog.
-	 * 
+	 *
 	 * @return Confirmation message for directory/file to be overwritten/copied.
 	 */
 	private String getConfirmationMessage() {

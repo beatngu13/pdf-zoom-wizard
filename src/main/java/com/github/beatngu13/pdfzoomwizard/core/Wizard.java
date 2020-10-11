@@ -1,7 +1,7 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import java.io.File;
-
+import javafx.concurrent.Task;
+import lombok.extern.slf4j.Slf4j;
 import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
@@ -11,17 +11,15 @@ import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
 
-import javafx.concurrent.Task;
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
 
 /**
  * Applies {@link #zoom} to the bookmarks of a single PDF file or a whole
  * directory (subdirectories included). This implementation is based on the
  * <a href="http://www.stefanochizzolini.it/en/projects/clown/">PDF Clown</a>
  * library by Stefano Chizzolini.
- * 
- * @author Daniel Kraus
  *
+ * @author Daniel Kraus
  */
 @Slf4j
 public class Wizard extends Task<Void> {
@@ -64,7 +62,7 @@ public class Wizard extends Task<Void> {
 
 	/**
 	 * Creates a new <code>Wizard</code> instance.
-	 * 
+	 *
 	 * @param root          Sets {@link #root}.
 	 * @param filenameInfix Sets {@link #filenameInfix}.
 	 * @param zoom          Sets {@link #zoom}.
@@ -87,9 +85,8 @@ public class Wizard extends Task<Void> {
 	}
 
 	/**
-	 * Modifies each PDF file which is found by depth-first search and calls
-	 * {@link #modifyBookmarks(Bookmarks)} on it.
-	 * 
+	 * Modifies each PDF file which is found by depth-first search via {@link #modifyBookmarks(Bookmarks)}.
+	 *
 	 * @param file Directory or file to work with.
 	 */
 	public void modifyFiles(File file) {
@@ -130,9 +127,8 @@ public class Wizard extends Task<Void> {
 	}
 
 	/**
-	 * Modifies each bookmark which is found by depth-first seach and applies
-	 * {@link #mode} and {@link #zoom} to it.
-	 * 
+	 * Modifies each bookmark which is found by depth-first search via {{@link #modifyDestination(Bookmark, Destination)}}.
+	 *
 	 * @param bookmarks Collection of bookmarks to modify.
 	 */
 	void modifyBookmarks(Bookmarks bookmarks) {
@@ -164,9 +160,8 @@ public class Wizard extends Task<Void> {
 	}
 
 	/**
-	 * Modifies the given destination and applies {@link #mode} and {@link #zoom} to
-	 * it.
-	 * 
+	 * Modifies the given destination by applying {@link #zoom}.
+	 *
 	 * @param bookmark    Bookmark the given destination belongs to.
 	 * @param destination Destination to modify.
 	 */

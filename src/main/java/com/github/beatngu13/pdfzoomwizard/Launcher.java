@@ -8,9 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Launches the Wizard.
- * 
- * @author Daniel Kraus
  *
+ * @author Daniel Kraus
  */
 @Slf4j
 public class Launcher extends Application {
