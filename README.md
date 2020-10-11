@@ -11,19 +11,18 @@ A new and extended implementation of the [PDF Bookmark Wizard](https://bitbucket
 The road map below shows the current project status from a technical point of view. Have a look at the [changelog](https://github.com/beatngu13/pdf-zoom-wizard/blob/master/CHANGELOG.md) for more details on past changes.
 
 - [x] Convert to Maven project
-- [x] Enhance build process with Travis CI
+- [x] Enhance build process with GitHub Actions
 - [x] Add changelog and Semantic Versioning
 - [x] Tests (!)
+- [x] Add ControlsFX for (modal) dialogs
+- [x] Offer dynamically resizing GUI content
 - [x] Improve logging using SLF4J and Logback
-- [ ] Refactor entire project
+- [x] Refactor entire project
+- [ ] Create self-contained app with OpenJDK 14+
 - [ ] Extract Wizard interface for new implementation (e.g. with [iText](https://itextpdf.com/) or [PDFBox](https://pdfbox.apache.org/))
 - [ ] Implement zoom settings for links
 - [ ] Implement command-line interface (CLI)
 - [ ] Add integration tests for GUI and CLI
-- [ ] Create self-contained app
-- [ ] Migrate to current OpenJDK
-- [x] Add ControlsFX for (modal) dialogs
-- [x] Offer dynamically resizing GUI content
 
 ## Donation
 
