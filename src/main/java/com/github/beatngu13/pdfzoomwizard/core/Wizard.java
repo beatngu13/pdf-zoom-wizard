@@ -25,6 +25,19 @@ import java.io.File;
 public class Wizard extends Task<Void> {
 
 	/**
+	 * The {@link Task#updateMessage(String)} when {@link Task#running()}.
+	 */
+	public static final String PROCESSING_MESSAGE = "Processing";
+	/**
+	 * The {@link Task#updateMessage(String)} when {@link Task#succeeded()}.
+	 */
+	public static final String SUCCEEDED_MESSAGE = "Succeeded";
+	/**
+	 * The {@link Task#updateMessage(String)} when {@link Task#failed()}.
+	 */
+	public static final String FAILED_MESSAGE = "Failed";
+
+	/**
 	 * File extension for PDFs.
 	 */
 	private static final String PDF_FILE_EXTENSION = ".pdf";
@@ -176,19 +189,19 @@ public class Wizard extends Task<Void> {
 	@Override
 	protected void running() {
 		super.running();
-		updateMessage("Processing");
+		updateMessage(PROCESSING_MESSAGE);
 	}
 
 	@Override
 	protected void succeeded() {
 		super.succeeded();
-		updateMessage("Succeeded");
+		updateMessage(SUCCEEDED_MESSAGE);
 	}
 
 	@Override
 	protected void failed() {
 		super.failed();
-		updateMessage("Failed");
+		updateMessage(FAILED_MESSAGE);
 	}
 
 }

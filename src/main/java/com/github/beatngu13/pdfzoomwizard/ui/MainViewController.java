@@ -103,8 +103,8 @@ public class MainViewController {
 	 * Initializes FXML and bindings.
 	 */
 	public void initialize() {
-		runButton.disableProperty()
-				.bind(rootTextField.textProperty().isEmpty().or(infoText.textProperty().isEqualTo("Processing")));
+		runButton.disableProperty().bind(rootTextField.textProperty().isEmpty().or(
+				infoText.textProperty().isEqualTo(Wizard.PROCESSING_MESSAGE)));
 		copyTextField.disableProperty().bind(copyCheckBox.selectedProperty().not());
 
 		directoryChooser.setTitle("Choose a directory");
