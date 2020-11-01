@@ -40,12 +40,11 @@
 
 	<Label text="Filename infix:" GridPane.rowIndex="2"
 		   GridPane.columnIndex="0"/>
-	<TextField fx:id="copyTextField" disable="true"
-			   promptText="Filename&lt;infix&gt;.pdf" GridPane.rowIndex="2"
+	<TextField fx:id="copyTextField" promptText="Filename&lt;infix&gt;.pdf" GridPane.rowIndex="2"
 			   GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" prefWidth="350.0"/>
 	<HBox spacing="4.0" alignment="CENTER" GridPane.rowIndex="2"
 		  GridPane.columnIndex="2">
-		<CheckBox fx:id="copyCheckBox"/>
+		<CheckBox fx:id="copyCheckBox" selected="true"/>
 		<Label text="Copy"/>
 	</HBox>
 
