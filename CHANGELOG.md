@@ -18,6 +18,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Security
 
+## [0.6.0] - 2020-11-01
+
+### Changed
+
+- Copy PDF files as default (see [#157](https://github.com/beatngu13/pdf-zoom-wizard/issues/157)).
+
 ## [0.5.1] - 2020-07-23
 
 ### Fixed

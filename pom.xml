@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.beatngu13</groupId>
 	<artifactId>pdfzoomwizard</artifactId>
-	<version>0.6.0-SNAPSHOT</version>
+	<version>0.6.0</version>
 
 	<name>PDF Zoom Wizard</name>
 
@@ -53,14 +54,14 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.12</version>
+			<version>1.18.16</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>29.0-jre</version>
+			<version>30.0-jre</version>
 		</dependency>
 
 		<!-- test -->
@@ -68,35 +69,35 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.6.2</version>
+			<version>5.7.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.16.1</version>
+			<version>3.18.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>3.5.2</version>
+			<version>3.5.15</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.approvaltests</groupId>
 			<artifactId>approvaltests</artifactId>
-			<version>9.2.0</version>
+			<version>9.3.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>kernel</artifactId>
-			<version>7.1.12</version>
+			<version>7.1.13</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -172,7 +173,8 @@
 						<configuration>
 							<createDependencyReducedPom>false</createDependencyReducedPom>
 							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								<transformer
+										implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
 										<Main-Class>com.github.beatngu13.pdfzoomwizard.Launcher</Main-Class>
 										<Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
@@ -187,12 +189,17 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.3</version>
+				<groupId>com.amashchenko.maven.plugin</groupId>
+				<artifactId>gitflow-maven-plugin</artifactId>
+				<version>1.14.0</version>
 				<configuration>
-					<goals>install</goals>
-					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
+					<keepBranch>false</keepBranch>
+					<pushRemote>true</pushRemote>
+					<versionDigitToIncrement>1</versionDigitToIncrement>
+					<gitFlowConfig>
+						<versionTagPrefix>v</versionTagPrefix>
+					</gitFlowConfig>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -206,7 +213,7 @@
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>0.8.5</version>
+						<version>0.8.6</version>
 						<executions>
 							<execution>
 								<id>prepare-agent</id>

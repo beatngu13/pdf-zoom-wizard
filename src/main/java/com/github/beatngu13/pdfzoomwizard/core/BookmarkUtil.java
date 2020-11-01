@@ -1,9 +1,8 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import org.pdfclown.documents.interaction.navigation.document.Bookmark;
-
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 
 @Slf4j
 @UtilityClass

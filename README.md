@@ -4,28 +4,25 @@
 
 # PDF Zoom Wizard
 
-A new and extended implementation of the [PDF Bookmark Wizard](https://bitbucket.org/beatngu13/pdfbookmarkwizard/) for bookmarks *and* links (work in progress).
+A new and extended implementation of the [PDF Bookmark Wizard](https://bitbucket.org/beatngu13/pdfbookmarkwizard/) for bookmarks *and* links (work in progress) zoom settings. Check out the [wiki](https://github.com/beatngu13/pdf-zoom-wizard/wiki/) to see how to get started.
 
-The [road map](#technical-road-map) below shows the current project status from a technical point of view. Release `v0.1.0` is a simple GitHub port of the former PDF Bookmark Wizard (`v0.0.4.1`) that offers the same functionality. Have a look at the [changelog](https://github.com/beatngu13/pdf-zoom-wizard/blob/master/CHANGELOG.md) for the changes in subsequent releases.
+## (Technical) Road Map
 
-To see how to get started, check out the [wiki](https://github.com/beatngu13/pdf-zoom-wizard/wiki/).
-
-## Technical Road Map
+The road map below shows the current project status from a technical point of view. Have a look at the [changelog](https://github.com/beatngu13/pdf-zoom-wizard/blob/master/CHANGELOG.md) for more details on past changes.
 
 - [x] Convert to Maven project
-- [x] Enhance build process with Travis CI
+- [x] Enhance build process with GitHub Actions
 - [x] Add changelog and Semantic Versioning
 - [x] Tests (!)
+- [x] Add ControlsFX for (modal) dialogs
+- [x] Offer dynamically resizing GUI content
 - [x] Improve logging using SLF4J and Logback
-- [ ] Refactor entire project
+- [x] Refactor entire project
+- [ ] Create self-contained app with OpenJDK 14+
 - [ ] Extract Wizard interface for new implementation (e.g. with [iText](https://itextpdf.com/) or [PDFBox](https://pdfbox.apache.org/))
 - [ ] Implement zoom settings for links
 - [ ] Implement command-line interface (CLI)
 - [ ] Add integration tests for GUI and CLI
-- [ ] Create self-contained app
-- [ ] Migrate to current OpenJDK
-- [x] Add ControlsFX for (modal) dialogs
-- [x] Offer dynamically resizing GUI content
 
 ## Donation
 
