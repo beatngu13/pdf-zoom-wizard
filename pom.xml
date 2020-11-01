@@ -193,6 +193,9 @@
 				<artifactId>gitflow-maven-plugin</artifactId>
 				<version>1.14.0</version>
 				<configuration>
+					<commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
+					<keepBranch>false</keepBranch>
+					<pushRemote>true</pushRemote>
 					<versionDigitToIncrement>1</versionDigitToIncrement>
 					<gitFlowConfig>
 						<versionTagPrefix>v</versionTagPrefix>
