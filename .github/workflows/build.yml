@@ -41,7 +41,7 @@ jobs:
 
       - name: Run tests
         run: >
-          mvn verify -B
+          mvn verify -B -Pcoverage
 
       # required by Sonar
       - name: Set up JDK 11
@@ -55,7 +55,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
           mvn sonar:sonar -B
-          -Pcoverage
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.organization=beatngu13-github
           -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard
