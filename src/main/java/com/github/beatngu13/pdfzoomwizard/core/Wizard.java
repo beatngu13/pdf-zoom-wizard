@@ -1,5 +1,6 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
+import com.google.common.annotations.VisibleForTesting;
 import javafx.concurrent.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.pdfclown.documents.Document;
@@ -144,6 +145,7 @@ public class Wizard extends Task<Void> {
 	 *
 	 * @param bookmarks Collection of bookmarks to modify.
 	 */
+	@VisibleForTesting
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
 			Bookmarks children = bookmark.getBookmarks();
