@@ -1,13 +1,10 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
 import org.pdfclown.objects.PdfObjectWrapper;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -35,14 +32,6 @@ class WizardTest {
 		when(bookmarks.iterator()).thenReturn(iter);
 
 		assertThatCode(() -> cut.modifyBookmarks(bookmarks)).doesNotThrowAnyException();
-	}
-
-	@Test
-	void non_pdfs_shouldnt_crash_execution(@TempDir Path temp) throws Exception {
-		File nonPdf = temp.resolve("foo.bar").toFile();
-		nonPdf.createNewFile();
-		Wizard cut = new Wizard(nonPdf, null, Zoom.ACTUAL_SIZE);
-		assertThatCode(cut::call).doesNotThrowAnyException();
 	}
 
 	@SuppressWarnings("unchecked")
