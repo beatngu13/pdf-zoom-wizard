@@ -6,9 +6,12 @@ import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.navigation.PdfDestination;
 import org.approvaltests.Approvals;
+import org.approvaltests.namer.NamedEnvironment;
+import org.approvaltests.namer.NamerFactory;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -30,35 +33,15 @@ class WizardIT {
 		Files.copy(samplePdf, tempSamplePdf.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	}
 
-	// ParameterizedTest currently not supported by ApprovalTests (see
-	// https://github.com/approvals/ApprovalTests.Java/issues/36/).
-
-	@Test
-	void actual_size_should_be_applied_properly() throws Exception {
-		test(Zoom.ACTUAL_SIZE);
+	@ParameterizedTest
+	@EnumSource(Zoom.class)
+	void zoom_should_be_applied_properly(Zoom zoom) throws Exception {
+		try (NamedEnvironment env = NamerFactory.withParameters(zoom)) {
+			verify(zoom);
+		}
 	}
 
-	@Test
-	void fit_page_should_be_applied_properly() throws Exception {
-		test(Zoom.FIT_PAGE);
-	}
-
-	@Test
-	void fit_visible_should_be_applied_properly() throws Exception {
-		test(Zoom.FIT_VISIBLE);
-	}
-
-	@Test
-	void fit_width_should_be_applied_properly() throws Exception {
-		test(Zoom.FIT_WIDTH);
-	}
-
-	@Test
-	void inherit_zoom_should_be_applied_properly() throws Exception {
-		test(Zoom.INHERIT_ZOOM);
-	}
-
-	void test(Zoom zoom) throws Exception {
+	void verify(Zoom zoom) throws Exception {
 		new Wizard(tempSamplePdf, null, zoom).call();
 		List<PdfObject> pdfObjects = getAllBookmarks(tempSamplePdf).stream() //
 				.map(PdfOutline::getDestination) //
