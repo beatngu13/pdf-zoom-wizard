@@ -8,10 +8,10 @@ import org.pdfclown.documents.interaction.navigation.document.Destination.ModeEn
 @RequiredArgsConstructor
 public enum Zoom {
 
-	ACTUAL_SIZE(1.0, ModeEnum.XYZ), //
-	FIT_PAGE(null, ModeEnum.Fit), //
-	FIT_VISIBLE(0.0, ModeEnum.FitBoundingBoxHorizontal), //
-	FIT_WIDTH(null, ModeEnum.FitHorizontal), //
+	ACTUAL_SIZE(1.0, ModeEnum.XYZ),
+	FIT_PAGE(null, ModeEnum.Fit),
+	FIT_VISIBLE(0.0, ModeEnum.FitBoundingBoxHorizontal),
+	FIT_WIDTH(null, ModeEnum.FitHorizontal),
 	INHERIT_ZOOM(null, ModeEnum.XYZ);
 
 	private final Double zoom;

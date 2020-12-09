@@ -17,7 +17,7 @@ class WizardTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	void exception_in_get_target_shouldnt_crash_execution() throws Exception {
+	void exception_in_get_target_shouldnt_crash_execution() {
 		Wizard cut = new Wizard(null, null, Zoom.ACTUAL_SIZE);
 
 		Bookmark bookmark = mock(Bookmark.class);
@@ -36,7 +36,7 @@ class WizardTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	void closed_bookmarks_should_be_modified() throws Exception {
+	void closed_bookmarks_should_be_modified() {
 		Wizard cut = spy(new Wizard(null, null, Zoom.ACTUAL_SIZE));
 
 		Iterator<Bookmark> childrenIter = mock(Iterator.class);

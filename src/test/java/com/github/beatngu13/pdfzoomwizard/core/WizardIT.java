@@ -1,10 +1,7 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
+import com.github.beatngu13.pdfzoomwizard.TestUtil;
 import com.itextpdf.kernel.pdf.PdfObject;
-import com.itextpdf.kernel.pdf.PdfOutline;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.navigation.PdfDestination;
 import org.approvaltests.Approvals;
 import org.approvaltests.namer.NamedEnvironment;
 import org.approvaltests.namer.NamerFactory;
@@ -20,65 +17,33 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-@Nested
 class WizardIT {
 
 	@Nested
 	class WithPdf {
 
-		File tempSamplePdf;
+		File pdf;
 
 		@BeforeEach
 		void setUp(@TempDir Path temp) throws Exception {
-			Path samplePdf = Paths.get("src/test/resources/sample.pdf");
-			tempSamplePdf = temp.resolve("temp-sample.pdf").toFile();
-			Files.copy(samplePdf, tempSamplePdf.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			Path original = Paths.get("src/test/resources/sample.pdf");
+			pdf = temp.resolve("temp.pdf").toFile();
+			Files.copy(original, pdf.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 
 		@ParameterizedTest
 		@EnumSource(Zoom.class)
-		void zoom_should_be_applied_properly(Zoom zoom) throws Exception {
-			try (NamedEnvironment env = NamerFactory.withParameters(zoom)) {
-				verify(zoom);
+		void zoom_should_be_applied_properly(Zoom zoom) {
+			String normalized = TestUtil.toStringNormalized(zoom);
+			try (NamedEnvironment env = NamerFactory.withParameters(normalized)) {
+				new Wizard(pdf, null, zoom).call();
+				List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(pdf);
+				Approvals.verify(pdfObjects);
 			}
-		}
-
-		void verify(Zoom zoom) throws Exception {
-			new Wizard(tempSamplePdf, null, zoom).call();
-			List<PdfObject> pdfObjects = getAllBookmarks(tempSamplePdf).stream() //
-					.map(PdfOutline::getDestination) //
-					.map(PdfDestination::getPdfObject) //
-					.collect(Collectors.toList());
-			Approvals.verify(pdfObjects);
-		}
-
-		List<PdfOutline> getAllBookmarks(File pdf) throws Exception {
-			PdfDocument doc = new PdfDocument(new PdfReader(tempSamplePdf));
-			List<PdfOutline> outlines = doc.getOutlines(true).getAllChildren();
-			List<PdfOutline> allBookmarks = getAllBookmarks(outlines);
-			doc.close();
-			return allBookmarks;
-		}
-
-		List<PdfOutline> getAllBookmarks(List<PdfOutline> outlines) {
-			List<PdfOutline> allBookmarks = new ArrayList<>();
-
-			for (PdfOutline bookmark : outlines) {
-				allBookmarks.add(bookmark);
-
-				List<PdfOutline> children = bookmark.getAllChildren();
-				if (!children.isEmpty()) {
-					allBookmarks.addAll(getAllBookmarks(children));
-				}
-			}
-
-			return allBookmarks;
 		}
 
 	}

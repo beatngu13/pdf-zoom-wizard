@@ -88,7 +88,7 @@ public class Wizard extends Task<Void> {
 	}
 
 	@Override
-	protected Void call() throws Exception {
+	protected Void call() {
 		log.info(
 				"Start working on '{}'. Bookmark(s) will be set to zoom '{}'. PDF document(s) will be saved with serialization mode '{}'.",
 				root.getAbsolutePath(), zoom, SERIALIZATION_MODE);
