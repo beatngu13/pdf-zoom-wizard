@@ -1,5 +1,6 @@
 package com.github.beatngu13.pdfzoomwizard;
 
+import com.github.beatngu13.pdfzoomwizard.core.Zoom;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfReader;
@@ -11,6 +12,16 @@ import java.util.List;
 
 @UtilityClass
 public class TestUtil {
+
+	public String toStringNormalized(Zoom zoom) {
+		// Zoom name
+		String normalized = zoom.toString();
+		// zoom name
+		normalized = normalized.toLowerCase();
+		// zoom_name
+		normalized = normalized.replaceAll(" ", "_");
+		return normalized;
+	}
 
 	public static List<PdfOutline> getAllBookmarks(File pdf) throws Exception {
 		try (PdfDocument doc = new PdfDocument(new PdfReader(pdf))) {

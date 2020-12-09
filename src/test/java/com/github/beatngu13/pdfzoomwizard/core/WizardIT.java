@@ -41,7 +41,8 @@ class WizardIT {
 		@ParameterizedTest
 		@EnumSource(Zoom.class)
 		void zoom_should_be_applied_properly(Zoom zoom) throws Exception {
-			try (NamedEnvironment env = NamerFactory.withParameters(zoom)) {
+			String normalized = TestUtil.toStringNormalized(zoom);
+			try (NamedEnvironment env = NamerFactory.withParameters(normalized)) {
 				new Wizard(tempSamplePdf, null, zoom).call();
 				List<PdfObject> pdfObjects = TestUtil.getAllBookmarks(tempSamplePdf).stream() //
 						.map(PdfOutline::getDestination) //
