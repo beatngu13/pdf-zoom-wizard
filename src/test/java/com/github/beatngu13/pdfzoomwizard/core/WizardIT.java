@@ -26,13 +26,13 @@ class WizardIT {
 	@Nested
 	class WithPdf {
 
-		File tempSamplePdf;
+		File pdf;
 
 		@BeforeEach
 		void setUp(@TempDir Path temp) throws Exception {
-			Path samplePdf = Paths.get("src/test/resources/sample.pdf");
-			tempSamplePdf = temp.resolve("temp-sample.pdf").toFile();
-			Files.copy(samplePdf, tempSamplePdf.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			Path original = Paths.get("src/test/resources/sample.pdf");
+			pdf = temp.resolve("temp.pdf").toFile();
+			Files.copy(original, pdf.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 
 		@ParameterizedTest
@@ -40,8 +40,8 @@ class WizardIT {
 		void zoom_should_be_applied_properly(Zoom zoom) {
 			String normalized = TestUtil.toStringNormalized(zoom);
 			try (NamedEnvironment env = NamerFactory.withParameters(normalized)) {
-				new Wizard(tempSamplePdf, null, zoom).call();
-				List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(tempSamplePdf);
+				new Wizard(pdf, null, zoom).call();
+				List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(pdf);
 				Approvals.verify(pdfObjects);
 			}
 		}
