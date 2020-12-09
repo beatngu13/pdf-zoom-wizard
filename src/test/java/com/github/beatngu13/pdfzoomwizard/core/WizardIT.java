@@ -1,9 +1,8 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
+import com.github.beatngu13.pdfzoomwizard.TestUtil;
 import com.itextpdf.kernel.pdf.PdfObject;
 import com.itextpdf.kernel.pdf.PdfOutline;
-import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.navigation.PdfDestination;
 import org.approvaltests.Approvals;
 import org.approvaltests.namer.NamedEnvironment;
@@ -20,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,40 +42,13 @@ class WizardIT {
 		@EnumSource(Zoom.class)
 		void zoom_should_be_applied_properly(Zoom zoom) throws Exception {
 			try (NamedEnvironment env = NamerFactory.withParameters(zoom)) {
-				verify(zoom);
+				new Wizard(tempSamplePdf, null, zoom).call();
+				List<PdfObject> pdfObjects = TestUtil.getAllBookmarks(tempSamplePdf).stream() //
+						.map(PdfOutline::getDestination) //
+						.map(PdfDestination::getPdfObject) //
+						.collect(Collectors.toList());
+				Approvals.verify(pdfObjects);
 			}
-		}
-
-		void verify(Zoom zoom) throws Exception {
-			new Wizard(tempSamplePdf, null, zoom).call();
-			List<PdfObject> pdfObjects = getAllBookmarks(tempSamplePdf).stream() //
-					.map(PdfOutline::getDestination) //
-					.map(PdfDestination::getPdfObject) //
-					.collect(Collectors.toList());
-			Approvals.verify(pdfObjects);
-		}
-
-		List<PdfOutline> getAllBookmarks(File pdf) throws Exception {
-			PdfDocument doc = new PdfDocument(new PdfReader(tempSamplePdf));
-			List<PdfOutline> outlines = doc.getOutlines(true).getAllChildren();
-			List<PdfOutline> allBookmarks = getAllBookmarks(outlines);
-			doc.close();
-			return allBookmarks;
-		}
-
-		List<PdfOutline> getAllBookmarks(List<PdfOutline> outlines) {
-			List<PdfOutline> allBookmarks = new ArrayList<>();
-
-			for (PdfOutline bookmark : outlines) {
-				allBookmarks.add(bookmark);
-
-				List<PdfOutline> children = bookmark.getAllChildren();
-				if (!children.isEmpty()) {
-					allBookmarks.addAll(getAllBookmarks(children));
-				}
-			}
-
-			return allBookmarks;
 		}
 
 	}
