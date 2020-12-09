@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-@Nested
 class WizardIT {
 
 	@Nested
