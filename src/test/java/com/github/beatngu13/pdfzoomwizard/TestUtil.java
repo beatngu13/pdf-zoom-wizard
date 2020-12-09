@@ -13,11 +13,11 @@ import java.util.List;
 public class TestUtil {
 
 	public static List<PdfOutline> getAllBookmarks(File pdf) throws Exception {
-		PdfDocument doc = new PdfDocument(new PdfReader(pdf));
-		List<PdfOutline> outlines = doc.getOutlines(true).getAllChildren();
-		List<PdfOutline> allBookmarks = getAllBookmarks(outlines);
-		doc.close();
-		return allBookmarks;
+		try (PdfDocument doc = new PdfDocument(new PdfReader(pdf))) {
+			List<PdfOutline> outlines = doc.getOutlines(true).getAllChildren();
+			List<PdfOutline> allBookmarks = getAllBookmarks(outlines);
+			return allBookmarks;
+		}
 	}
 
 	public static List<PdfOutline> getAllBookmarks(List<PdfOutline> outlines) {
