@@ -149,8 +149,8 @@ public class MainViewController {
 				alert.setTitle("Confirmation Dialog");
 				alert.setHeaderText(null);
 				alert.setContentText(getConfirmationMessage());
-				alert.showAndWait() //
-						.filter(response -> response == ButtonType.OK) //
+				alert.showAndWait()
+						.filter(response -> response == ButtonType.OK)
 						.ifPresent(response -> run());
 			}
 		});
