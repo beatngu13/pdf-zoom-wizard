@@ -23,20 +23,20 @@ class LastDirectoryProviderTest {
 	LastDirectoryProvider cut;
 
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		prefs = mock(Preferences.class);
 		cut = new LastDirectoryProvider();
 	}
 
 	@Test
-	void set_should_not_accept_null() throws Exception {
+	void set_should_not_accept_null() {
 		assertThatThrownBy(() -> cut.set(null)) //
 				.isInstanceOf(NullPointerException.class) //
 				.hasMessage("Last directory must not be null.");
 	}
 
 	@Test
-	void set_should_not_accept_non_existing_file() throws Exception {
+	void set_should_not_accept_non_existing_file() {
 		File nonExistingFile = new File("non-existing-file");
 
 		assertThatThrownBy(() -> cut.set(nonExistingFile)) //
@@ -55,7 +55,7 @@ class LastDirectoryProviderTest {
 	}
 
 	@Test
-	void set_should_put_last_directory_in_preferences(@TempDir Path temp) throws Exception {
+	void set_should_put_last_directory_in_preferences(@TempDir Path temp) {
 		File lastDirectory = temp.resolve("directory").toFile();
 		lastDirectory.mkdir();
 
@@ -65,12 +65,12 @@ class LastDirectoryProviderTest {
 	}
 
 	@Test
-	void get_should_yield_null_if_last_directory_is_absent() throws Exception {
+	void get_should_yield_null_if_last_directory_is_absent() {
 		assertThat(cut.get(prefs)).isNull();
 	}
 
 	@Test
-	void get_should_yield_null_if_last_directory_does_not_exist() throws Exception {
+	void get_should_yield_null_if_last_directory_does_not_exist() {
 		String lastDirectoryPath = "non-existing-directory";
 		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirectoryPath);
 
@@ -89,7 +89,7 @@ class LastDirectoryProviderTest {
 	}
 
 	@Test
-	void get_should_yield_last_directory_from_preferences(@TempDir Path temp) throws Exception {
+	void get_should_yield_last_directory_from_preferences(@TempDir Path temp) {
 		File lastDirectory = temp.resolve("directory").toFile();
 		lastDirectory.mkdir();
 
