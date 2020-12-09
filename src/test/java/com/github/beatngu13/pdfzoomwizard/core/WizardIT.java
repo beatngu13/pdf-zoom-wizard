@@ -2,8 +2,6 @@ package com.github.beatngu13.pdfzoomwizard.core;
 
 import com.github.beatngu13.pdfzoomwizard.TestUtil;
 import com.itextpdf.kernel.pdf.PdfObject;
-import com.itextpdf.kernel.pdf.PdfOutline;
-import com.itextpdf.kernel.pdf.navigation.PdfDestination;
 import org.approvaltests.Approvals;
 import org.approvaltests.namer.NamedEnvironment;
 import org.approvaltests.namer.NamerFactory;
@@ -20,7 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -40,14 +37,11 @@ class WizardIT {
 
 		@ParameterizedTest
 		@EnumSource(Zoom.class)
-		void zoom_should_be_applied_properly(Zoom zoom) throws Exception {
+		void zoom_should_be_applied_properly(Zoom zoom) {
 			String normalized = TestUtil.toStringNormalized(zoom);
 			try (NamedEnvironment env = NamerFactory.withParameters(normalized)) {
 				new Wizard(tempSamplePdf, null, zoom).call();
-				List<PdfObject> pdfObjects = TestUtil.getAllBookmarks(tempSamplePdf).stream() //
-						.map(PdfOutline::getDestination) //
-						.map(PdfDestination::getPdfObject) //
-						.collect(Collectors.toList());
+				List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(tempSamplePdf);
 				Approvals.verify(pdfObjects);
 			}
 		}
