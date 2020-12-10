@@ -13,6 +13,10 @@ import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 /**
  * Applies {@link #zoom} to the bookmarks of a single PDF file or a whole
@@ -104,14 +108,10 @@ public class Wizard extends Task<Void> {
 	 * @param file Directory or file to be modified.
 	 */
 	public void modifyFiles(File file) {
-		if (file.isDirectory()) {
-			File[] files = file.listFiles();
-
-			for (File f : files) {
-				modifyFiles(f);
-			}
-		} else {
-			modifyFile(file);
+		try (Stream<Path> tree = Files.walk(file.toPath())) {
+			tree.map(Path::toFile).forEach(this::modifyFile);
+		} catch (IOException e) {
+			log.error("Exception while walking file tree.", e);
 		}
 	}
 
