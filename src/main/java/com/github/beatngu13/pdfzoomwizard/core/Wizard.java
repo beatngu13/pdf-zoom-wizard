@@ -134,18 +134,29 @@ public class Wizard extends Task<Void> {
 			bookmarkCountLocal = 0;
 			Document document = pdf.getDocument();
 			modifyBookmarks(document.getBookmarks());
-
-			if (filenameInfix != null) {
-				File output = new File(
-						file.getAbsolutePath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION));
-				pdf.save(output, SERIALIZATION_MODE);
-			} else {
-				pdf.save(SERIALIZATION_MODE);
-			}
+			savePdf(pdf);
 			fileCount++;
 			log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
 		} catch (Exception e) {
 			log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
+		}
+	}
+
+	/**
+	 * Saves the given PDF. If {@link #filenameInfix} is not null, the PDF will be copied, otherwise overwritten.
+	 *
+	 * @param pdf PDF to be saved.
+	 * @throws IOException If an I/O error occurs.
+	 */
+	private void savePdf(org.pdfclown.files.File pdf) throws IOException {
+		if (filenameInfix != null) {
+			// Copy PDF.
+			String path = pdf.getPath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION);
+			File copy = new File(path);
+			pdf.save(copy, SERIALIZATION_MODE);
+		} else {
+			// Overwrite PDF.
+			pdf.save(SERIALIZATION_MODE);
 		}
 	}
 
