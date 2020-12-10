@@ -99,9 +99,9 @@ public class Wizard extends Task<Void> {
 	}
 
 	/**
-	 * Modifies each PDF file which is found by depth-first search via {@link #modifyBookmarks(Bookmarks)}.
+	 * Modifies each PDF file which is found by depth-first search using {@link #modifyFile(File)}.
 	 *
-	 * @param file Directory or file to work with.
+	 * @param file Directory or file to be modified.
 	 */
 	public void modifyFiles(File file) {
 		if (file.isDirectory()) {
@@ -111,39 +111,48 @@ public class Wizard extends Task<Void> {
 				modifyFiles(f);
 			}
 		} else {
-			String filename = file.getName();
-
-			if (!filename.endsWith(PDF_FILE_EXTENSION)) {
-				log.warn("Skipping '{}'.", filename);
-				return;
-			}
-
-			log.info("Processing '{}'.", filename);
-
-			try (org.pdfclown.files.File pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
-				bookmarkCountLocal = 0;
-				Document document = pdf.getDocument();
-				modifyBookmarks(document.getBookmarks());
-
-				if (filenameInfix != null) {
-					File output = new File(
-							file.getAbsolutePath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION));
-					pdf.save(output, SERIALIZATION_MODE);
-				} else {
-					pdf.save(SERIALIZATION_MODE);
-				}
-				fileCount++;
-				log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
-			} catch (Exception e) {
-				log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
-			}
+			modifyFile(file);
 		}
 	}
 
 	/**
-	 * Modifies each bookmark which is found by depth-first search via {{@link #modifyDestination(Bookmark, Destination)}}.
+	 * Modifies the given file using {@link #modifyBookmarks(Bookmarks)} if it is a PDF, otherwise does nothing.
 	 *
-	 * @param bookmarks Collection of bookmarks to modify.
+	 * @param file File to be modified.
+	 */
+	private void modifyFile(File file) {
+		String filename = file.getName();
+
+		if (!filename.endsWith(PDF_FILE_EXTENSION)) {
+			log.warn("Skipping '{}'.", filename);
+			return;
+		}
+
+		log.info("Processing '{}'.", filename);
+
+		try (org.pdfclown.files.File pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
+			bookmarkCountLocal = 0;
+			Document document = pdf.getDocument();
+			modifyBookmarks(document.getBookmarks());
+
+			if (filenameInfix != null) {
+				File output = new File(
+						file.getAbsolutePath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION));
+				pdf.save(output, SERIALIZATION_MODE);
+			} else {
+				pdf.save(SERIALIZATION_MODE);
+			}
+			fileCount++;
+			log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
+		} catch (Exception e) {
+			log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
+		}
+	}
+
+	/**
+	 * Modifies each bookmark which is found by depth-first search using {@link #modifyBookmark(Bookmark)}.
+	 *
+	 * @param bookmarks Bookmarks to be modified.
 	 */
 	@VisibleForTesting
 	void modifyBookmarks(Bookmarks bookmarks) {
@@ -153,24 +162,32 @@ public class Wizard extends Task<Void> {
 			if (children.size() != 0) {
 				modifyBookmarks(children);
 			}
+			modifyBookmark(bookmark);
+		}
+	}
 
-			// XXX Bookmarks with broken destinations sometimes cause trouble.
-			try {
-				PdfObjectWrapper<?> target = bookmark.getTarget();
+	/**
+	 * Modifies the given bookmark using {@link #modifyDestination(Bookmark, Destination)}.
+	 *
+	 * @param bookmark Bookmark to be modified.
+	 */
+	private void modifyBookmark(Bookmark bookmark) {
+		// XXX Bookmarks with broken destinations sometimes cause trouble.
+		try {
+			PdfObjectWrapper<?> target = bookmark.getTarget();
 
-				if (target instanceof GoToDestination<?>) {
-					Destination destination = ((GoToDestination<?>) target).getDestination();
-					modifyDestination(bookmark, destination);
-				} else if (target instanceof LocalDestination) {
-					Destination destination = (LocalDestination) target;
-					modifyDestination(bookmark, destination);
-				} else {
-					log.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
-							target.getClass());
-				}
-			} catch (Exception e) {
-				log.error("Exception while processing bookmark '{}'.", BookmarkUtil.getTitle(bookmark), e);
+			if (target instanceof GoToDestination<?>) {
+				Destination destination = ((GoToDestination<?>) target).getDestination();
+				modifyDestination(bookmark, destination);
+			} else if (target instanceof LocalDestination) {
+				Destination destination = (LocalDestination) target;
+				modifyDestination(bookmark, destination);
+			} else {
+				log.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
+						target.getClass());
 			}
+		} catch (Exception e) {
+			log.error("Exception while processing bookmark '{}'.", BookmarkUtil.getTitle(bookmark), e);
 		}
 	}
 
