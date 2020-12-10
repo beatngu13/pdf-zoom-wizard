@@ -93,12 +93,11 @@ public class Wizard extends Task<Void> {
 
 	@Override
 	protected Void call() {
-		log.info(
-				"Start working on '{}'. Bookmark(s) will be set to zoom '{}'. PDF document(s) will be saved with serialization mode '{}'.",
-				root.getAbsolutePath(), zoom, SERIALIZATION_MODE);
+		log.info("Start working on '{}'.", root.getAbsolutePath());
+		log.info("Bookmark(s) will be set to zoom '{}'.", zoom);
+		log.info("PDF document(s) will be saved with serialization mode '{}'.", SERIALIZATION_MODE);
 		modifyFiles(root);
 		log.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
-
 		return null;
 	}
 
