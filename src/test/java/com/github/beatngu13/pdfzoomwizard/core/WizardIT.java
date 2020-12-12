@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 class WizardIT {
@@ -26,12 +27,15 @@ class WizardIT {
 	@Nested
 	class WithPdf {
 
+		String pdfPrefix = "temp";
+		String pdfSuffix = ".pdf";
+		String pdfName = pdfPrefix + pdfSuffix;
 		File pdf;
 
 		@BeforeEach
 		void setUp(@TempDir Path temp) throws Exception {
 			Path original = Paths.get("src/test/resources/sample.pdf");
-			pdf = temp.resolve("temp.pdf").toFile();
+			pdf = temp.resolve(pdfName).toFile();
 			Files.copy(original, pdf.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 
@@ -44,6 +48,24 @@ class WizardIT {
 				List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(pdf);
 				Approvals.verify(pdfObjects);
 			}
+		}
+
+		@Test
+		void should_overwrite_pdf_if_infix_is_null() {
+			new Wizard(pdf, null, Zoom.INHERIT_ZOOM).call();
+			assertThat(pdf.getParentFile().listFiles())
+					.extracting(File::getName)
+					.containsExactly(pdfName);
+		}
+
+		@Test
+		void should_copy_pdf_if_infix_is_not_null() {
+			String pdfInfix = "-infix";
+			new Wizard(pdf, pdfInfix, Zoom.INHERIT_ZOOM).call();
+			String pdfCopyName = pdfPrefix + pdfInfix + pdfSuffix;
+			assertThat(pdf.getParentFile().listFiles())
+					.extracting(File::getName)
+					.containsExactlyInAnyOrder(pdfName, pdfCopyName);
 		}
 
 	}
