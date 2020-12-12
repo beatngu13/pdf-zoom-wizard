@@ -13,10 +13,10 @@ jobs:
           # fetch unshallow to enable blame for Sonar
           fetch-depth: 0
 
-      - name: Set up JDK 8 with JavaFX
+      - name: Set up JDK 15 with JavaFX
         uses: actions/setup-java@v1
         with:
-          java-version: 8
+          java-version: 15
           java-package: jdk+fx
 
       - name: Cache Maven

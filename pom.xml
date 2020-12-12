@@ -15,7 +15,8 @@
 		<encoding>UTF-8</encoding>
 		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
-		<java.version>1.8</java.version>
+		<java.version>15</java.version>
+		<javafx.version>15.0.1</javafx.version>
 	</properties>
 
 	<scm>
@@ -39,6 +40,18 @@
 	</repositories>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.pdfclown</groupId>
 			<artifactId>pdfclown</artifactId>
@@ -105,8 +118,18 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<release>${java.version}</release>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-maven-plugin</artifactId>
+				<version>0.0.5</version>
+				<configuration>
+					<mainClass>
+						com.github.beatngu13.pdfzoomwizard/com.github.beatngu13.pdfzoomwizard.Launcher
+					</mainClass>
 				</configuration>
 			</plugin>
 
