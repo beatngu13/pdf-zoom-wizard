@@ -11,9 +11,9 @@ import lombok.experimental.UtilityClass;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @UtilityClass
 public class TestUtil {
@@ -29,35 +29,28 @@ public class TestUtil {
 	}
 
 	public static List<PdfObject> getAllPdfObjects(File pdf) {
-		return getAllBookmarks(pdf).stream()
+		return getAllBookmarks(pdf)
 				.map(PdfOutline::getDestination)
 				.map(PdfDestination::getPdfObject)
 				.collect(Collectors.toList());
 	}
 
-	private static List<PdfOutline> getAllBookmarks(File pdf) {
+	private static Stream<PdfOutline> getAllBookmarks(File pdf) {
 		try (PdfDocument doc = new PdfDocument(new PdfReader(pdf))) {
-			List<PdfOutline> outlines = doc.getOutlines(true).getAllChildren();
-			List<PdfOutline> allBookmarks = getAllBookmarks(outlines);
-			return allBookmarks;
+			return doc.getOutlines(true)
+					.getAllChildren()
+					.stream()
+					.flatMap(TestUtil::streamRecursive);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
 	}
 
-	private static List<PdfOutline> getAllBookmarks(List<PdfOutline> outlines) {
-		List<PdfOutline> allBookmarks = new ArrayList<>();
-
-		for (PdfOutline bookmark : outlines) {
-			allBookmarks.add(bookmark);
-
-			List<PdfOutline> children = bookmark.getAllChildren();
-			if (!children.isEmpty()) {
-				allBookmarks.addAll(getAllBookmarks(children));
-			}
-		}
-
-		return allBookmarks;
+	private static Stream<PdfOutline> streamRecursive(PdfOutline bookmark) {
+		Stream<PdfOutline> allChildren = bookmark.getAllChildren()
+				.stream()
+				.flatMap(TestUtil::streamRecursive);
+		return Stream.concat(Stream.of(bookmark), allChildren);
 	}
 
 }
