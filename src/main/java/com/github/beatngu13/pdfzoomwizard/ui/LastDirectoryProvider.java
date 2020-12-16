@@ -1,14 +1,15 @@
 package com.github.beatngu13.pdfzoomwizard.ui;
 
 import com.google.common.annotations.VisibleForTesting;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.util.Objects;
 import java.util.prefs.Preferences;
 
-@Slf4j
 class LastDirectoryProvider {
+
+	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(LastDirectoryProvider.class);
 
 	/**
 	 * Preferences key for the absolute path of the last directory.
@@ -23,7 +24,7 @@ class LastDirectoryProvider {
 	@VisibleForTesting
 	File get(Preferences prefs) {
 		String lastDirPath = prefs.get(LAST_DIRECTORY_PREFERENCES_KEY, null);
-		log.debug("Get last directory: {}", lastDirPath);
+		logger.debug("Get last directory: {}", lastDirPath);
 		if (lastDirPath == null) {
 			return null;
 		}
@@ -43,7 +44,7 @@ class LastDirectoryProvider {
 	void set(File lastDir, Preferences prefs) {
 		validate(lastDir);
 		String lastDirPath = lastDir.getAbsolutePath();
-		log.debug("Set last directory: {}", lastDirPath);
+		logger.debug("Set last directory: {}", lastDirPath);
 		prefs.put(LAST_DIRECTORY_PREFERENCES_KEY, lastDirPath);
 	}
 

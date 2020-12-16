@@ -6,7 +6,6 @@ import com.itextpdf.kernel.pdf.PdfObject;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.navigation.PdfDestination;
-import lombok.experimental.UtilityClass;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,10 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@UtilityClass
 public class TestUtil {
 
-	public String toStringNormalized(Zoom zoom) {
+	private TestUtil() {
+	}
+
+	public static String toStringNormalized(Zoom zoom) {
 		// Zoom name
 		String normalized = zoom.toString();
 		// zoom name

@@ -1,20 +1,22 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
+import org.slf4j.Logger;
 
-@Slf4j
-@UtilityClass
 class BookmarkUtil {
 
+	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(BookmarkUtil.class);
+
 	static final String BOOKMARK_TITLE_FALLBACK = "N/A";
+
+	private BookmarkUtil() {
+	}
 
 	public static String getTitle(Bookmark bm) {
 		try {
 			return bm.getTitle();
 		} catch (RuntimeException e) {
-			log.warn("Exception while getting bookmark title, using '{}'.", BOOKMARK_TITLE_FALLBACK, e);
+			logger.warn("Exception while getting bookmark title, using '{}'.", BOOKMARK_TITLE_FALLBACK, e);
 			return BOOKMARK_TITLE_FALLBACK;
 		}
 	}
