@@ -13,7 +13,7 @@ public enum Zoom {
 	private final Double zoom;
 	private final ModeEnum mode;
 
-	private Zoom(Double zoom, ModeEnum mode) {
+	Zoom(Double zoom, ModeEnum mode) {
 		this.zoom = zoom;
 		this.mode = mode;
 	}
