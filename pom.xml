@@ -137,6 +137,8 @@
 					<mainClass>
 						com.github.beatngu13.pdfzoomwizard/com.github.beatngu13.pdfzoomwizard.Launcher
 					</mainClass>
+					<!-- see https://stackoverflow.com/a/56064936/3429133 -->
+					<bindServices>true</bindServices>
 				</configuration>
 			</plugin>
 
