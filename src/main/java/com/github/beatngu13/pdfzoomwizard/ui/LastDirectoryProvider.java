@@ -1,6 +1,5 @@
 package com.github.beatngu13.pdfzoomwizard.ui;
 
-import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -21,7 +20,12 @@ class LastDirectoryProvider {
 		return get(prefs);
 	}
 
-	@VisibleForTesting
+	/**
+	 * Visible for testing.
+	 *
+	 * @param prefs
+	 * @return
+	 */
 	File get(Preferences prefs) {
 		String lastDirPath = prefs.get(LAST_DIRECTORY_PREFERENCES_KEY, null);
 		logger.debug("Get last directory: {}", lastDirPath);
@@ -40,7 +44,12 @@ class LastDirectoryProvider {
 		set(lastDir, prefs);
 	}
 
-	@VisibleForTesting
+	/**
+	 * Visible for testing.
+	 *
+	 * @param lastDir
+	 * @param prefs
+	 */
 	void set(File lastDir, Preferences prefs) {
 		validate(lastDir);
 		String lastDirPath = lastDir.getAbsolutePath();

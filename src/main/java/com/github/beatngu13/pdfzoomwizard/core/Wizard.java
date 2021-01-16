@@ -1,6 +1,5 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import com.google.common.annotations.VisibleForTesting;
 import javafx.concurrent.Task;
 import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
@@ -162,10 +161,11 @@ public class Wizard extends Task<Void> {
 
 	/**
 	 * Modifies each bookmark which is found by depth-first search using {@link #modifyBookmark(Bookmark)}.
+	 * <p>
+	 * Visible for testing.
 	 *
 	 * @param bookmarks Bookmarks to be modified.
 	 */
-	@VisibleForTesting
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
 			Bookmarks children = bookmark.getBookmarks();
