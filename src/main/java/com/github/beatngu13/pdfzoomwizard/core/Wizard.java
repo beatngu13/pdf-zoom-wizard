@@ -1,8 +1,6 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import com.google.common.annotations.VisibleForTesting;
 import javafx.concurrent.Task;
-import lombok.extern.slf4j.Slf4j;
 import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
@@ -11,6 +9,7 @@ import org.pdfclown.documents.interaction.navigation.document.Destination;
 import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +25,9 @@ import java.util.stream.Stream;
  *
  * @author Daniel Kraus
  */
-@Slf4j
 public class Wizard extends Task<Void> {
+
+	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Wizard.class);
 
 	/**
 	 * The {@link Task#updateMessage(String)} when {@link Task#running()}.
@@ -93,11 +93,11 @@ public class Wizard extends Task<Void> {
 
 	@Override
 	protected Void call() {
-		log.info("Start working on '{}'.", root.getAbsolutePath());
-		log.info("Bookmark(s) will be set to zoom '{}'.", zoom);
-		log.info("PDF document(s) will be saved with serialization mode '{}'.", SERIALIZATION_MODE);
+		logger.info("Start working on '{}'.", root.getAbsolutePath());
+		logger.info("Bookmark(s) will be set to zoom '{}'.", zoom);
+		logger.info("PDF document(s) will be saved with serialization mode '{}'.", SERIALIZATION_MODE);
 		modifyFiles(root);
-		log.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
+		logger.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
 		return null;
 	}
 
@@ -110,7 +110,7 @@ public class Wizard extends Task<Void> {
 		try (Stream<Path> tree = Files.walk(file.toPath())) {
 			tree.map(Path::toFile).forEach(this::modifyFile);
 		} catch (IOException e) {
-			log.error("Exception while walking file tree.", e);
+			logger.error("Exception while walking file tree.", e);
 		}
 	}
 
@@ -123,11 +123,11 @@ public class Wizard extends Task<Void> {
 		String filename = file.getName();
 
 		if (!filename.endsWith(PDF_FILE_EXTENSION)) {
-			log.warn("Skipping '{}'.", filename);
+			logger.warn("Skipping '{}'.", filename);
 			return;
 		}
 
-		log.info("Processing '{}'.", filename);
+		logger.info("Processing '{}'.", filename);
 
 		try (org.pdfclown.files.File pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
 			bookmarkCountLocal = 0;
@@ -135,9 +135,9 @@ public class Wizard extends Task<Void> {
 			modifyBookmarks(document.getBookmarks());
 			savePdf(pdf);
 			fileCount++;
-			log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
+			logger.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
 		} catch (Exception e) {
-			log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
+			logger.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
 		}
 	}
 
@@ -161,10 +161,11 @@ public class Wizard extends Task<Void> {
 
 	/**
 	 * Modifies each bookmark which is found by depth-first search using {@link #modifyBookmark(Bookmark)}.
+	 * <p>
+	 * Visible for testing.
 	 *
 	 * @param bookmarks Bookmarks to be modified.
 	 */
-	@VisibleForTesting
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
 			Bookmarks children = bookmark.getBookmarks();
@@ -193,11 +194,11 @@ public class Wizard extends Task<Void> {
 				Destination destination = (LocalDestination) target;
 				modifyDestination(bookmark, destination);
 			} else {
-				log.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
+				logger.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
 						target.getClass());
 			}
 		} catch (Exception e) {
-			log.error("Exception while processing bookmark '{}'.", BookmarkUtil.getTitle(bookmark), e);
+			logger.error("Exception while processing bookmark '{}'.", BookmarkUtil.getTitle(bookmark), e);
 		}
 	}
 
@@ -212,7 +213,7 @@ public class Wizard extends Task<Void> {
 		destination.setZoom(zoom.getZoom());
 		bookmarkCountGlobal++;
 		bookmarkCountLocal++;
-		log.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
+		logger.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
 	}
 
 	@Override
