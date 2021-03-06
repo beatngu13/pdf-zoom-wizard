@@ -27,18 +27,18 @@ jobs:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
 
-      - name: Install dependencies
+      - name: Install PDF Clown
         run: |
           ./install-deps.sh
 
-      - name: Package artifact
+      - name: Package app
         id: package
         run: |
           mvn package -B -DskipTests
           cd ./target/
           echo "::set-output name=jar_name::$(echo pdfzoomwizard-*.jar)"
 
-      - name: Create release
+      - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
         with:
@@ -46,7 +46,7 @@ jobs:
           release_name: ${{ github.ref }}
           draft: true
 
-      - name: Upload release asset
+      - name: Upload release assets
         id: upload_release_asset
         uses: actions/upload-release-asset@v1
         with:
