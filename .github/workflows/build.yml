@@ -33,7 +33,7 @@ jobs:
 
       - name: Install PDF Clown
         run: |
-          ./install-deps.sh
+          ./install-pdf-clown.sh
 
       - name: Compile app and test sources
         run: >
