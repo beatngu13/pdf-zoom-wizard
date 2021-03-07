@@ -36,11 +36,11 @@ jobs:
           ./install-pdf-clown.sh
 
       - name: Compile app and test sources
-        run: >
+        run: |
           mvn test-compile -B
 
       - name: Run tests and install
-        run: >
+        run: |
           mvn install -B -Pcoverage
 
       # required by Sonar
