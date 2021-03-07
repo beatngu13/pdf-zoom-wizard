@@ -1,4 +1,4 @@
-name: Main build
+name: Build
 
 on: push
 
@@ -31,17 +31,17 @@ jobs:
           path: ~/.sonar/cache/
           key: ${{ runner.os }}-sonar-${{ secrets.CACHE_VERSION }}
 
-      - name: Install dependencies
+      - name: Install PDF Clown
         run: |
-          ./install-deps.sh
+          ./install-pdf-clown.sh
 
-      - name: Compile code
-        run: >
+      - name: Compile app and test sources
+        run: |
           mvn test-compile -B
 
-      - name: Run tests
-        run: >
-          mvn verify -B -Pcoverage
+      - name: Run tests and install
+        run: |
+          mvn install -B -Pcoverage
 
       # required by Sonar
       - name: Set up JDK 11
@@ -49,7 +49,7 @@ jobs:
         with:
           java-version: 11
 
-      - name: Analyze code
+      - name: Analyze with Sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
