@@ -7,7 +7,7 @@
 
 	<groupId>com.github.beatngu13</groupId>
 	<artifactId>pdfzoomwizard</artifactId>
-	<version>0.6.0</version>
+	<version>0.7.0</version>
 
 	<name>PDF Zoom Wizard</name>
 
@@ -51,53 +51,40 @@
 			<version>1.2.3</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.16</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>30.0-jre</version>
-		</dependency>
-
 		<!-- test -->
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.7.0</version>
+			<version>5.7.1</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.18.0</version>
+			<version>3.19.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>3.5.15</version>
+			<artifactId>mockito-inline</artifactId>
+			<version>3.8.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.approvaltests</groupId>
 			<artifactId>approvaltests</artifactId>
-			<version>9.3.0</version>
+			<version>10.0.1</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>kernel</artifactId>
-			<version>7.1.13</version>
+			<version>7.1.14</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -114,6 +101,7 @@
 
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
@@ -157,7 +145,7 @@
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.7.0.1746</version>
+				<version>3.8.0.2131</version>
 			</plugin>
 
 			<plugin>
@@ -191,11 +179,11 @@
 			<plugin>
 				<groupId>com.amashchenko.maven.plugin</groupId>
 				<artifactId>gitflow-maven-plugin</artifactId>
-				<version>1.14.0</version>
+				<version>1.15.1</version>
 				<configuration>
 					<commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
-					<keepBranch>false</keepBranch>
-					<pushRemote>true</pushRemote>
+					<useSnapshotInRelease>true</useSnapshotInRelease>
+					<useSnapshotInHotfix>true</useSnapshotInHotfix>
 					<versionDigitToIncrement>1</versionDigitToIncrement>
 					<gitFlowConfig>
 						<versionTagPrefix>v</versionTagPrefix>

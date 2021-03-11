@@ -5,4 +5,4 @@ mvn install:install-file \
 		-DgroupId=org.pdfclown \
 		-DartifactId=pdfclown \
 		-Dversion=0.1.2 \
-		-Dpackaging=jar \
+		-Dpackaging=jar

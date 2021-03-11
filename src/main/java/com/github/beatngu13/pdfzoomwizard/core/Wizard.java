@@ -1,7 +1,6 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
 import javafx.concurrent.Task;
-import lombok.extern.slf4j.Slf4j;
 import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
@@ -10,8 +9,13 @@ import org.pdfclown.documents.interaction.navigation.document.Destination;
 import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
+import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 /**
  * Applies {@link #zoom} to the bookmarks of a single PDF file or a whole
@@ -21,8 +25,9 @@ import java.io.File;
  *
  * @author Daniel Kraus
  */
-@Slf4j
 public class Wizard extends Task<Void> {
+
+	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Wizard.class);
 
 	/**
 	 * The {@link Task#updateMessage(String)} when {@link Task#running()}.
@@ -87,62 +92,79 @@ public class Wizard extends Task<Void> {
 	}
 
 	@Override
-	protected Void call() throws Exception {
-		log.info(
-				"Start working on '{}'. Bookmark(s) will be set to zoom '{}'. PDF document(s) will be saved with serialization mode '{}'.",
-				root.getAbsolutePath(), zoom, SERIALIZATION_MODE);
+	protected Void call() {
+		logger.info("Start working on '{}'.", root.getAbsolutePath());
+		logger.info("Bookmark(s) will be set to zoom '{}'.", zoom);
+		logger.info("PDF document(s) will be saved with serialization mode '{}'.", SERIALIZATION_MODE);
 		modifyFiles(root);
-		log.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
-
+		logger.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
 		return null;
 	}
 
 	/**
-	 * Modifies each PDF file which is found by depth-first search via {@link #modifyBookmarks(Bookmarks)}.
+	 * Modifies each PDF file which is found by depth-first search using {@link #modifyFile(File)}.
 	 *
-	 * @param file Directory or file to work with.
+	 * @param file Directory or file to be modified.
 	 */
 	public void modifyFiles(File file) {
-		if (file.isDirectory()) {
-			File[] files = file.listFiles();
-
-			for (File f : files) {
-				modifyFiles(f);
-			}
-		} else {
-			String filename = file.getName();
-
-			if (!filename.endsWith(PDF_FILE_EXTENSION)) {
-				log.warn("Skipping '{}'.", filename);
-				return;
-			}
-
-			log.info("Processing '{}'.", filename);
-
-			try (org.pdfclown.files.File pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
-				bookmarkCountLocal = 0;
-				Document document = pdf.getDocument();
-				modifyBookmarks(document.getBookmarks());
-
-				if (filenameInfix != null) {
-					File output = new File(
-							file.getAbsolutePath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION));
-					pdf.save(output, SERIALIZATION_MODE);
-				} else {
-					pdf.save(SERIALIZATION_MODE);
-				}
-				fileCount++;
-				log.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
-			} catch (Exception e) {
-				log.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
-			}
+		try (Stream<Path> tree = Files.walk(file.toPath())) {
+			tree.map(Path::toFile).forEach(this::modifyFile);
+		} catch (IOException e) {
+			logger.error("Exception while walking file tree.", e);
 		}
 	}
 
 	/**
-	 * Modifies each bookmark which is found by depth-first search via {{@link #modifyDestination(Bookmark, Destination)}}.
+	 * Modifies the given file using {@link #modifyBookmarks(Bookmarks)} if it is a PDF, otherwise does nothing.
 	 *
-	 * @param bookmarks Collection of bookmarks to modify.
+	 * @param file File to be modified.
+	 */
+	private void modifyFile(File file) {
+		String filename = file.getName();
+
+		if (!filename.endsWith(PDF_FILE_EXTENSION)) {
+			logger.warn("Skipping '{}'.", filename);
+			return;
+		}
+
+		logger.info("Processing '{}'.", filename);
+
+		try (org.pdfclown.files.File pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
+			bookmarkCountLocal = 0;
+			Document document = pdf.getDocument();
+			modifyBookmarks(document.getBookmarks());
+			savePdf(pdf);
+			fileCount++;
+			logger.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
+		} catch (Exception e) {
+			logger.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
+		}
+	}
+
+	/**
+	 * Saves the given PDF. If {@link #filenameInfix} is not null, the PDF will be copied, otherwise overwritten.
+	 *
+	 * @param pdf PDF to be saved.
+	 * @throws IOException If an I/O error occurs.
+	 */
+	private void savePdf(org.pdfclown.files.File pdf) throws IOException {
+		if (filenameInfix != null) {
+			// Copy PDF.
+			String path = pdf.getPath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION);
+			File copy = new File(path);
+			pdf.save(copy, SERIALIZATION_MODE);
+		} else {
+			// Overwrite PDF.
+			pdf.save(SERIALIZATION_MODE);
+		}
+	}
+
+	/**
+	 * Modifies each bookmark which is found by depth-first search using {@link #modifyBookmark(Bookmark)}.
+	 * <p>
+	 * Visible for testing.
+	 *
+	 * @param bookmarks Bookmarks to be modified.
 	 */
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
@@ -151,24 +173,32 @@ public class Wizard extends Task<Void> {
 			if (children.size() != 0) {
 				modifyBookmarks(children);
 			}
+			modifyBookmark(bookmark);
+		}
+	}
 
-			// XXX Bookmarks with broken destinations sometimes cause trouble.
-			try {
-				PdfObjectWrapper<?> target = bookmark.getTarget();
+	/**
+	 * Modifies the given bookmark using {@link #modifyDestination(Bookmark, Destination)}.
+	 *
+	 * @param bookmark Bookmark to be modified.
+	 */
+	private void modifyBookmark(Bookmark bookmark) {
+		// XXX Bookmarks with broken destinations sometimes cause trouble.
+		try {
+			PdfObjectWrapper<?> target = bookmark.getTarget();
 
-				if (target instanceof GoToDestination<?>) {
-					Destination destination = ((GoToDestination<?>) target).getDestination();
-					modifyDestination(bookmark, destination);
-				} else if (target instanceof LocalDestination) {
-					Destination destination = (LocalDestination) target;
-					modifyDestination(bookmark, destination);
-				} else {
-					log.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
-							target.getClass());
-				}
-			} catch (Exception e) {
-				log.error("Exception while processing bookmark '{}'.", BookmarkUtil.getTitle(bookmark), e);
+			if (target instanceof GoToDestination<?>) {
+				Destination destination = ((GoToDestination<?>) target).getDestination();
+				modifyDestination(bookmark, destination);
+			} else if (target instanceof LocalDestination) {
+				Destination destination = (LocalDestination) target;
+				modifyDestination(bookmark, destination);
+			} else {
+				logger.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
+						target.getClass());
 			}
+		} catch (Exception e) {
+			logger.error("Exception while processing bookmark '{}'.", BookmarkUtil.getTitle(bookmark), e);
 		}
 	}
 
@@ -183,7 +213,7 @@ public class Wizard extends Task<Void> {
 		destination.setZoom(zoom.getZoom());
 		bookmarkCountGlobal++;
 		bookmarkCountLocal++;
-		log.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
+		logger.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
 	}
 
 	@Override

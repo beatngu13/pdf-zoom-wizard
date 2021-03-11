@@ -1,0 +1,38 @@
+pull_request_rules:
+  - name: "Rebase if non-release, non-draft, unreviewed"
+    conditions:
+      - "head~=^(?!(release|hotfix)).*$"
+      - "-draft"
+      - "#approved-reviews-by=0"
+      - "#changes-requested-reviews-by=0"
+    actions:
+      rebase: {}
+
+  - name: "Merge strict with rebase if non-release, non-draft, reviewed"
+    conditions:
+      - "head~=^(?!(release|hotfix)).*$"
+      - "-draft"
+      - "#approved-reviews-by>=1"
+      - "#changes-requested-reviews-by=0"
+    actions:
+      merge:
+        strict: true
+        strict_method: rebase
+        method: merge
+
+  - name: "Merge strict if release, non-draft, reviewed"
+    conditions:
+      - "head~=^(release|hotfix).*$"
+      - "-draft"
+      - "#approved-reviews-by>=1"
+      - "#changes-requested-reviews-by=0"
+    actions:
+      merge:
+        strict: true
+        method: merge
+
+  - name: "Delete if merged"
+    conditions:
+      - merged
+    actions:
+      delete_head_branch: {}

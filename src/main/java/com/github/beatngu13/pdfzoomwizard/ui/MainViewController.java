@@ -18,7 +18,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Duration;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 import java.io.File;
 
@@ -27,8 +27,9 @@ import java.io.File;
  *
  * @author Daniel Kraus
  */
-@Slf4j
 public class MainViewController {
+
+	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(MainViewController.class);
 
 	/**
 	 * Provides the last directory for {@link #directoryChooser} and
@@ -149,8 +150,8 @@ public class MainViewController {
 				alert.setTitle("Confirmation Dialog");
 				alert.setHeaderText(null);
 				alert.setContentText(getConfirmationMessage());
-				alert.showAndWait() //
-						.filter(response -> response == ButtonType.OK) //
+				alert.showAndWait()
+						.filter(response -> response == ButtonType.OK)
 						.ifPresent(response -> run());
 			}
 		});
@@ -192,7 +193,7 @@ public class MainViewController {
 	 * @return Always <code>false</code>.
 	 */
 	private boolean handleInvalidInput(String msg) {
-		log.warn(msg);
+		logger.warn(msg);
 		infoText.setText(msg);
 		return false;
 	}

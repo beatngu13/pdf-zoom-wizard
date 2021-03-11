@@ -18,6 +18,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Security
 
+## [0.7.0] - 2021-03-11
+
+### Changed
+
+- Various internal improvements that e.g. reduce memory footprint and required disk space.
+
 ## [0.6.0] - 2020-11-01
 
 ### Changed
