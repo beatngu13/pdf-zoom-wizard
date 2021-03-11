@@ -184,8 +184,6 @@
 					<commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
 					<useSnapshotInRelease>true</useSnapshotInRelease>
 					<useSnapshotInHotfix>true</useSnapshotInHotfix>
-					<keepBranch>false</keepBranch>
-					<pushRemote>true</pushRemote>
 					<versionDigitToIncrement>1</versionDigitToIncrement>
 					<gitFlowConfig>
 						<versionTagPrefix>v</versionTagPrefix>
