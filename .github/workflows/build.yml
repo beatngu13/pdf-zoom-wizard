@@ -39,9 +39,9 @@ jobs:
         run: |
           mvn test-compile -B
 
-      - name: Run tests and install
+      - name: Run tests
         run: |
-          mvn install -B -Pcoverage
+          mvn verify -B -Pcoverage
 
       # required by Sonar
       - name: Set up JDK 11
