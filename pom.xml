@@ -17,7 +17,7 @@
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
 		<java.version>11</java.version>
 		<javafx.version>15.0.1</javafx.version>
-		<mainClass>com.github.beatngu13.pdfzoomwizard.Launcher</mainClass>
+		<mainClass>com.github.beatngu13.pdfzoomwizard.LauncherWrapper</mainClass>
 	</properties>
 
 	<scm>
@@ -129,6 +129,19 @@
 				<version>0.0.5</version>
 				<configuration>
 					<mainClass>${mainClass}</mainClass>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>com.gluonhq</groupId>
+				<artifactId>client-maven-plugin</artifactId>
+				<version>0.1.38</version>
+				<configuration>
+					<mainClass>${mainClass}</mainClass>
+					<nativeImageArgs>
+						<arg>--allow-incomplete-classpath</arg>
+						<arg>--no-fallback</arg>
+					</nativeImageArgs>
 				</configuration>
 			</plugin>
 

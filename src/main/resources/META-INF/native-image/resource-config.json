@@ -1,0 +1,26 @@
+{
+  "resources":{
+  "includes":[
+    {"pattern":"\\QMainView.fxml\\E"}, 
+    {"pattern":"\\Qcom/sun/glass/utils/NativeLibLoader.class\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/FillPgram_Color.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/FillPgram_LinearGradient_PAD.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/FillRoundRect_Color.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/FillRoundRect_LinearGradient_PAD.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/Mask_TextureSuper.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/Solid_TextureFirstPassLCD.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/Solid_TextureRGB.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/Solid_TextureSecondPassLCD.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/Texture_Color.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/prism/es2/glsl/Texture_LinearGradient_PAD.frag\\E"}, 
+    {"pattern":"\\Qcom/sun/scenario/effect/impl/es2/glsl/LinearConvolveShadow_28.frag\\E"}, 
+    {"pattern":"\\Qlibglass.dylib\\E"}, 
+    {"pattern":"\\Qlibprism_es2.dylib\\E"}, 
+    {"pattern":"\\Qlogback.xml\\E"}, 
+    {"pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"}
+  ]},
+  "bundles":[
+    {"name":"com.sun.javafx.tk.quantum.QuantumMessagesBundle"}, 
+    {"name":"com/sun/javafx/scene/control/skin/resources/controls"}
+  ]
+}
