@@ -15,6 +15,7 @@ jobs:
       - name: Set up JDK 8 with JavaFX
         uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: 8
           java-package: jdk+fx
 
