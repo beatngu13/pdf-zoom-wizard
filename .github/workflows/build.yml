@@ -21,13 +21,13 @@ jobs:
           java-package: jdk+fx
 
       - name: Cache Maven
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
 
       - name: Cache Sonar
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         with:
           path: ~/.sonar/cache/
           key: ${{ runner.os }}-sonar-${{ secrets.CACHE_VERSION }}
