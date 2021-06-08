@@ -51,17 +51,6 @@ jobs:
           distribution: 'zulu'
           java-version: 11
 
-      - name: Check Sonar Token
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          if [[ -z "${SONAR_TOKEN}" ]]
-          then
-            echo 'Sonar Token not set.'
-          else
-            echo 'Sonar Token set.'
-          fi
-
       - name: Analyze with Sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
