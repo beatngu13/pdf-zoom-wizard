@@ -120,7 +120,7 @@ public class Wizard extends Task<Void> {
 	 * @param file File to be modified.
 	 */
 	private void modifyFile(File file) {
-		String filename = file.getName();
+		var filename = file.getName();
 
 		if (!filename.endsWith(PDF_FILE_EXTENSION)) {
 			logger.warn("Skipping '{}'.", filename);
@@ -129,9 +129,9 @@ public class Wizard extends Task<Void> {
 
 		logger.info("Processing '{}'.", filename);
 
-		try (org.pdfclown.files.File pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
+		try (var pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
 			bookmarkCountLocal = 0;
-			Document document = pdf.getDocument();
+			var document = pdf.getDocument();
 			modifyBookmarks(document.getBookmarks());
 			savePdf(pdf);
 			fileCount++;
@@ -153,8 +153,8 @@ public class Wizard extends Task<Void> {
 			pdf.save(SERIALIZATION_MODE);
 		} else {
 			// Copy PDF.
-			String path = pdf.getPath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION);
-			File copy = new File(path);
+			var path = pdf.getPath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION);
+			var copy = new File(path);
 			pdf.save(copy, SERIALIZATION_MODE);
 		}
 	}
@@ -168,7 +168,7 @@ public class Wizard extends Task<Void> {
 	 */
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
-			Bookmarks children = bookmark.getBookmarks();
+			var children = bookmark.getBookmarks();
 			// Size might be positive (bookmark open) or negative (bookmark closed).
 			if (children.size() != 0) {
 				modifyBookmarks(children);
