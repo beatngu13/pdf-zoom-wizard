@@ -41,7 +41,7 @@ jobs:
         run: |
           mvn verify -B -Pcoverage
 
-      - name: Analyze with Sonar
+      - name: Run Sonar analysis
         # see https://github.com/dependabot/dependabot-core/issues/3253#issuecomment-852541544
         if: ${{ github.actor != 'dependabot[bot]' }}
         env:
@@ -103,7 +103,7 @@ jobs:
         run: |
           mvn gluonfx:build -B
 
-      - name: Move native image to staging directory
+      - name: Stage native image
         run: |
           mkdir ./staging/
           cp "./target/gluonfx/x86_64-linux/PDF Zoom Wizard" ./staging/pdfzoomwizard-linux
@@ -141,7 +141,7 @@ jobs:
         run: |
           mvn gluonfx:build -B
 
-      - name: Move native image to staging directory
+      - name: Stage native image
         run: |
           mkdir ./staging/
           cp "./target/gluonfx/x86_64-darwin/PDF Zoom Wizard" ./staging/pdfzoomwizard-macos
@@ -185,7 +185,7 @@ jobs:
         run: |
           mvn gluonfx:build -B
 
-      - name: Move native image to staging directory
+      - name: Stage native image
         run: |
           mkdir ./staging/
           cp "./target/gluonfx/x86_64-windows/PDF Zoom Wizard.exe" ./staging/pdfzoomwizard-windows.exe
