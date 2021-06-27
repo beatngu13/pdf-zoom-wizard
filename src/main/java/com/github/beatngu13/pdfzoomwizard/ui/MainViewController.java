@@ -35,15 +35,15 @@ public class MainViewController {
 	 * Provides the last directory for {@link #directoryChooser} and
 	 * {@link #fileChooser}.
 	 */
-	private LastDirectoryProvider lastDirProvider = new LastDirectoryProvider();
+	private final LastDirectoryProvider lastDirProvider = new LastDirectoryProvider();
 	/**
 	 * Sets {@link #root}.
 	 */
-	private DirectoryChooser directoryChooser = new DirectoryChooser();
+	private final DirectoryChooser directoryChooser = new DirectoryChooser();
 	/**
 	 * Sets {@link #root}.
 	 */
-	private FileChooser fileChooser = new FileChooser();
+	private final FileChooser fileChooser = new FileChooser();
 	/**
 	 * Root directory or file to work with.
 	 */
