@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
         with:
           # fetch unshallow to enable blame for Sonar
           fetch-depth: 0
@@ -59,7 +59,7 @@ jobs:
           cp ./target/pdfzoomwizard-*.jar ./staging/pdfzoomwizard.jar
 
       - name: Upload JAR
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
           path: ./staging/pdfzoomwizard.jar
@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
 
       - name: Set up GraalVM 21
         uses: DeLaGuardo/setup-graalvm@master
@@ -109,7 +109,7 @@ jobs:
           cp "./target/gluonfx/x86_64-linux/PDF Zoom Wizard" ./staging/pdfzoomwizard-linux
 
       - name: Upload native image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
           path: ./staging/pdfzoomwizard-linux
@@ -120,7 +120,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
 
       - name: Set up GraalVM 21
         uses: DeLaGuardo/setup-graalvm@master
@@ -147,7 +147,7 @@ jobs:
           cp "./target/gluonfx/x86_64-darwin/PDF Zoom Wizard" ./staging/pdfzoomwizard-macos
 
       - name: Upload native image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
           path: ./staging/pdfzoomwizard-macos
@@ -158,7 +158,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
 
       - name: Set up GraalVM 21
         uses: DeLaGuardo/setup-graalvm@master
@@ -172,10 +172,10 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
 
       - name: Add MSBuild to PATH
-        uses: microsoft/setup-msbuild@v1
+        uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Set up Visual Studio shell
-        uses: egor-tensin/vs-shell@v1
+        uses: egor-tensin/vs-shell@v2
 
       - name: Install PDF Clown
         run: |
@@ -191,7 +191,7 @@ jobs:
           cp "./target/gluonfx/x86_64-windows/PDF Zoom Wizard.exe" ./staging/pdfzoomwizard-windows.exe
 
       - name: Upload native image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
           path: ./staging/pdfzoomwizard-windows.exe
@@ -203,12 +203,12 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v2.0.10
         with:
           name: artifacts
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v0.1.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
