@@ -138,6 +138,11 @@
 				<version>1.0.1</version>
 				<configuration>
 					<mainClass>${mainClass}</mainClass>
+					<nativeImageArgs>
+						<arg>--allow-incomplete-classpath</arg>
+						<arg>--initialize-at-build-time=org.pdfclown.Version</arg>
+						<arg>--no-fallback</arg>
+					</nativeImageArgs>
 				</configuration>
 			</plugin>
 
