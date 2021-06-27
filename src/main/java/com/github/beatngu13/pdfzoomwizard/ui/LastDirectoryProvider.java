@@ -22,9 +22,6 @@ class LastDirectoryProvider {
 
 	/**
 	 * Visible for testing.
-	 *
-	 * @param prefs
-	 * @return
 	 */
 	File get(Preferences prefs) {
 		String lastDirPath = prefs.get(LAST_DIRECTORY_PREFERENCES_KEY, null);
@@ -46,9 +43,6 @@ class LastDirectoryProvider {
 
 	/**
 	 * Visible for testing.
-	 *
-	 * @param lastDir
-	 * @param prefs
 	 */
 	void set(File lastDir, Preferences prefs) {
 		validate(lastDir);
