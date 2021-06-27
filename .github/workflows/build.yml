@@ -197,7 +197,7 @@ jobs:
           path: ./staging/pdfzoomwizard-windows.exe
 
   release:
-    if: ${{ github.ref == 'refs/head/master' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs: [native-linux, native-macos, native-windows]
     runs-on: ubuntu-latest
 
