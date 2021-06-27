@@ -47,7 +47,7 @@ public class Wizard extends Task<Void> {
 	 */
 	private static final String PDF_FILE_EXTENSION = ".pdf";
 	/**
-	 * @see {@link SerializationModeEnum}
+	 * @see SerializationModeEnum
 	 */
 	private static final SerializationModeEnum SERIALIZATION_MODE = SerializationModeEnum.Incremental;
 
@@ -120,7 +120,7 @@ public class Wizard extends Task<Void> {
 	 * @param file File to be modified.
 	 */
 	private void modifyFile(File file) {
-		String filename = file.getName();
+		var filename = file.getName();
 
 		if (!filename.endsWith(PDF_FILE_EXTENSION)) {
 			logger.warn("Skipping '{}'.", filename);
@@ -129,9 +129,9 @@ public class Wizard extends Task<Void> {
 
 		logger.info("Processing '{}'.", filename);
 
-		try (org.pdfclown.files.File pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
+		try (var pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
 			bookmarkCountLocal = 0;
-			Document document = pdf.getDocument();
+			var document = pdf.getDocument();
 			modifyBookmarks(document.getBookmarks());
 			savePdf(pdf);
 			fileCount++;
@@ -148,14 +148,14 @@ public class Wizard extends Task<Void> {
 	 * @throws IOException If an I/O error occurs.
 	 */
 	private void savePdf(org.pdfclown.files.File pdf) throws IOException {
-		if (filenameInfix != null) {
-			// Copy PDF.
-			String path = pdf.getPath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION);
-			File copy = new File(path);
-			pdf.save(copy, SERIALIZATION_MODE);
-		} else {
+		if (filenameInfix == null) {
 			// Overwrite PDF.
 			pdf.save(SERIALIZATION_MODE);
+		} else {
+			// Copy PDF.
+			var path = pdf.getPath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION);
+			var copy = new File(path);
+			pdf.save(copy, SERIALIZATION_MODE);
 		}
 	}
 
@@ -168,7 +168,7 @@ public class Wizard extends Task<Void> {
 	 */
 	void modifyBookmarks(Bookmarks bookmarks) {
 		for (Bookmark bookmark : bookmarks) {
-			Bookmarks children = bookmark.getBookmarks();
+			var children = bookmark.getBookmarks();
 			// Size might be positive (bookmark open) or negative (bookmark closed).
 			if (children.size() != 0) {
 				modifyBookmarks(children);
