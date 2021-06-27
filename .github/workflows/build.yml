@@ -13,12 +13,10 @@ jobs:
           # fetch unshallow to enable blame for Sonar
           fetch-depth: 0
 
-      - name: Set up JDK 11 with JavaFX
-        uses: actions/setup-java@v2
+      - name: Set up GraalVM 21
+        uses: DeLaGuardo/setup-graalvm@master
         with:
-          distribution: 'zulu'
-          java-version: 11
-          java-package: jdk+fx
+          graalvm-version: 21.1.0.java11
 
       - name: Cache Maven
         uses: actions/cache@v2.1.6
@@ -36,11 +34,7 @@ jobs:
         run: |
           ./install-pdf-clown.sh
 
-      - name: Compile app and test sources
-        run: |
-          mvn test-compile -B
-
-      - name: Run tests
+      - name: Maven verify
         run: |
           mvn verify -B -Pcoverage
 
@@ -55,3 +49,169 @@ jobs:
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.organization=beatngu13-github
           -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard
+
+      - name: Move JAR to staging directory
+        run: |
+          mkdir ./staging/
+          cp ./target/pdfzoomwizard-*.jar ./staging/pdfzoomwizard.jar
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: ./staging/pdfzoomwizard.jar
+
+  native-linux:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Set up GraalVM 21
+        uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm-version: 21.1.0.java11
+
+      - name: Cache Maven
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
+
+      - name: Install libraries
+        run: >
+          sudo apt install
+          libasound2-dev
+          libavcodec-dev
+          libavformat-dev
+          libavutil-dev
+          libgl-dev
+          libgtk-3-dev
+          libpango1.0-dev
+          libxtst-dev
+
+      - name: Install PDF Clown
+        run: |
+          ./install-pdf-clown.sh
+
+      - name: Maven compile and link
+        run: |
+          mvn gluonfx:build -B
+
+      - name: Move native image to staging directory
+        run: |
+          mkdir ./staging/
+          cp "./target/gluonfx/x86_64-linux/PDF Zoom Wizard" ./staging/pdfzoomwizard-linux
+
+      - name: Upload native image
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: ./staging/pdfzoomwizard-linux
+
+  native-macos:
+    needs: build
+    runs-on: macos-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Set up GraalVM 21
+        uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm-version: 21.1.0.java11
+
+      - name: Cache Maven
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
+
+      - name: Install PDF Clown
+        run: |
+          ./install-pdf-clown.sh
+
+      - name: Maven compile and link
+        run: |
+          mvn gluonfx:build -B
+
+      - name: Move native image to staging directory
+        run: |
+          mkdir ./staging/
+          cp "./target/gluonfx/x86_64-darwin/PDF Zoom Wizard" ./staging/pdfzoomwizard-macos
+
+      - name: Upload native image
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: ./staging/pdfzoomwizard-macos
+
+  native-windows:
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Set up GraalVM 21
+        uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm-version: 21.1.0.java11
+
+      - name: Cache Maven
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Set up Visual Studio shell
+        uses: egor-tensin/vs-shell@v1
+
+      - name: Install PDF Clown
+        run: |
+          bash ./install-pdf-clown.sh
+
+      - name: Maven compile and link
+        run: |
+          mvn gluonfx:build -B
+
+      - name: Move native image to staging directory
+        run: |
+          mkdir ./staging/
+          cp "./target/gluonfx/x86_64-windows/PDF Zoom Wizard.exe" ./staging/pdfzoomwizard-windows.exe
+
+      - name: Upload native image
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: ./staging/pdfzoomwizard-windows.exe
+
+  release:
+    if: ${{ github.ref == 'refs/head/master' }}
+    needs: [native-linux, native-macos, native-windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: true
+          files: |
+            ./pdfzoomwizard-linux
+            ./pdfzoomwizard-macos
+            ./pdfzoomwizard-windows.exe
+            ./pdfzoomwizard.jar
