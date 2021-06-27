@@ -47,7 +47,7 @@ public class Wizard extends Task<Void> {
 	 */
 	private static final String PDF_FILE_EXTENSION = ".pdf";
 	/**
-	 * @see {@link SerializationModeEnum}
+	 * @see SerializationModeEnum
 	 */
 	private static final SerializationModeEnum SERIALIZATION_MODE = SerializationModeEnum.Incremental;
 
