@@ -22,7 +22,7 @@ public class Launcher extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		logger.info("Launching PDF Zoom Wizard v{}.", getClass().getPackage().getImplementationVersion());
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainView.fxml"));
+		var loader = new FXMLLoader(getClass().getResource("/MainView.fxml"));
 		primaryStage.setTitle("PDF Zoom Wizard");
 		primaryStage.setScene(new Scene(loader.load()));
 		primaryStage.show();

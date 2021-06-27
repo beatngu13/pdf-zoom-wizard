@@ -18,7 +18,7 @@ The road map below shows the current project status from a technical point of vi
 - [x] Offer dynamically resizing GUI content
 - [x] Improve logging using SLF4J and Logback
 - [x] Refactor entire project
-- [ ] Create self-contained app with OpenJDK 14+
+- [x] Create self-contained app
 - [ ] Extract Wizard interface for new implementation (e.g. with [iText](https://itextpdf.com/) or [PDFBox](https://pdfbox.apache.org/))
 - [ ] Implement zoom settings for links
 - [ ] Implement command-line interface (CLI)

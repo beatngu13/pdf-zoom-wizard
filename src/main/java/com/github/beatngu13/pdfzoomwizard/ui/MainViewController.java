@@ -35,15 +35,15 @@ public class MainViewController {
 	 * Provides the last directory for {@link #directoryChooser} and
 	 * {@link #fileChooser}.
 	 */
-	private LastDirectoryProvider lastDirProvider = new LastDirectoryProvider();
+	private final LastDirectoryProvider lastDirProvider = new LastDirectoryProvider();
 	/**
 	 * Sets {@link #root}.
 	 */
-	private DirectoryChooser directoryChooser = new DirectoryChooser();
+	private final DirectoryChooser directoryChooser = new DirectoryChooser();
 	/**
 	 * Sets {@link #root}.
 	 */
-	private FileChooser fileChooser = new FileChooser();
+	private final FileChooser fileChooser = new FileChooser();
 	/**
 	 * Root directory or file to work with.
 	 */
@@ -115,27 +115,27 @@ public class MainViewController {
 			multipleMode = !rootLabel.getText().equals("Directory:");
 			rootLabel.setText(multipleMode ? "Directory:" : "File:");
 
-			FadeTransition fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
+			var fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
 			fadeOut.setFromValue(1.0);
 			fadeOut.setToValue(0.0);
 			fadeOut.play();
 
-			FadeTransition fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
+			var fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
 			fadeIn.setFromValue(0.0);
 			fadeIn.setToValue(1.0);
 			fadeIn.play();
 		});
 
 		browseButton.setOnAction(event -> {
-			File lastDir = lastDirProvider.get();
+			var lastDir = lastDirProvider.get();
 			directoryChooser.setInitialDirectory(lastDir);
 			fileChooser.setInitialDirectory(lastDir);
 
-			Window window = browseButton.getScene().getWindow();
+			var window = browseButton.getScene().getWindow();
 			root = multipleMode ? directoryChooser.showDialog(window) : fileChooser.showOpenDialog(window);
 
 			if (root != null) {
-				File parentFile = multipleMode ? root : root.getParentFile();
+				var parentFile = multipleMode ? root : root.getParentFile();
 
 				rootTextField.setText(root.getAbsolutePath());
 				directoryChooser.setInitialDirectory(parentFile);
@@ -146,7 +146,7 @@ public class MainViewController {
 
 		runButton.setOnAction(event -> {
 			if (validateInput()) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
+				var alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Confirmation Dialog");
 				alert.setHeaderText(null);
 				alert.setContentText(getConfirmationMessage());
@@ -204,11 +204,11 @@ public class MainViewController {
 	 * @return Confirmation message for directory/file to be overwritten/copied.
 	 */
 	private String getConfirmationMessage() {
-		String prefix = multipleMode
+		var prefix = multipleMode
 				? "All files in '" + root.getAbsolutePath() + "' and its enclosing subdirectories will be "
 				: "File '" + root.getAbsolutePath() + "' will be ";
-		String infix = copyCheckBox.isSelected() ? "copied." : "overwritten.";
-		String suffix = "\n\nAre you sure to proceed?";
+		var infix = copyCheckBox.isSelected() ? "copied." : "overwritten.";
+		var suffix = "\n\nAre you sure to proceed?";
 		return prefix + infix + suffix;
 	}
 
@@ -217,9 +217,9 @@ public class MainViewController {
 	 * {@link #root}.
 	 */
 	private void run() {
-		String filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
-		Wizard wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
-		Thread thread = new Thread(wizard);
+		var filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
+		var wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
+		var thread = new Thread(wizard);
 		// Can't be bound because infoText is also set within here.
 		wizard.messageProperty().addListener((observable, oldValue, newValue) -> infoText.setText(newValue));
 		thread.setDaemon(true);

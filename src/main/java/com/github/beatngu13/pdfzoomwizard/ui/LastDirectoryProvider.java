@@ -16,23 +16,20 @@ class LastDirectoryProvider {
 	static final String LAST_DIRECTORY_PREFERENCES_KEY = "last_directory";
 
 	public File get() {
-		Preferences prefs = Preferences.userNodeForPackage(LastDirectoryProvider.class);
+		var prefs = Preferences.userNodeForPackage(LastDirectoryProvider.class);
 		return get(prefs);
 	}
 
 	/**
 	 * Visible for testing.
-	 *
-	 * @param prefs
-	 * @return
 	 */
 	File get(Preferences prefs) {
-		String lastDirPath = prefs.get(LAST_DIRECTORY_PREFERENCES_KEY, null);
+		var lastDirPath = prefs.get(LAST_DIRECTORY_PREFERENCES_KEY, null);
 		logger.debug("Get last directory: {}", lastDirPath);
 		if (lastDirPath == null) {
 			return null;
 		}
-		File lastDir = new File(lastDirPath);
+		var lastDir = new File(lastDirPath);
 		if (!lastDir.isDirectory()) {
 			return null;
 		}
@@ -40,19 +37,16 @@ class LastDirectoryProvider {
 	}
 
 	public void set(File lastDir) {
-		Preferences prefs = Preferences.userNodeForPackage(LastDirectoryProvider.class);
+		var prefs = Preferences.userNodeForPackage(LastDirectoryProvider.class);
 		set(lastDir, prefs);
 	}
 
 	/**
 	 * Visible for testing.
-	 *
-	 * @param lastDir
-	 * @param prefs
 	 */
 	void set(File lastDir, Preferences prefs) {
 		validate(lastDir);
-		String lastDirPath = lastDir.getAbsolutePath();
+		var lastDirPath = lastDir.getAbsolutePath();
 		logger.debug("Set last directory: {}", lastDirPath);
 		prefs.put(LAST_DIRECTORY_PREFERENCES_KEY, lastDirPath);
 	}
