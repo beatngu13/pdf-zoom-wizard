@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
 		<java.version>11</java.version>
-		<javafx.version>15.0.1</javafx.version>
+		<javafx.version>16</javafx.version>
 		<mainClass>com.github.beatngu13.pdfzoomwizard.LauncherWrapper</mainClass>
 	</properties>
 
