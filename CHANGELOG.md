@@ -18,6 +18,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Security
 
+## [0.8.0] - 2021-06-30
+
+### Changed
+
+- Provide native executables for Linux, Mac, and Windows. As a consequence, the provided JAR now requires Java 11+.
+
 ## [0.7.0] - 2021-03-11
 
 ### Changed
