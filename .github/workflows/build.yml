@@ -103,16 +103,16 @@ jobs:
         run: |
           mvn gluonfx:build -B
 
-      - name: Stage native image
+      - name: Prepare native image for upload
         run: |
-          mkdir ./staging/
-          cp "./target/gluonfx/x86_64-linux/PDF Zoom Wizard" ./staging/pdfzoomwizard-linux
+          cp "./target/gluonfx/x86_64-linux/PDF Zoom Wizard" ./pdfzoomwizard-linux
+          tar --create --gzip --file ./pdfzoomwizard-linux.tar.gz ./pdfzoomwizard-linux
 
       - name: Upload native image
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./staging/pdfzoomwizard-linux
+          path: ./pdfzoomwizard-linux.tar.gz
 
   native-macos:
     needs: build
@@ -141,16 +141,16 @@ jobs:
         run: |
           mvn gluonfx:build -B
 
-      - name: Stage native image
+      - name: Prepare native image for upload
         run: |
-          mkdir ./staging/
-          cp "./target/gluonfx/x86_64-darwin/PDF Zoom Wizard" ./staging/pdfzoomwizard-macos
+          cp "./target/gluonfx/x86_64-darwin/PDF Zoom Wizard" ./pdfzoomwizard-macos
+          tar --create --gzip --file ./pdfzoomwizard-macos.tar.gz ./pdfzoomwizard-macos
 
       - name: Upload native image
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./staging/pdfzoomwizard-macos
+          path: ./pdfzoomwizard-macos.tar.gz
 
   native-windows:
     needs: build
@@ -185,19 +185,18 @@ jobs:
         run: |
           mvn gluonfx:build -B
 
-      - name: Stage native image
+      - name: Prepare native image for upload
         run: |
-          mkdir ./staging/
-          cp "./target/gluonfx/x86_64-windows/PDF Zoom Wizard.exe" ./staging/pdfzoomwizard-windows.exe
+          cp "./target/gluonfx/x86_64-windows/PDF Zoom Wizard.exe" ./pdfzoomwizard-windows.exe
 
       - name: Upload native image
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./staging/pdfzoomwizard-windows.exe
+          path: ./pdfzoomwizard-windows.exe
 
   release:
-    if: ${{ github.ref == 'refs/head/master' }}
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     needs: [native-linux, native-macos, native-windows]
     runs-on: ubuntu-latest
 
@@ -214,7 +213,7 @@ jobs:
         with:
           draft: true
           files: |
-            ./pdfzoomwizard-linux
-            ./pdfzoomwizard-macos
+            ./pdfzoomwizard-linux.tar.gz
+            ./pdfzoomwizard-macos.tar.gz
             ./pdfzoomwizard-windows.exe
             ./pdfzoomwizard.jar
