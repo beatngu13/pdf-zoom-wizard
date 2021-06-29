@@ -112,7 +112,7 @@ jobs:
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./pdfzoomwizard-linux
+          path: ./pdfzoomwizard-linux.tar.gz
 
   native-macos:
     needs: build
@@ -150,7 +150,7 @@ jobs:
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./pdfzoomwizard-macos
+          path: ./pdfzoomwizard-macos.tar.gz
 
   native-windows:
     needs: build
@@ -213,7 +213,7 @@ jobs:
         with:
           draft: true
           files: |
-            ./pdfzoomwizard-linux
-            ./pdfzoomwizard-macos
+            ./pdfzoomwizard-linux.tar.gz
+            ./pdfzoomwizard-macos.tar.gz
             ./pdfzoomwizard-windows.exe
             ./pdfzoomwizard.jar
