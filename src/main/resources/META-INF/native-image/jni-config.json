@@ -8,9 +8,15 @@
     {"name":"leaveNestedEventLoop","parameterTypes":["java.lang.Object"] }, 
     {"name":"notifyDidBecomeActive","parameterTypes":[] }, 
     {"name":"notifyDidFinishLaunching","parameterTypes":[] }, 
+    {"name":"notifyDidHide","parameterTypes":[] }, 
+    {"name":"notifyDidResignActive","parameterTypes":[] }, 
+    {"name":"notifyDidUnhide","parameterTypes":[] }, 
     {"name":"notifyOpenFiles","parameterTypes":["java.lang.String[]"] }, 
     {"name":"notifyWillBecomeActive","parameterTypes":[] }, 
     {"name":"notifyWillFinishLaunching","parameterTypes":[] }, 
+    {"name":"notifyWillHide","parameterTypes":[] }, 
+    {"name":"notifyWillResignActive","parameterTypes":[] }, 
+    {"name":"notifyWillUnhide","parameterTypes":[] }, 
     {"name":"reportException","parameterTypes":["java.lang.Throwable"] }
   ]
 },
@@ -186,9 +192,6 @@
 {
   "name":"java.lang.Long",
   "methods":[{"name":"longValue","parameterTypes":[] }]
-},
-{
-  "name":"java.lang.NoSuchMethodError"
 },
 {
   "name":"java.lang.Runnable",

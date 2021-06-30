@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Fixed
 
+- Missing class(es) in native image(s) (see [#224](https://github.com/beatngu13/pdf-zoom-wizard/issues/224)).
+
 ### Security
 
 ## [0.8.0] - 2021-06-30
