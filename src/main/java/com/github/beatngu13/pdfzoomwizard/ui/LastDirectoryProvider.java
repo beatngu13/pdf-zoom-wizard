@@ -1,6 +1,7 @@
 package com.github.beatngu13.pdfzoomwizard.ui;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Objects;
@@ -8,7 +9,7 @@ import java.util.prefs.Preferences;
 
 class LastDirectoryProvider {
 
-	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(LastDirectoryProvider.class);
+	private static final Logger logger = LoggerFactory.getLogger(LastDirectoryProvider.class);
 
 	/**
 	 * Preferences key for the absolute path of the last directory.

@@ -2,10 +2,11 @@ package com.github.beatngu13.pdfzoomwizard.core;
 
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class BookmarkUtil {
 
-	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(BookmarkUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(BookmarkUtil.class);
 
 	static final String BOOKMARK_TITLE_FALLBACK = "N/A";
 

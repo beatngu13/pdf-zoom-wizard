@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Launches the Wizard.
@@ -13,7 +14,7 @@ import org.slf4j.Logger;
  */
 public class Launcher extends Application {
 
-	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Launcher.class);
+	private static final Logger logger = LoggerFactory.getLogger(Launcher.class);
 
 	public static void main(String[] args) {
 		launch(args);
