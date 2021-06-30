@@ -123,11 +123,11 @@ public class Wizard extends Task<Void> {
 		var filename = file.getName();
 
 		if (!filename.endsWith(PDF_FILE_EXTENSION)) {
-			logger.warn("Skipping '{}'.", filename);
+			logger.warn("Skipping non-PDF file '{}'.", filename);
 			return;
 		}
 
-		logger.info("Processing '{}'.", filename);
+		logger.info("Processing PDF file '{}'.", filename);
 
 		try (var pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
 			bookmarkCountLocal = 0;
