@@ -1,7 +1,6 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
 import javafx.concurrent.Task;
-import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
