@@ -1,7 +1,6 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
 import javafx.concurrent.Task;
-import org.pdfclown.documents.Document;
 import org.pdfclown.documents.interaction.actions.GoToDestination;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
@@ -10,6 +9,7 @@ import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  */
 public class Wizard extends Task<Void> {
 
-	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Wizard.class);
+	private static final Logger logger = LoggerFactory.getLogger(Wizard.class);
 
 	/**
 	 * The {@link Task#updateMessage(String)} when {@link Task#running()}.
@@ -123,11 +123,11 @@ public class Wizard extends Task<Void> {
 		var filename = file.getName();
 
 		if (!filename.endsWith(PDF_FILE_EXTENSION)) {
-			logger.warn("Skipping '{}'.", filename);
+			logger.warn("Skipping non-PDF file '{}'.", filename);
 			return;
 		}
 
-		logger.info("Processing '{}'.", filename);
+		logger.info("Processing PDF file '{}'.", filename);
 
 		try (var pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
 			bookmarkCountLocal = 0;

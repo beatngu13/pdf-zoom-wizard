@@ -16,9 +16,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 import javafx.util.Duration;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -29,7 +29,7 @@ import java.io.File;
  */
 public class MainViewController {
 
-	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(MainViewController.class);
+	private static final Logger logger = LoggerFactory.getLogger(MainViewController.class);
 
 	/**
 	 * Provides the last directory for {@link #directoryChooser} and

@@ -197,7 +197,7 @@ jobs:
 
   release:
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-    needs: [native-linux, native-macos, native-windows]
+    needs: [ native-linux, native-macos, native-windows ]
     runs-on: ubuntu-latest
 
     steps:
