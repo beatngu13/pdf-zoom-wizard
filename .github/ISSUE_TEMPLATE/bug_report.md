@@ -31,5 +31,5 @@ Add the [log file](https://github.com/beatngu13/pdf-zoom-wizard/wiki#info) from 
 ### Environment
 
 - OS: [e.g. macOS 10.14.2]
-- Java version: [e.g. result of `$ java -version`]
 - PDF Zoom Wizard version: [e.g. 1.2.3]
+- Java version (if use of JAR): [e.g. result of `$ java -version`]
