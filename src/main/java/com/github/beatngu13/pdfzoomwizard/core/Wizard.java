@@ -9,6 +9,7 @@ import org.pdfclown.documents.interaction.navigation.document.LocalDestination;
 import org.pdfclown.files.SerializationModeEnum;
 import org.pdfclown.objects.PdfObjectWrapper;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.util.stream.Stream;
  */
 public class Wizard extends Task<Void> {
 
-	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Wizard.class);
+	private static final Logger logger = LoggerFactory.getLogger(Wizard.class);
 
 	/**
 	 * The {@link Task#updateMessage(String)} when {@link Task#running()}.
