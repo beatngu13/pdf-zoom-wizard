@@ -8,6 +8,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
 
     steps:
       - name: Check out repo
@@ -53,15 +55,17 @@ jobs:
           -Dsonar.organization=beatngu13-github
           -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard
 
-      - name: Prepare JAR for upload
-        run: |
-          cp ./target/pdfzoomwizard-*.jar ./pdfzoomwizard.jar
-
       - name: Upload JAR
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./pdfzoomwizard.jar
+          path: ./target/pdfzoomwizard-*.jar
+
+      - name: Extract version
+        id: version
+        run: |
+          version=$(mvn help:evaluate -q -Dexpression=project.version -DforceStdout)
+          echo "::set-output name=version::${version}"
 
   native-linux:
     needs: build
@@ -104,14 +108,14 @@ jobs:
 
       - name: Prepare native image for upload
         run: |
-          cp "./target/gluonfx/x86_64-linux/PDF Zoom Wizard" ./pdfzoomwizard-linux
-          tar --create --gzip --file ./pdfzoomwizard-linux.tar.gz ./pdfzoomwizard-linux
+          cp "./target/gluonfx/x86_64-linux/PDF Zoom Wizard" ./pdfzoomwizard
+          tar --create --gzip --file "./pdfzoomwizard-linux-${{needs.build.outputs.version}}.tar.gz" ./pdfzoomwizard
 
       - name: Upload native image
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./pdfzoomwizard-linux.tar.gz
+          path: ./pdfzoomwizard-linux-*.tar.gz
 
   native-macos:
     needs: build
@@ -142,14 +146,14 @@ jobs:
 
       - name: Prepare native image for upload
         run: |
-          cp "./target/gluonfx/x86_64-darwin/PDF Zoom Wizard" ./pdfzoomwizard-macos
-          tar --create --gzip --file ./pdfzoomwizard-macos.tar.gz ./pdfzoomwizard-macos
+          cp "./target/gluonfx/x86_64-darwin/PDF Zoom Wizard" ./pdfzoomwizard
+          tar --create --gzip --file "./pdfzoomwizard-macos-${{needs.build.outputs.version}}.tar.gz" ./pdfzoomwizard
 
       - name: Upload native image
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./pdfzoomwizard-macos.tar.gz
+          path: ./pdfzoomwizard-macos-*.tar.gz
 
   native-windows:
     needs: build
@@ -186,13 +190,14 @@ jobs:
 
       - name: Prepare native image for upload
         run: |
-          cp "./target/gluonfx/x86_64-windows/PDF Zoom Wizard.exe" ./pdfzoomwizard-windows.exe
+          cp ".\target\gluonfx\x86_64-windows\PDF Zoom Wizard.exe" .\pdfzoomwizard.exe
+          Compress-Archive -Path .\pdfzoomwizard.exe -DestinationPath ".\pdfzoomwizard-windows-${{needs.build.outputs.version}}.zip"
 
       - name: Upload native image
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./pdfzoomwizard-windows.exe
+          path: ./pdfzoomwizard-windows-*.zip
 
   release:
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
@@ -212,7 +217,7 @@ jobs:
         with:
           draft: true
           files: |
-            ./pdfzoomwizard-linux.tar.gz
-            ./pdfzoomwizard-macos.tar.gz
-            ./pdfzoomwizard-windows.exe
-            ./pdfzoomwizard.jar
+            ./pdfzoomwizard-linux-*.tar.gz
+            ./pdfzoomwizard-macos-*.tar.gz
+            ./pdfzoomwizard-windows-*.zip
+            ./pdfzoomwizard-*.jar
