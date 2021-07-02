@@ -53,16 +53,15 @@ jobs:
           -Dsonar.organization=beatngu13-github
           -Dsonar.projectKey=com.github.beatngu13:pdfzoomwizard
 
-      - name: Move JAR to staging directory
+      - name: Prepare JAR for upload
         run: |
-          mkdir ./staging/
-          cp ./target/pdfzoomwizard-*.jar ./staging/pdfzoomwizard.jar
+          cp ./target/pdfzoomwizard-*.jar ./pdfzoomwizard.jar
 
       - name: Upload JAR
         uses: actions/upload-artifact@v2.2.4
         with:
           name: artifacts
-          path: ./staging/pdfzoomwizard.jar
+          path: ./pdfzoomwizard.jar
 
   native-linux:
     needs: build
