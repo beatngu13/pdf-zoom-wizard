@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.version.outputs.version }}
+      version: ${{ steps.extract-version.outputs.version }}
 
     steps:
       - name: Check out repo
@@ -62,7 +62,7 @@ jobs:
           path: ./target/pdfzoomwizard-*.jar
 
       - name: Extract version
-        id: version
+        id: extract-version
         run: |
           version=$(mvn help:evaluate -q -Dexpression=project.version -DforceStdout)
           echo "::set-output name=version::${version}"
