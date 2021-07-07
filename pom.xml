@@ -18,6 +18,9 @@
 		<java.version>11</java.version>
 		<javafx.version>16</javafx.version>
 		<mainClass>com.github.beatngu13.pdfzoomwizard.LauncherWrapper</mainClass>
+		<sonar.projectKey>beatngu13_pdf-zoom-wizard</sonar.projectKey>
+		<sonar.organization>beatngu13</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<scm>
