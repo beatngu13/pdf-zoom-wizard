@@ -5,6 +5,7 @@ import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
 import org.pdfclown.objects.PdfObjectWrapper;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -24,9 +25,7 @@ class WizardTest {
 		when(bookmark.getBookmarks()).thenReturn(mock(Bookmarks.class));
 		when(bookmark.getTarget()).thenThrow(IllegalArgumentException.class);
 
-		Iterator<Bookmark> iter = mock(Iterator.class);
-		when(iter.hasNext()).thenReturn(true, false);
-		when(iter.next()).thenReturn(bookmark);
+		Iterator<Bookmark> iter = Collections.singleton(bookmark).iterator();
 
 		Bookmarks bookmarks = mock(Bookmarks.class);
 		when(bookmarks.iterator()).thenReturn(iter);
@@ -39,8 +38,7 @@ class WizardTest {
 	void closed_bookmarks_should_be_modified() {
 		Wizard cut = spy(new Wizard(null, null, Zoom.ACTUAL_SIZE));
 
-		Iterator<Bookmark> childrenIter = mock(Iterator.class);
-		when(childrenIter.hasNext()).thenReturn(false);
+		Iterator<Bookmark> childrenIter = Collections.emptyIterator();
 
 		Bookmarks children = mock(Bookmarks.class);
 		when(children.iterator()).thenReturn(childrenIter);
@@ -51,9 +49,7 @@ class WizardTest {
 		when(bookmark.getBookmarks()).thenReturn(children);
 		when(bookmark.getTarget()).thenReturn(mock(PdfObjectWrapper.class));
 
-		Iterator<Bookmark> bookmarksIter = mock(Iterator.class);
-		when(bookmarksIter.hasNext()).thenReturn(true, false);
-		when(bookmarksIter.next()).thenReturn(bookmark);
+		Iterator<Bookmark> bookmarksIter = Collections.singleton(bookmark).iterator();
 
 		Bookmarks bookmarks = mock(Bookmarks.class);
 		when(bookmarks.iterator()).thenReturn(bookmarksIter);
