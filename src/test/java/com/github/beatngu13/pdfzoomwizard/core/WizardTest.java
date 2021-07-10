@@ -23,7 +23,7 @@ class WizardTest {
 
 		Bookmark bookmark = mock(Bookmark.class);
 		when(bookmark.getBookmarks()).thenReturn(mock(Bookmarks.class));
-		when(bookmark.getTarget()).thenThrow(IllegalArgumentException.class);
+		when(bookmark.getTarget()).thenThrow(RuntimeException.class);
 
 		Iterator<Bookmark> iter = Collections.singleton(bookmark).iterator();
 
