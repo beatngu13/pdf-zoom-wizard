@@ -10,9 +10,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Changed
 
-- Include version in native images name.
-- Reduce native images size.
-
 ### Deprecated
 
 ### Removed
@@ -20,6 +17,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ### Fixed
 
 ### Security
+
+## [0.10.0] - 2021-08-09
+
+### Changed
+
+- Include version in native images names.
+- Reduce native images sizes.
 
 ## [0.9.0] - 2021-07-01
 
