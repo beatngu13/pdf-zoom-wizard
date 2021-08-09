@@ -3,7 +3,8 @@ name: Build
 on: push
 
 env:
-  GRAALVM_VERSION: 21.1.0.java11
+  GRAALVM_VERSION: 21.2.0
+  JAVA_VERSION: java11
 
 jobs:
   build:
@@ -21,7 +22,8 @@ jobs:
       - name: Set up GraalVM
         uses: DeLaGuardo/setup-graalvm@4.0
         with:
-          graalvm-version: ${{ env.GRAALVM_VERSION }}
+          graalvm: ${{ env.GRAALVM_VERSION }}
+          java: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
         uses: actions/cache@v2.1.6
@@ -75,7 +77,8 @@ jobs:
       - name: Set up GraalVM
         uses: DeLaGuardo/setup-graalvm@4.0
         with:
-          graalvm-version: ${{ env.GRAALVM_VERSION }}
+          graalvm: ${{ env.GRAALVM_VERSION }}
+          java: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
         uses: actions/cache@v2.1.6
@@ -125,7 +128,8 @@ jobs:
       - name: Set up GraalVM
         uses: DeLaGuardo/setup-graalvm@4.0
         with:
-          graalvm-version: ${{ env.GRAALVM_VERSION }}
+          graalvm: ${{ env.GRAALVM_VERSION }}
+          java: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
         uses: actions/cache@v2.1.6
@@ -163,7 +167,8 @@ jobs:
       - name: Set up GraalVM
         uses: DeLaGuardo/setup-graalvm@4.0
         with:
-          graalvm-version: ${{ env.GRAALVM_VERSION }}
+          graalvm: ${{ env.GRAALVM_VERSION }}
+          java: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
         uses: actions/cache@v2.1.6
