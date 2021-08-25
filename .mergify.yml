@@ -5,6 +5,11 @@ pull_request_rules:
       - "-draft"
       - "#approved-reviews-by=0"
       - "#changes-requested-reviews-by=0"
+      - "check-success=build"
+      - "check-success=native-linux"
+      - "check-success=native-macos"
+      - "check-success=native-windows"
+      - "check-success=SonarCloud Code Analysis"
     actions:
       rebase: { }
 
@@ -14,6 +19,11 @@ pull_request_rules:
       - "-draft"
       - "#approved-reviews-by>=1"
       - "#changes-requested-reviews-by=0"
+      - "check-success=build"
+      - "check-success=native-linux"
+      - "check-success=native-macos"
+      - "check-success=native-windows"
+      - "check-success=SonarCloud Code Analysis"
     actions:
       merge:
         strict: true
@@ -26,6 +36,11 @@ pull_request_rules:
       - "-draft"
       - "#approved-reviews-by>=1"
       - "#changes-requested-reviews-by=0"
+      - "check-success=build"
+      - "check-success=native-linux"
+      - "check-success=native-macos"
+      - "check-success=native-windows"
+      - "check-success=SonarCloud Code Analysis"
     actions:
       merge:
         strict: true
