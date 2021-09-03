@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -110,7 +111,7 @@ public class Wizard extends Task<Void> {
 		try (Stream<Path> tree = Files.walk(file.toPath())) {
 			tree.map(Path::toFile).forEach(this::modifyFile);
 		} catch (IOException e) {
-			logger.error("Exception while walking file tree.", e);
+			throw new UncheckedIOException("Exception while walking file tree.", e);
 		}
 	}
 
