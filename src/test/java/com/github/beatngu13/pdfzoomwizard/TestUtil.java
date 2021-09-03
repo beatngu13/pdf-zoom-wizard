@@ -20,13 +20,9 @@ public class TestUtil {
 	}
 
 	public static String toStringNormalized(Zoom zoom) {
-		// Zoom name
-		var normalized = zoom.toString();
-		// zoom name
-		normalized = normalized.toLowerCase();
-		// zoom_name
-		normalized = normalized.replaceAll(" ", "_");
-		return normalized;
+		return zoom.toString()
+				.toLowerCase()
+				.replaceAll(" ", "_");
 	}
 
 	public static List<PdfObject> getAllPdfObjects(File pdf) {
