@@ -21,7 +21,7 @@ public class TestUtil {
 
 	public static String toStringNormalized(Zoom zoom) {
 		// Zoom name
-		String normalized = zoom.toString();
+		var normalized = zoom.toString();
 		// zoom name
 		normalized = normalized.toLowerCase();
 		// zoom_name
