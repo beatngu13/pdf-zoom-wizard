@@ -118,11 +118,11 @@ public class MainViewController {
 			var fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
 			fadeOut.setFromValue(1.0);
 			fadeOut.setToValue(0.0);
-			fadeOut.play();
-
 			var fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
 			fadeIn.setFromValue(0.0);
 			fadeIn.setToValue(1.0);
+
+			fadeOut.play();
 			fadeIn.play();
 		});
 
