@@ -107,7 +107,7 @@ public class Wizard extends Task<Void> {
 	 *
 	 * @param file Directory or file to be modified.
 	 */
-	public void modifyFiles(File file) {
+	private void modifyFiles(File file) {
 		try (Stream<Path> tree = Files.walk(file.toPath())) {
 			tree.map(Path::toFile).forEach(this::modifyFile);
 		} catch (IOException e) {
