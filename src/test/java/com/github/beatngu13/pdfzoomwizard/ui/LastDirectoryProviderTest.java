@@ -37,7 +37,7 @@ class LastDirectoryProviderTest {
 
 	@Test
 	void set_should_not_accept_non_existing_file() {
-		File nonExistingFile = new File("non-existing-file");
+		var nonExistingFile = new File("non-existing-file");
 
 		assertThatThrownBy(() -> cut.set(nonExistingFile))
 				.isInstanceOf(IllegalArgumentException.class)
@@ -46,7 +46,7 @@ class LastDirectoryProviderTest {
 
 	@Test
 	void set_should_not_accept_non_directory(@TempDir Path temp) throws Exception {
-		File nonDirectory = temp.resolve("non-directory").toFile();
+		var nonDirectory = temp.resolve("non-directory").toFile();
 		nonDirectory.createNewFile();
 
 		assertThatThrownBy(() -> cut.set(nonDirectory))
@@ -56,7 +56,7 @@ class LastDirectoryProviderTest {
 
 	@Test
 	void set_should_put_last_directory_in_preferences(@TempDir Path temp) {
-		File lastDirectory = temp.resolve("directory").toFile();
+		var lastDirectory = temp.resolve("directory").toFile();
 		lastDirectory.mkdir();
 
 		cut.set(lastDirectory, prefs);
@@ -71,7 +71,7 @@ class LastDirectoryProviderTest {
 
 	@Test
 	void get_should_yield_null_if_last_directory_does_not_exist() {
-		String lastDirectoryPath = "non-existing-directory";
+		var lastDirectoryPath = "non-existing-directory";
 		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirectoryPath);
 
 		assertThat(cut.get(prefs)).isNull();
@@ -79,10 +79,10 @@ class LastDirectoryProviderTest {
 
 	@Test
 	void get_should_yield_null_if_last_directory_is_not_a_directory(@TempDir Path temp) throws Exception {
-		File nonDirectory = temp.resolve("non-directory").toFile();
+		var nonDirectory = temp.resolve("non-directory").toFile();
 		nonDirectory.createNewFile();
 
-		String lastDirectoryPath = nonDirectory.getAbsolutePath();
+		var lastDirectoryPath = nonDirectory.getAbsolutePath();
 		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirectoryPath);
 
 		assertThat(cut.get(prefs)).isNull();
@@ -90,10 +90,10 @@ class LastDirectoryProviderTest {
 
 	@Test
 	void get_should_yield_last_directory_from_preferences(@TempDir Path temp) {
-		File lastDirectory = temp.resolve("directory").toFile();
+		var lastDirectory = temp.resolve("directory").toFile();
 		lastDirectory.mkdir();
 
-		String lastDirectoryPath = lastDirectory.getAbsolutePath();
+		var lastDirectoryPath = lastDirectory.getAbsolutePath();
 		when(prefs.get(eq(LAST_DIRECTORY_PREFERENCES_KEY), any())).thenReturn(lastDirectoryPath);
 
 		assertThat(cut.get(prefs)).isEqualTo(new File(lastDirectoryPath));

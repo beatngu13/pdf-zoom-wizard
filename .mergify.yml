@@ -1,49 +1,15 @@
 pull_request_rules:
-  - name: "Rebase if non-release, non-draft, unreviewed"
+  - name: "Merge strict with rebase if Dependabot"
     conditions:
-      - "head~=^(?!(release|hotfix)).*$"
-      - "-draft"
-      - "#approved-reviews-by=0"
-      - "#changes-requested-reviews-by=0"
+      - "author=dependabot[bot]"
       - "check-success=build"
       - "check-success=native-linux"
       - "check-success=native-macos"
       - "check-success=native-windows"
-      - "check-success=SonarCloud Code Analysis"
-    actions:
-      rebase: { }
-
-  - name: "Merge strict with rebase if non-release, non-draft, reviewed"
-    conditions:
-      - "head~=^(?!(release|hotfix)).*$"
-      - "-draft"
-      - "#approved-reviews-by>=1"
-      - "#changes-requested-reviews-by=0"
-      - "check-success=build"
-      - "check-success=native-linux"
-      - "check-success=native-macos"
-      - "check-success=native-windows"
-      - "check-success=SonarCloud Code Analysis"
     actions:
       merge:
         strict: true
         strict_method: rebase
-        method: merge
-
-  - name: "Merge strict if release, non-draft, reviewed"
-    conditions:
-      - "head~=^(release|hotfix).*$"
-      - "-draft"
-      - "#approved-reviews-by>=1"
-      - "#changes-requested-reviews-by=0"
-      - "check-success=build"
-      - "check-success=native-linux"
-      - "check-success=native-macos"
-      - "check-success=native-windows"
-      - "check-success=SonarCloud Code Analysis"
-    actions:
-      merge:
-        strict: true
         method: merge
 
   - name: "Delete if merged"

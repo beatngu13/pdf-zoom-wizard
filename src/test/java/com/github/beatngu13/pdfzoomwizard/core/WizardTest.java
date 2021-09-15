@@ -5,7 +5,7 @@ import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
 import org.pdfclown.objects.PdfObjectWrapper;
 
-import java.util.Iterator;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.mock;
@@ -18,18 +18,16 @@ class WizardTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	void exception_in_get_target_shouldnt_crash_execution() {
-		Wizard cut = new Wizard(null, null, Zoom.ACTUAL_SIZE);
+		var cut = new Wizard(null, null, Zoom.ACTUAL_SIZE);
 
-		Bookmark bookmark = mock(Bookmark.class);
+		var bookmark = mock(Bookmark.class);
 		when(bookmark.getBookmarks()).thenReturn(mock(Bookmarks.class));
-		when(bookmark.getTarget()).thenThrow(IllegalArgumentException.class);
+		when(bookmark.getTarget()).thenThrow(RuntimeException.class);
 
-		Iterator<Bookmark> iter = mock(Iterator.class);
-		when(iter.hasNext()).thenReturn(true, false);
-		when(iter.next()).thenReturn(bookmark);
+		var bookmarkIter = Collections.singleton(bookmark).iterator();
 
-		Bookmarks bookmarks = mock(Bookmarks.class);
-		when(bookmarks.iterator()).thenReturn(iter);
+		var bookmarks = mock(Bookmarks.class);
+		when(bookmarks.iterator()).thenReturn(bookmarkIter);
 
 		assertThatCode(() -> cut.modifyBookmarks(bookmarks)).doesNotThrowAnyException();
 	}
@@ -37,30 +35,27 @@ class WizardTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	void closed_bookmarks_should_be_modified() {
-		Wizard cut = spy(new Wizard(null, null, Zoom.ACTUAL_SIZE));
+		var cut = spy(new Wizard(null, null, Zoom.ACTUAL_SIZE));
 
-		Iterator<Bookmark> childrenIter = mock(Iterator.class);
-		when(childrenIter.hasNext()).thenReturn(false);
+		var childBookmarksIter = Collections.<Bookmark>emptyIterator();
 
-		Bookmarks children = mock(Bookmarks.class);
-		when(children.iterator()).thenReturn(childrenIter);
+		var childBookmarks = mock(Bookmarks.class);
+		when(childBookmarks.iterator()).thenReturn(childBookmarksIter);
 		// Negative count means closed bookmark.
-		when(children.size()).thenReturn(-1);
+		when(childBookmarks.size()).thenReturn(-1);
 
-		Bookmark bookmark = mock(Bookmark.class);
-		when(bookmark.getBookmarks()).thenReturn(children);
+		var bookmark = mock(Bookmark.class);
+		when(bookmark.getBookmarks()).thenReturn(childBookmarks);
 		when(bookmark.getTarget()).thenReturn(mock(PdfObjectWrapper.class));
 
-		Iterator<Bookmark> bookmarksIter = mock(Iterator.class);
-		when(bookmarksIter.hasNext()).thenReturn(true, false);
-		when(bookmarksIter.next()).thenReturn(bookmark);
+		var bookmarksIter = Collections.singleton(bookmark).iterator();
 
-		Bookmarks bookmarks = mock(Bookmarks.class);
+		var bookmarks = mock(Bookmarks.class);
 		when(bookmarks.iterator()).thenReturn(bookmarksIter);
 
 		cut.modifyBookmarks(bookmarks);
 
-		verify(cut).modifyBookmarks(children);
+		verify(cut).modifyBookmarks(childBookmarks);
 	}
 
 }
