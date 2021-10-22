@@ -3,7 +3,7 @@ name: Build
 on: push
 
 env:
-  GRAALVM_VERSION: 21.2.0
+  GRAALVM_VERSION: 21.3.0
   JAVA_VERSION: java11
 
 jobs:
