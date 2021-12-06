@@ -1,5 +1,13 @@
+queue_rules:
+  - name: default
+    conditions:
+      - "check-success=build"
+      - "check-success=native-linux"
+      - "check-success=native-macos"
+      - "check-success=native-windows"
+
 pull_request_rules:
-  - name: "Merge strict with rebase if Dependabot"
+  - name: merge_dependabot
     conditions:
       - "author=dependabot[bot]"
       - "check-success=build"
@@ -7,12 +15,11 @@ pull_request_rules:
       - "check-success=native-macos"
       - "check-success=native-windows"
     actions:
-      merge:
-        strict: true
-        strict_method: rebase
-        method: merge
+      queue:
+        name: default
+        update_method: rebase
 
-  - name: "Delete if merged"
+  - name: delete_merged
     conditions:
       - merged
     actions:
