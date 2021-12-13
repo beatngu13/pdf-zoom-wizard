@@ -185,7 +185,7 @@
 			<plugin>
 				<groupId>com.gluonhq</groupId>
 				<artifactId>gluonfx-maven-plugin</artifactId>
-				<version>1.0.9</version>
+				<version>1.0.10</version>
 				<configuration>
 					<mainClass>${mainClass}</mainClass>
 					<nativeImageArgs>
