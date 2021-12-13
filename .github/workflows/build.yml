@@ -55,7 +55,7 @@ jobs:
           mvn sonar:sonar -B
 
       - name: Upload JAR
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v2.3.0
         with:
           name: artifacts
           path: ./target/pdfzoomwizard-*.jar
@@ -112,7 +112,7 @@ jobs:
           tar --create --gzip --file "./pdfzoomwizard-linux-${{needs.build.outputs.version}}.tar.gz" ./pdfzoomwizard
 
       - name: Upload native image
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v2.3.0
         with:
           name: artifacts
           path: ./pdfzoomwizard-linux-*.tar.gz
@@ -151,7 +151,7 @@ jobs:
           tar --create --gzip --file "./pdfzoomwizard-macos-${{needs.build.outputs.version}}.tar.gz" ./pdfzoomwizard
 
       - name: Upload native image
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v2.3.0
         with:
           name: artifacts
           path: ./pdfzoomwizard-macos-*.tar.gz
@@ -196,7 +196,7 @@ jobs:
           Compress-Archive -Path .\pdfzoomwizard.exe -DestinationPath ".\pdfzoomwizard-windows-${{needs.build.outputs.version}}.zip"
 
       - name: Upload native image
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v2.3.0
         with:
           name: artifacts
           path: ./pdfzoomwizard-windows-*.zip
