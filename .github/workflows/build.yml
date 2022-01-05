@@ -214,7 +214,7 @@ jobs:
           name: artifacts
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v0.1.5
+        uses: softprops/action-gh-release@v0.1.14
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
