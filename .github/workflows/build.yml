@@ -215,9 +215,8 @@ jobs:
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v0.1.5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
           files: |
             ./pdfzoomwizard-linux-*.tar.gz
