@@ -15,7 +15,7 @@
 		<encoding>UTF-8</encoding>
 		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<javafx.version>17.0.1</javafx.version>
 		<mainClass>com.github.beatngu13.pdfzoomwizard.LauncherWrapper</mainClass>
 		<sonar.projectKey>beatngu13_pdf-zoom-wizard</sonar.projectKey>
@@ -188,6 +188,8 @@
 				<version>1.0.11</version>
 				<configuration>
 					<mainClass>${mainClass}</mainClass>
+					<javaStaticSdkVersion>${java.version}</javaStaticSdkVersion>
+					<javafxStaticSdkVersion>${javafx.version}</javafxStaticSdkVersion>
 					<nativeImageArgs>
 						<arg>--allow-incomplete-classpath</arg>
 						<arg>--initialize-at-build-time=org.pdfclown.Version</arg>
