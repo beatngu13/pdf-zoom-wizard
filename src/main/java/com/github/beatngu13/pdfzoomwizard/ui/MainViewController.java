@@ -118,11 +118,11 @@ public class MainViewController {
 			var fadeOut = new FadeTransition(Duration.millis(300.0), rootLabel);
 			fadeOut.setFromValue(1.0);
 			fadeOut.setToValue(0.0);
-			fadeOut.play();
-
 			var fadeIn = new FadeTransition(Duration.millis(300.0), rootLabel);
 			fadeIn.setFromValue(0.0);
 			fadeIn.setToValue(1.0);
+
+			fadeOut.play();
 			fadeIn.play();
 		});
 
@@ -168,19 +168,19 @@ public class MainViewController {
 		}
 
 		if (!root.exists()) {
-			return handleInvalidInput("Selected file/directory doesn't exist");
+			return logAndShow("Selected file/directory doesn't exist");
 		}
 
 		if (multipleMode && !root.isDirectory()) {
-			return handleInvalidInput("Multiple files mode selected but file is selected");
+			return logAndShow("Multiple files mode selected but file is selected");
 		}
 
 		if (!multipleMode && root.isDirectory()) {
-			return handleInvalidInput("Singe file mode selected but directory is selected");
+			return logAndShow("Singe file mode selected but directory is selected");
 		}
 
 		if (copyCheckBox.isSelected() && copyTextField.getText().isEmpty()) {
-			return handleInvalidInput("Copy selected but filename infix is empty");
+			return logAndShow("Copy selected but filename infix is empty");
 		}
 
 		return true;
@@ -192,7 +192,7 @@ public class MainViewController {
 	 * @param msg Warning message to log and show.
 	 * @return Always <code>false</code>.
 	 */
-	private boolean handleInvalidInput(String msg) {
+	private boolean logAndShow(String msg) {
 		logger.warn(msg);
 		infoText.setText(msg);
 		return false;

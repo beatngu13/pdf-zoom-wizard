@@ -15,7 +15,6 @@ import static org.mockito.Mockito.when;
 
 class WizardTest {
 
-	@SuppressWarnings("unchecked")
 	@Test
 	void exception_in_get_target_shouldnt_crash_execution() {
 		var cut = new Wizard(null, null, Zoom.ACTUAL_SIZE);
