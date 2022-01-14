@@ -69,15 +69,15 @@ public class Wizard extends Task<Void> {
 	/**
 	 * Total number of modified files.
 	 */
-	private int fileCount;
+	private int fileCountTotal;
 	/**
 	 * Total number of modified bookmarks.
 	 */
-	private int bookmarkCountGlobal;
+	private int bookmarkCountTotal;
 	/**
 	 * Number of modified bookmarks within the current processed PDF file.
 	 */
-	private int bookmarkCountLocal;
+	private int bookmarkCountCurrent;
 
 	/**
 	 * Creates a new <code>Wizard</code> instance.
@@ -98,7 +98,7 @@ public class Wizard extends Task<Void> {
 		logger.info("Bookmark(s) will be set to zoom '{}'.", zoom);
 		logger.info("PDF document(s) will be saved with serialization mode '{}'.", SERIALIZATION_MODE);
 		modifyFiles(root);
-		logger.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountGlobal, fileCount);
+		logger.info("Modified {} bookmark(s) in {} file(s).", bookmarkCountTotal, fileCountTotal);
 		return null;
 	}
 
@@ -131,12 +131,12 @@ public class Wizard extends Task<Void> {
 		logger.info("Processing PDF file '{}'.", filename);
 
 		try (var pdf = new org.pdfclown.files.File(file.getAbsolutePath())) {
-			bookmarkCountLocal = 0;
+			bookmarkCountCurrent = 0;
 			var document = pdf.getDocument();
 			modifyBookmarks(document.getBookmarks());
 			savePdf(pdf);
-			fileCount++;
-			logger.info("Modified {} bookmark(s) in '{}'.", bookmarkCountLocal, filename);
+			fileCountTotal++;
+			logger.info("Modified {} bookmark(s) in '{}'.", bookmarkCountCurrent, filename);
 		} catch (Exception e) {
 			logger.error("Exception while processing file '{}'.", file.getAbsolutePath(), e);
 		}
@@ -209,8 +209,8 @@ public class Wizard extends Task<Void> {
 	private void modifyDestination(Bookmark bookmark, Destination destination) {
 		destination.setMode(zoom.getMode());
 		destination.setZoom(zoom.getZoom());
-		bookmarkCountGlobal++;
-		bookmarkCountLocal++;
+		bookmarkCountTotal++;
+		bookmarkCountCurrent++;
 		logger.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
 	}
 
