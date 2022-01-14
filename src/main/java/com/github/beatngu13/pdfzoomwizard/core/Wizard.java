@@ -149,14 +149,13 @@ public class Wizard extends Task<Void> {
 	 * @throws IOException If an I/O error occurs.
 	 */
 	private void savePdf(org.pdfclown.files.File pdf) throws IOException {
-		if (filenameInfix == null) {
-			// Overwrite PDF.
-			pdf.save(SERIALIZATION_MODE);
-		} else {
-			// Copy PDF.
+		var copyPdf = filenameInfix != null;
+		if (copyPdf) {
 			var path = pdf.getPath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION);
 			var copy = new File(path);
 			pdf.save(copy, SERIALIZATION_MODE);
+		} else {
+			pdf.save(SERIALIZATION_MODE);
 		}
 	}
 
