@@ -143,23 +143,6 @@ public class Wizard extends Task<Void> {
 	}
 
 	/**
-	 * Saves the given PDF. If {@link #filenameInfix} is not null, the PDF will be copied, otherwise overwritten.
-	 *
-	 * @param pdf PDF to be saved.
-	 * @throws IOException If an I/O error occurs.
-	 */
-	private void savePdf(org.pdfclown.files.File pdf) throws IOException {
-		var copyPdf = filenameInfix != null;
-		if (copyPdf) {
-			var path = pdf.getPath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION);
-			var copy = new File(path);
-			pdf.save(copy, SERIALIZATION_MODE);
-		} else {
-			pdf.save(SERIALIZATION_MODE);
-		}
-	}
-
-	/**
 	 * Modifies each bookmark which is found by depth-first search using {@link #modifyBookmark(Bookmark)}.
 	 * <p>
 	 * Visible for testing.
@@ -212,6 +195,23 @@ public class Wizard extends Task<Void> {
 		bookmarkCountTotal++;
 		bookmarkCountCurrent++;
 		logger.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
+	}
+
+	/**
+	 * Saves the given PDF. If {@link #filenameInfix} is not null, the PDF will be copied, otherwise overwritten.
+	 *
+	 * @param pdf PDF to be saved.
+	 * @throws IOException If an I/O error occurs.
+	 */
+	private void savePdf(org.pdfclown.files.File pdf) throws IOException {
+		var copyPdf = filenameInfix != null;
+		if (copyPdf) {
+			var path = pdf.getPath().replace(PDF_FILE_EXTENSION, filenameInfix + PDF_FILE_EXTENSION);
+			var copy = new File(path);
+			pdf.save(copy, SERIALIZATION_MODE);
+		} else {
+			pdf.save(SERIALIZATION_MODE);
+		}
 	}
 
 	@Override
