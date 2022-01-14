@@ -188,12 +188,10 @@ public class Wizard extends Task<Void> {
 		try {
 			PdfObjectWrapper<?> target = bookmark.getTarget();
 
-			if (target instanceof GoToDestination<?>) {
-				Destination destination = ((GoToDestination<?>) target).getDestination();
-				modifyDestination(bookmark, destination);
-			} else if (target instanceof LocalDestination) {
-				Destination destination = (LocalDestination) target;
-				modifyDestination(bookmark, destination);
+			if (target instanceof GoToDestination<?> goToDestination) {
+				modifyDestination(bookmark, goToDestination.getDestination());
+			} else if (target instanceof LocalDestination localDestination) {
+				modifyDestination(bookmark, localDestination);
 			} else {
 				logger.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
 						target.getClass());
