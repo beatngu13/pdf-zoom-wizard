@@ -185,7 +185,7 @@
 			<plugin>
 				<groupId>com.gluonhq</groupId>
 				<artifactId>gluonfx-maven-plugin</artifactId>
-				<version>1.0.11</version>
+				<version>1.0.12</version>
 				<configuration>
 					<mainClass>${mainClass}</mainClass>
 					<javaStaticSdkVersion>${java.version}</javaStaticSdkVersion>
