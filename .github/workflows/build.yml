@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
         with:
           # fetch unshallow to enable blame for Sonar
           fetch-depth: 0
@@ -73,7 +73,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
 
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
@@ -126,7 +126,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
 
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
@@ -167,7 +167,7 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
 
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
