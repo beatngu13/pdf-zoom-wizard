@@ -40,7 +40,7 @@ jobs:
 
       - name: Install PDF Clown
         run: |
-          ./install-pdf-clown.sh
+          ./scripts/install-deps.sh
 
       - name: Maven verify
         run: |
@@ -103,7 +103,7 @@ jobs:
 
       - name: Install PDF Clown
         run: |
-          ./install-pdf-clown.sh
+          ./scripts/install-deps.sh
 
       - name: Maven compile and link
         run: |
@@ -144,7 +144,7 @@ jobs:
 
       - name: Install PDF Clown
         run: |
-          ./install-pdf-clown.sh
+          ./scripts/install-deps.sh
 
       - name: Maven compile and link
         run: |
@@ -185,7 +185,7 @@ jobs:
 
       - name: Install PDF Clown
         run: |
-          bash ./install-pdf-clown.sh
+          bash ./scripts/install-deps.sh
 
       - name: Maven compile and link
         run: |
