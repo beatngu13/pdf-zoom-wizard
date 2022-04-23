@@ -165,7 +165,7 @@ public class Wizard extends Task<Void> {
 	 * @param bookmark Bookmark to be modified.
 	 */
 	private void modifyBookmark(Bookmark bookmark) {
-		// XXX Bookmarks with broken destinations sometimes cause trouble.
+		// Bookmark#getTarget() might throw an exception.
 		try {
 			PdfObjectWrapper<?> target = bookmark.getTarget();
 
