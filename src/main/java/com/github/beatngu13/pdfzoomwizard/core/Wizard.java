@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -166,34 +167,34 @@ public class Wizard extends Task<Void> {
 	 */
 	private void modifyBookmark(Bookmark bookmark) {
 		// Bookmark#getTarget() might throw an exception.
+		var title = BookmarkUtil.getTitle(bookmark);
 		try {
 			PdfObjectWrapper<?> target = bookmark.getTarget();
 
 			if (target instanceof GoToDestination<?> goToDestination) {
-				modifyDestination(bookmark, goToDestination.getDestination());
+				modifyDestination(title, goToDestination.getDestination());
 			} else if (target instanceof LocalDestination localDestination) {
-				modifyDestination(bookmark, localDestination);
+				modifyDestination(title, localDestination);
 			} else {
-				logger.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
-						target.getClass());
+				logger.warn("Bookmark '{}' has an unknown target type: {}.", title, target.getClass());
 			}
 		} catch (Exception e) {
-			logger.error("Exception while processing bookmark '{}'.", BookmarkUtil.getTitle(bookmark), e);
+			logger.error("Exception while processing bookmark '{}'.", title, e);
 		}
 	}
 
 	/**
 	 * Modifies the given destination by applying {@link #zoom}.
 	 *
-	 * @param bookmark    Bookmark the given destination belongs to.
+	 * @param title    Bookmark title the given destination belongs to.
 	 * @param destination Destination to modify.
 	 */
-	private void modifyDestination(Bookmark bookmark, Destination destination) {
+	private void modifyDestination(String title, Destination destination) {
 		destination.setMode(zoom.getMode());
 		destination.setZoom(zoom.getZoom());
 		bookmarkCountTotal++;
 		bookmarkCountCurrent++;
-		logger.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
+		logger.info("Modified bookmark '{}'.", title);
 	}
 
 	/**
