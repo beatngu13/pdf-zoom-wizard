@@ -2,3 +2,4 @@ changelog:
   exclude:
     labels:
       - exclude release notes
+      - dependencies
