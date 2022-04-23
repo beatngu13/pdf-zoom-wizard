@@ -4,7 +4,7 @@ import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class BookmarkUtil {
+final class BookmarkUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(BookmarkUtil.class);
 
