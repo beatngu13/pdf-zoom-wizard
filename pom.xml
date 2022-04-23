@@ -7,7 +7,7 @@
 
 	<groupId>com.github.beatngu13</groupId>
 	<artifactId>pdfzoomwizard</artifactId>
-	<version>0.10.0</version>
+	<version>0.11.0</version>
 
 	<name>PDF Zoom Wizard</name>
 
@@ -15,8 +15,8 @@
 		<encoding>UTF-8</encoding>
 		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
-		<java.version>11</java.version>
-		<javafx.version>16</javafx.version>
+		<java.version>17</java.version>
+		<javafx.version>18.0.1</javafx.version>
 		<mainClass>com.github.beatngu13.pdfzoomwizard.LauncherWrapper</mainClass>
 		<sonar.projectKey>beatngu13_pdf-zoom-wizard</sonar.projectKey>
 		<sonar.organization>beatngu13</sonar.organization>
@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.5</version>
+			<version>1.2.11</version>
 		</dependency>
 
 		<!-- test -->
@@ -60,35 +60,35 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.7.2</version>
+			<version>5.8.2</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.20.2</version>
+			<version>3.22.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-inline</artifactId>
-			<version>3.11.2</version>
+			<version>4.5.1</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.approvaltests</groupId>
 			<artifactId>approvaltests</artifactId>
-			<version>11.7.0</version>
+			<version>15.1.2</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>kernel</artifactId>
-			<version>7.1.16</version>
+			<version>7.2.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -107,7 +107,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.10.1</version>
 				<configuration>
 					<release>${java.version}</release>
 				</configuration>
@@ -148,7 +148,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.4</version>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -176,7 +176,7 @@
 			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
-				<version>0.0.6</version>
+				<version>0.0.8</version>
 				<configuration>
 					<mainClass>${mainClass}</mainClass>
 				</configuration>
@@ -185,9 +185,11 @@
 			<plugin>
 				<groupId>com.gluonhq</groupId>
 				<artifactId>gluonfx-maven-plugin</artifactId>
-				<version>1.0.3</version>
+				<version>1.0.13</version>
 				<configuration>
 					<mainClass>${mainClass}</mainClass>
+					<javaStaticSdkVersion>${java.version}</javaStaticSdkVersion>
+					<javafxStaticSdkVersion>${javafx.version}</javafxStaticSdkVersion>
 					<nativeImageArgs>
 						<arg>--allow-incomplete-classpath</arg>
 						<arg>--initialize-at-build-time=org.pdfclown.Version</arg>
@@ -199,13 +201,13 @@
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.9.0.2155</version>
+				<version>3.9.1.2184</version>
 			</plugin>
 
 			<plugin>
 				<groupId>com.amashchenko.maven.plugin</groupId>
 				<artifactId>gitflow-maven-plugin</artifactId>
-				<version>1.16.0</version>
+				<version>1.18.0</version>
 				<configuration>
 					<commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
 					<useSnapshotInRelease>true</useSnapshotInRelease>
@@ -227,7 +229,7 @@
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>0.8.7</version>
+						<version>0.8.8</version>
 						<executions>
 							<execution>
 								<id>prepare-agent</id>

@@ -1,37 +1,25 @@
+queue_rules:
+  - name: default
+    conditions:
+      - "check-success=build"
+      - "check-success=native-linux"
+      - "check-success=native-macos"
+      - "check-success=native-windows"
+
 pull_request_rules:
-  - name: "Rebase if non-release, non-draft, unreviewed"
+  - name: merge_dependabot
     conditions:
-      - "head~=^(?!(release|hotfix)).*$"
-      - "-draft"
-      - "#approved-reviews-by=0"
-      - "#changes-requested-reviews-by=0"
+      - "author=dependabot[bot]"
+      - "check-success=build"
+      - "check-success=native-linux"
+      - "check-success=native-macos"
+      - "check-success=native-windows"
     actions:
-      rebase: { }
+      queue:
+        name: default
+        update_method: rebase
 
-  - name: "Merge strict with rebase if non-release, non-draft, reviewed"
-    conditions:
-      - "head~=^(?!(release|hotfix)).*$"
-      - "-draft"
-      - "#approved-reviews-by>=1"
-      - "#changes-requested-reviews-by=0"
-    actions:
-      merge:
-        strict: true
-        strict_method: rebase
-        method: merge
-
-  - name: "Merge strict if release, non-draft, reviewed"
-    conditions:
-      - "head~=^(release|hotfix).*$"
-      - "-draft"
-      - "#approved-reviews-by>=1"
-      - "#changes-requested-reviews-by=0"
-    actions:
-      merge:
-        strict: true
-        method: merge
-
-  - name: "Delete if merged"
+  - name: delete_merged
     conditions:
       - merged
     actions:

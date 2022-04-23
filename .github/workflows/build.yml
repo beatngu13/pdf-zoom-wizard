@@ -3,8 +3,8 @@ name: Build
 on: push
 
 env:
-  GRAALVM_VERSION: 21.2.0
-  JAVA_VERSION: java11
+  GRAALVM_VERSION: 22.0.0.2
+  JAVA_VERSION: 17
 
 jobs:
   build:
@@ -14,25 +14,26 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
         with:
           # fetch unshallow to enable blame for Sonar
           fetch-depth: 0
 
       - name: Set up GraalVM
-        uses: DeLaGuardo/setup-graalvm@4.0
+        uses: graalvm/setup-graalvm@v1
         with:
-          graalvm: ${{ env.GRAALVM_VERSION }}
-          java: ${{ env.JAVA_VERSION }}
+          version: ${{ env.GRAALVM_VERSION }}
+          java-version: ${{ env.JAVA_VERSION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache Maven
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
 
       - name: Cache Sonar
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3
         with:
           path: ~/.sonar/cache/
           key: ${{ runner.os }}-sonar-${{ secrets.CACHE_VERSION }}
@@ -55,7 +56,7 @@ jobs:
           mvn sonar:sonar -B
 
       - name: Upload JAR
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: ./target/pdfzoomwizard-*.jar
@@ -72,23 +73,25 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
 
       - name: Set up GraalVM
-        uses: DeLaGuardo/setup-graalvm@4.0
+        uses: graalvm/setup-graalvm@v1
         with:
-          graalvm: ${{ env.GRAALVM_VERSION }}
-          java: ${{ env.JAVA_VERSION }}
+          version: ${{ env.GRAALVM_VERSION }}
+          java-version: ${{ env.JAVA_VERSION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          components: 'native-image'
 
       - name: Cache Maven
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
 
       - name: Install libraries
         run: >
-          sudo apt install
+          sudo apt-get update && sudo apt-get install
           libasound2-dev
           libavcodec-dev
           libavformat-dev
@@ -112,7 +115,7 @@ jobs:
           tar --create --gzip --file "./pdfzoomwizard-linux-${{needs.build.outputs.version}}.tar.gz" ./pdfzoomwizard
 
       - name: Upload native image
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: ./pdfzoomwizard-linux-*.tar.gz
@@ -123,16 +126,18 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
 
       - name: Set up GraalVM
-        uses: DeLaGuardo/setup-graalvm@4.0
+        uses: graalvm/setup-graalvm@v1
         with:
-          graalvm: ${{ env.GRAALVM_VERSION }}
-          java: ${{ env.JAVA_VERSION }}
+          version: ${{ env.GRAALVM_VERSION }}
+          java-version: ${{ env.JAVA_VERSION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          components: 'native-image'
 
       - name: Cache Maven
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
@@ -151,7 +156,7 @@ jobs:
           tar --create --gzip --file "./pdfzoomwizard-macos-${{needs.build.outputs.version}}.tar.gz" ./pdfzoomwizard
 
       - name: Upload native image
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: ./pdfzoomwizard-macos-*.tar.gz
@@ -162,25 +167,21 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
 
       - name: Set up GraalVM
-        uses: DeLaGuardo/setup-graalvm@4.0
+        uses: graalvm/setup-graalvm@v1
         with:
-          graalvm: ${{ env.GRAALVM_VERSION }}
-          java: ${{ env.JAVA_VERSION }}
+          version: ${{ env.GRAALVM_VERSION }}
+          java-version: ${{ env.JAVA_VERSION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          components: 'native-image'
 
       - name: Cache Maven
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
-
-      - name: Add MSBuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
-
-      - name: Set up Visual Studio shell
-        uses: egor-tensin/vs-shell@v2
 
       - name: Install PDF Clown
         run: |
@@ -196,7 +197,7 @@ jobs:
           Compress-Archive -Path .\pdfzoomwizard.exe -DestinationPath ".\pdfzoomwizard-windows-${{needs.build.outputs.version}}.zip"
 
       - name: Upload native image
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: ./pdfzoomwizard-windows-*.zip
@@ -208,16 +209,16 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v2.0.10
+        uses: actions/download-artifact@v3
         with:
           name: artifacts
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v0.1.5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v0.1.14
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
+          generate_release_notes: true
           files: |
             ./pdfzoomwizard-linux-*.tar.gz
             ./pdfzoomwizard-macos-*.tar.gz
