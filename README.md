@@ -8,7 +8,7 @@ A new and extended implementation of the [PDF Bookmark Wizard](https://bitbucket
 
 ## (Technical) Road Map
 
-The road map below shows the current project status from a technical point of view. Have a look at the [changelog](https://github.com/beatngu13/pdf-zoom-wizard/blob/master/CHANGELOG.md) for more details on past changes.
+The road map below shows the current project status from a technical point of view.
 
 - [x] Convert to Maven project
 - [x] Enhance build process with GitHub Actions

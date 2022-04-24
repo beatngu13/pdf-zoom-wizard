@@ -40,11 +40,11 @@ jobs:
 
       - name: Install PDF Clown
         run: |
-          ./install-pdf-clown.sh
+          ./scripts/install-deps.sh
 
       - name: Maven verify
         run: |
-          mvn verify -B -Pcoverage
+          mvn -B verify -Pcoverage
 
       - name: Run Sonar analysis
         # see https://github.com/dependabot/dependabot-core/issues/3253#issuecomment-852541544
@@ -53,7 +53,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
-          mvn sonar:sonar -B
+          mvn -B sonar:sonar
 
       - name: Upload JAR
         uses: actions/upload-artifact@v3
@@ -103,11 +103,11 @@ jobs:
 
       - name: Install PDF Clown
         run: |
-          ./install-pdf-clown.sh
+          ./scripts/install-deps.sh
 
       - name: Maven compile and link
         run: |
-          mvn gluonfx:build -B
+          mvn -B gluonfx:build
 
       - name: Prepare native image for upload
         run: |
@@ -144,11 +144,11 @@ jobs:
 
       - name: Install PDF Clown
         run: |
-          ./install-pdf-clown.sh
+          ./scripts/install-deps.sh
 
       - name: Maven compile and link
         run: |
-          mvn gluonfx:build -B
+          mvn -B gluonfx:build
 
       - name: Prepare native image for upload
         run: |
@@ -185,11 +185,11 @@ jobs:
 
       - name: Install PDF Clown
         run: |
-          bash ./install-pdf-clown.sh
+          bash ./scripts/install-deps.sh
 
       - name: Maven compile and link
         run: |
-          mvn gluonfx:build -B
+          mvn -B gluonfx:build
 
       - name: Prepare native image for upload
         run: |
