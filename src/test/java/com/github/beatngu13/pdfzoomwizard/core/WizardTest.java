@@ -16,12 +16,28 @@ import static org.mockito.Mockito.when;
 class WizardTest {
 
 	@Test
-	void exception_in_get_target_shouldnt_crash_execution() {
+	void get_target_exception_should_not_crash_execution() {
 		var cut = new Wizard(null, null, Zoom.ACTUAL_SIZE);
 
 		var bookmark = mock(Bookmark.class);
 		when(bookmark.getBookmarks()).thenReturn(mock(Bookmarks.class));
 		when(bookmark.getTarget()).thenThrow(RuntimeException.class);
+
+		var bookmarkIter = Collections.singleton(bookmark).iterator();
+
+		var bookmarks = mock(Bookmarks.class);
+		when(bookmarks.iterator()).thenReturn(bookmarkIter);
+
+		assertThatCode(() -> cut.modifyBookmarks(bookmarks)).doesNotThrowAnyException();
+	}
+
+	@Test
+	void get_target_null_should_not_crash_execution() {
+		var cut = new Wizard(null, null, Zoom.ACTUAL_SIZE);
+
+		var bookmark = mock(Bookmark.class);
+		when(bookmark.getBookmarks()).thenReturn(mock(Bookmarks.class));
+		when(bookmark.getTarget()).thenReturn(null);
 
 		var bookmarkIter = Collections.singleton(bookmark).iterator();
 

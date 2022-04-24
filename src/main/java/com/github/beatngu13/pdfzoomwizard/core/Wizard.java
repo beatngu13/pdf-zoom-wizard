@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -160,40 +161,59 @@ public class Wizard extends Task<Void> {
 	}
 
 	/**
-	 * Modifies the given bookmark using {@link #modifyDestination(Bookmark, Destination)}.
+	 * Modifies the given bookmark using {@link #modifyDestination(Destination)}.
 	 *
 	 * @param bookmark Bookmark to be modified.
 	 */
 	private void modifyBookmark(Bookmark bookmark) {
-		// XXX Bookmarks with broken destinations sometimes cause trouble.
+		// Bookmark#getTarget() might throw an exception.
+		var title = BookmarkUtil.getTitle(bookmark);
 		try {
-			PdfObjectWrapper<?> target = bookmark.getTarget();
-
-			if (target instanceof GoToDestination<?> goToDestination) {
-				modifyDestination(bookmark, goToDestination.getDestination());
-			} else if (target instanceof LocalDestination localDestination) {
-				modifyDestination(bookmark, localDestination);
-			} else {
-				logger.warn("Bookmark '{}' has an unknown target type: {}.", BookmarkUtil.getTitle(bookmark),
-						target.getClass());
+			var target = bookmark.getTarget();
+			if (target == null) {
+				logger.warn("Bookmark '{}' has no target.", title);
+				return;
 			}
+
+			var destination = getDestination(target);
+			if (destination == null) {
+				logger.warn("Bookmark '{}' has no destination.", title);
+				return;
+			}
+
+			modifyDestination(destination);
+			logger.info("Modified bookmark '{}'.", title);
 		} catch (Exception e) {
-			logger.error("Exception while processing bookmark '{}'.", BookmarkUtil.getTitle(bookmark), e);
+			logger.error("Exception while processing bookmark '{}'.", title, e);
 		}
+	}
+
+	/**
+	 * Gets a bookmark's target destination.
+	 *
+	 * @param target {@link Bookmark#getTarget} to get the destination from.
+	 * @return Target destination if applicable, else <code>null</code>.
+	 */
+	private Destination getDestination(PdfObjectWrapper<?> target) {
+		if (target instanceof GoToDestination<?> goToDestination) {
+			return goToDestination.getDestination();
+		}
+		if (target instanceof LocalDestination localDestination) {
+			return localDestination;
+		}
+		return null;
 	}
 
 	/**
 	 * Modifies the given destination by applying {@link #zoom}.
 	 *
-	 * @param bookmark    Bookmark the given destination belongs to.
 	 * @param destination Destination to modify.
 	 */
-	private void modifyDestination(Bookmark bookmark, Destination destination) {
+	private void modifyDestination(Destination destination) {
 		destination.setMode(zoom.getMode());
 		destination.setZoom(zoom.getZoom());
 		bookmarkCountTotal++;
 		bookmarkCountCurrent++;
-		logger.info("Modified bookmark '{}'.", BookmarkUtil.getTitle(bookmark));
 	}
 
 	/**
