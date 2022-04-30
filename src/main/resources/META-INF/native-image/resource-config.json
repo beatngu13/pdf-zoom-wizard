@@ -16,7 +16,8 @@
     {"pattern":"\\Qlibglass.dylib\\E"}, 
     {"pattern":"\\Qlibprism_es2.dylib\\E"}, 
     {"pattern":"\\Qlogback.xml\\E"}, 
-    {"pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"}
+    {"pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"},
+    {"pattern":"\\Qpdfzoomwizard.properties\\E"}
   ]},
   "bundles":[
     {"name":"com.sun.javafx.tk.quantum.QuantumMessagesBundle"}, 
