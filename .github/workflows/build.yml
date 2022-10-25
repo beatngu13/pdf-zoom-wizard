@@ -65,7 +65,7 @@ jobs:
         id: extract-version
         run: |
           version=$(mvn help:evaluate -q -Dexpression=project.version -DforceStdout)
-          echo "::set-output name=version::${version}"
+          echo "version=${version}" >> $GITHUB_OUTPUT
 
   native-linux:
     needs: build
