@@ -2,4 +2,4 @@
 
 set -x
 
-mvn -B gitflow:release
+./mvnw -B gitflow:release

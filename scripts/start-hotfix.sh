@@ -2,4 +2,4 @@
 
 set -x
 
-mvn -B gitflow:hotfix-start
+./mvnw -B gitflow:hotfix-start

@@ -44,7 +44,7 @@ jobs:
 
       - name: Maven verify
         run: |
-          mvn -B verify -Pcoverage
+          ./mvnw -B verify -Pcoverage
 
       - name: Run Sonar analysis
         # see https://github.com/dependabot/dependabot-core/issues/3253#issuecomment-852541544
@@ -53,7 +53,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
-          mvn -B sonar:sonar
+          ./mvnw -B sonar:sonar
 
       - name: Upload JAR
         uses: actions/upload-artifact@v3
@@ -64,7 +64,7 @@ jobs:
       - name: Extract version
         id: extract-version
         run: >
-          echo "version=$(mvn help:evaluate -q -Dexpression=project.version -DforceStdout)" >> $GITHUB_OUTPUT
+          echo "version=$(./mvnw help:evaluate -q -Dexpression=project.version -DforceStdout)" >> $GITHUB_OUTPUT
 
   native-linux:
     needs: build
@@ -106,7 +106,7 @@ jobs:
 
       - name: Maven compile and link
         run: |
-          mvn -B gluonfx:build
+          ./mvnw -B gluonfx:build
 
       - name: Prepare native image for upload
         run: |
@@ -147,7 +147,7 @@ jobs:
 
       - name: Maven compile and link
         run: |
-          mvn -B gluonfx:build
+          ./mvnw -B gluonfx:build
 
       - name: Prepare native image for upload
         run: |
@@ -188,7 +188,7 @@ jobs:
 
       - name: Maven compile and link
         run: |
-          mvn -B gluonfx:build
+          ./mvnw -B gluonfx:build
 
       - name: Prepare native image for upload
         run: |
