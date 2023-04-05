@@ -1,4 +1,4 @@
-![.github/workflows/build.yml](https://github.com/beatngu13/pdf-zoom-wizard/workflows/.github/workflows/build.yml/badge.svg)
+![Workflow status](https://github.com/beatngu13/pdf-zoom-wizard/actions/workflows//build.yml/badge.svg)
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=beatngu13_pdf-zoom-wizard&metric=alert_status)](https://sonarcloud.io/dashboard?id=beatngu13_pdf-zoom-wizard)
 [![Total downloads status](https://img.shields.io/github/downloads/beatngu13/pdf-zoom-wizard/total.svg?style=flat)](https://github.com/beatngu13/pdf-zoom-wizard/releases)
 
