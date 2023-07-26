@@ -181,7 +181,7 @@ public class Wizard extends Task<Void> {
 			}
 
 			modifyDestination(destination);
-			logger.info("Modified bookmark '{}'.", title);
+			logger.debug("Modified bookmark '{}'.", title);
 		} catch (Exception e) {
 			logger.error("Exception while processing bookmark '{}'.", title, e);
 		}
