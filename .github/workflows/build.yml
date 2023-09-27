@@ -3,8 +3,8 @@ name: Build
 on: push
 
 env:
-  GRAALVM_VERSION: 22.2.0
-  JAVA_VERSION: 17
+  GRAALVM_VERSION: 22.1.0.1-Final
+  JAVA_VERSION: java17
 
 jobs:
   build:
@@ -20,11 +20,12 @@ jobs:
           fetch-depth: 0
 
       - name: Set up GraalVM
-        uses: graalvm/setup-graalvm@v1
+        uses: gluonhq/setup-graalvm@6eecc74f9ad1f028b863d7a494e351668a1b0370
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version: ${{ env.GRAALVM_VERSION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          graalvm: ${{ env.GRAALVM_VERSION }}
+          jdk: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
         uses: actions/cache@v3
@@ -75,12 +76,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up GraalVM
-        uses: graalvm/setup-graalvm@v1
+        uses: gluonhq/setup-graalvm@6eecc74f9ad1f028b863d7a494e351668a1b0370
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version: ${{ env.GRAALVM_VERSION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          components: 'native-image'
+          graalvm: ${{ env.GRAALVM_VERSION }}
+          jdk: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
         uses: actions/cache@v3
@@ -128,12 +129,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up GraalVM
-        uses: graalvm/setup-graalvm@v1
+        uses: gluonhq/setup-graalvm@6eecc74f9ad1f028b863d7a494e351668a1b0370
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version: ${{ env.GRAALVM_VERSION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          components: 'native-image'
+          graalvm: ${{ env.GRAALVM_VERSION }}
+          jdk: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
         uses: actions/cache@v3
@@ -169,12 +170,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up GraalVM
-        uses: graalvm/setup-graalvm@v1
+        uses: gluonhq/setup-graalvm@6eecc74f9ad1f028b863d7a494e351668a1b0370
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version: ${{ env.GRAALVM_VERSION }}
-          java-version: ${{ env.JAVA_VERSION }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          components: 'native-image'
+          graalvm: ${{ env.GRAALVM_VERSION }}
+          jdk: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
         uses: actions/cache@v3
