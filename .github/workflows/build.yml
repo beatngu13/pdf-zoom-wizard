@@ -31,13 +31,13 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Cache Sonar
         uses: actions/cache@v3
         with:
           path: ~/.sonar/cache/
-          key: ${{ runner.os }}-sonar-${{ secrets.CACHE_VERSION }}
+          key: ${{ runner.os }}-sonar
 
       - name: Install PDF Clown
         run: |
@@ -87,7 +87,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Install libraries
         run: >
@@ -140,7 +140,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Install PDF Clown
         run: |
@@ -181,7 +181,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ secrets.CACHE_VERSION }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Install PDF Clown
         run: |
