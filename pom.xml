@@ -198,8 +198,9 @@
 					<javaStaticSdkVersion>${java.version}</javaStaticSdkVersion>
 					<javafxStaticSdkVersion>${javafx.version}</javafxStaticSdkVersion>
 					<nativeImageArgs>
-						<arg>--allow-incomplete-classpath</arg>
+						<arg>--add-exports=org.graalvm.nativeimage.builder/com.oracle.svm.core.jdk=ALL-UNNAMED</arg>
 						<arg>--initialize-at-build-time=org.pdfclown.Version</arg>
+						<arg>--initialize-at-build-time=org.pdfclown.VersionEnum</arg>
 						<arg>--no-fallback</arg>
 					</nativeImageArgs>
 				</configuration>
