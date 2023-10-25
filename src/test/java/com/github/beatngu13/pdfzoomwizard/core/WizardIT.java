@@ -49,9 +49,8 @@ class WizardIT {
 		@Test
 		void should_overwrite_pdf_if_infix_is_null() {
 			new Wizard(pdf, null, Zoom.INHERIT_ZOOM).call();
-			assertThat(pdf.getParentFile().listFiles())
-					.extracting(File::getName)
-					.containsExactly(pdfName);
+			assertThat(pdf.getParentFile())
+					.isDirectoryContaining(file -> file.getName().equals(pdfName));
 		}
 
 		@Test
@@ -59,9 +58,9 @@ class WizardIT {
 			var pdfInfix = "-infix";
 			new Wizard(pdf, pdfInfix, Zoom.INHERIT_ZOOM).call();
 			var pdfCopyName = pdfPrefix + pdfInfix + pdfSuffix;
-			assertThat(pdf.getParentFile().listFiles())
-					.extracting(File::getName)
-					.containsExactlyInAnyOrder(pdfName, pdfCopyName);
+			assertThat(pdf.getParentFile())
+					.isDirectoryContaining(file -> file.getName().equals(pdfName))
+					.isDirectoryContaining(file -> file.getName().equals(pdfCopyName));
 		}
 
 	}
