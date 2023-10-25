@@ -3,8 +3,6 @@ package com.github.beatngu13.pdfzoomwizard.core;
 import com.github.beatngu13.pdfzoomwizard.TestUtil;
 import com.itextpdf.kernel.pdf.PdfObject;
 import org.approvaltests.Approvals;
-import org.approvaltests.namer.NamedEnvironment;
-import org.approvaltests.namer.NamerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -43,11 +41,9 @@ class WizardIT {
 		@EnumSource(Zoom.class)
 		void zoom_should_be_applied_properly(Zoom zoom) {
 			var zoomName = TestUtil.toStringNormalized(zoom);
-			try (NamedEnvironment env = NamerFactory.withParameters(zoomName)) {
-				new Wizard(pdf, null, zoom).call();
-				List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(pdf);
-				Approvals.verify(pdfObjects);
-			}
+			new Wizard(pdf, null, zoom).call();
+			List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(pdf);
+			Approvals.verify(pdfObjects, Approvals.NAMES.withParameters(zoomName));
 		}
 
 		@Test
