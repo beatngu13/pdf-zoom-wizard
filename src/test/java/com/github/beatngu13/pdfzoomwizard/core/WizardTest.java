@@ -1,11 +1,13 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.pdfclown.documents.interaction.navigation.document.Bookmark;
 import org.pdfclown.documents.interaction.navigation.document.Bookmarks;
 import org.pdfclown.objects.PdfObjectWrapper;
 
 import java.util.Collections;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.mock;
@@ -71,6 +73,24 @@ class WizardTest {
 		cut.modifyBookmarks(bookmarks);
 
 		verify(cut).modifyBookmarks(childBookmarks);
+	}
+
+	@Test
+	@Timeout(1)
+	void endless_bookmark_iterator_should_be_stopped() {
+		var cut = new Wizard(null, null, Zoom.ACTUAL_SIZE);
+
+		var childBookmarks = mock(Bookmarks.class);
+
+		var bookmark = mock(Bookmark.class);
+		when(bookmark.getBookmarks()).thenReturn(childBookmarks);
+
+		var bookmarksIter = Stream.generate(() -> bookmark).iterator();
+
+		var bookmarks = mock(Bookmarks.class);
+		when(bookmarks.iterator()).thenReturn(bookmarksIter);
+
+		assertThatCode(() -> cut.modifyBookmarks(bookmarks)).doesNotThrowAnyException();
 	}
 
 }
