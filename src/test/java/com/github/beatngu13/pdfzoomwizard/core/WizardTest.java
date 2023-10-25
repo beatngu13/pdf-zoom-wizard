@@ -59,7 +59,6 @@ class WizardTest {
 		assertThatCode(() -> cut.modifyBookmarks(bookmarks)).doesNotThrowAnyException();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	void closed_bookmarks_should_be_modified() {
 		var cut = spy(this.cut);
