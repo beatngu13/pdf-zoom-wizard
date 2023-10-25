@@ -1,4 +1,4 @@
-![.github/workflows/build.yml](https://github.com/beatngu13/pdf-zoom-wizard/workflows/.github/workflows/build.yml/badge.svg)
+![Workflow status](https://github.com/beatngu13/pdf-zoom-wizard/actions/workflows//build.yml/badge.svg)
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=beatngu13_pdf-zoom-wizard&metric=alert_status)](https://sonarcloud.io/dashboard?id=beatngu13_pdf-zoom-wizard)
 [![Total downloads status](https://img.shields.io/github/downloads/beatngu13/pdf-zoom-wizard/total.svg?style=flat)](https://github.com/beatngu13/pdf-zoom-wizard/releases)
 
@@ -8,7 +8,7 @@ A new and extended implementation of the [PDF Bookmark Wizard](https://bitbucket
 
 ## (Technical) Road Map
 
-The road map below shows the current project status from a technical point of view. Have a look at the [changelog](https://github.com/beatngu13/pdf-zoom-wizard/blob/master/CHANGELOG.md) for more details on past changes.
+The road map below shows the current project status from a technical point of view.
 
 - [x] Convert to Maven project
 - [x] Enhance build process with GitHub Actions
