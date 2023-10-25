@@ -43,7 +43,7 @@ class WizardIT {
 			var zoomName = TestUtil.toStringNormalized(zoom);
 			new Wizard(pdf, null, zoom).call();
 			List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(pdf);
-			Approvals.verify(pdfObjects, Approvals.NAMES.withParameters(zoomName));
+			Approvals.verifyAll(pdfObjects.toArray(), Object::toString, Approvals.NAMES.withParameters(zoomName));
 		}
 
 		@Test
