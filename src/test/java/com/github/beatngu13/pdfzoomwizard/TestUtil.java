@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class TestUtil {
@@ -29,7 +28,7 @@ public final class TestUtil {
 	public static List<Bookmark> getBookmarks(File pdf) {
 		return streamOutlines(pdf)
 				.map(TestUtil::toBookmark)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	private static Stream<PdfOutline> streamOutlines(File pdf) {
