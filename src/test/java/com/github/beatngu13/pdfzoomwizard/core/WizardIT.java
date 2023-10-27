@@ -36,7 +36,7 @@ class WizardIT {
 		}
 
 		@ParameterizedTest
-		@EnumSource(Zoom.class)
+		@EnumSource
 		void zoom_should_be_applied_properly(Zoom zoom) {
 			var zoomName = TestUtil.toStringNormalized(zoom);
 			new Wizard(pdf, null, zoom).call();
