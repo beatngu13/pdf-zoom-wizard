@@ -2,10 +2,8 @@ package com.github.beatngu13.pdfzoomwizard;
 
 import com.github.beatngu13.pdfzoomwizard.core.Zoom;
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfObject;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.navigation.PdfDestination;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +14,9 @@ import java.util.stream.Stream;
 
 public final class TestUtil {
 
+	public record Bookmark(String title, String data) {
+	}
+
 	private TestUtil() {
 	}
 
@@ -25,29 +26,34 @@ public final class TestUtil {
 				.replaceAll(" ", "_");
 	}
 
-	public static List<PdfObject> getAllPdfObjects(File pdf) {
-		return getAllBookmarks(pdf)
-				.map(PdfOutline::getDestination)
-				.map(PdfDestination::getPdfObject)
+	public static List<Bookmark> getBookmarks(File pdf) {
+		return streamOutlines(pdf)
+				.map(TestUtil::toBookmark)
 				.collect(Collectors.toList());
 	}
 
-	private static Stream<PdfOutline> getAllBookmarks(File pdf) {
+	private static Stream<PdfOutline> streamOutlines(File pdf) {
 		try (PdfDocument doc = new PdfDocument(new PdfReader(pdf))) {
 			return doc.getOutlines(true)
 					.getAllChildren()
 					.stream()
-					.flatMap(TestUtil::streamRecursive);
+					.flatMap(TestUtil::streamOutlines);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
 	}
 
-	private static Stream<PdfOutline> streamRecursive(PdfOutline bookmark) {
-		Stream<PdfOutline> allChildren = bookmark.getAllChildren()
+	private static Stream<PdfOutline> streamOutlines(PdfOutline pdfOutline) {
+		Stream<PdfOutline> allChildren = pdfOutline.getAllChildren()
 				.stream()
-				.flatMap(TestUtil::streamRecursive);
-		return Stream.concat(Stream.of(bookmark), allChildren);
+				.flatMap(TestUtil::streamOutlines);
+		return Stream.concat(Stream.of(pdfOutline), allChildren);
+	}
+
+	private static Bookmark toBookmark(PdfOutline pdfOutline) {
+		String title = pdfOutline.getTitle();
+		String data = pdfOutline.getDestination().getPdfObject().toString();
+		return new Bookmark(title, data);
 	}
 
 }

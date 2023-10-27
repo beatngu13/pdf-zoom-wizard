@@ -1,7 +1,6 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
 import com.github.beatngu13.pdfzoomwizard.TestUtil;
-import com.itextpdf.kernel.pdf.PdfObject;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -15,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -42,8 +40,8 @@ class WizardIT {
 		void zoom_should_be_applied_properly(Zoom zoom) {
 			var zoomName = TestUtil.toStringNormalized(zoom);
 			new Wizard(pdf, null, zoom).call();
-			List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(pdf);
-			Approvals.verifyAll(pdfObjects.toArray(), Object::toString, Approvals.NAMES.withParameters(zoomName));
+			var bookmarks = TestUtil.getBookmarks(pdf);
+			Approvals.verifyAll(bookmarks.toArray(), Object::toString, Approvals.NAMES.withParameters(zoomName));
 		}
 
 		@Test
