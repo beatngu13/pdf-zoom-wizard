@@ -209,7 +209,7 @@ public class MainViewController {
 				: "File '%s' will be ")
 				.formatted(root.getAbsolutePath());
 		var infix = copyCheckBox.isSelected() ? "copied." : "overwritten.";
-		var suffix = "\n\nAre you sure to proceed?";
+		var suffix = System.lineSeparator().repeat(2) + "Are you sure to proceed?";
 		return prefix + infix + suffix;
 	}
 
