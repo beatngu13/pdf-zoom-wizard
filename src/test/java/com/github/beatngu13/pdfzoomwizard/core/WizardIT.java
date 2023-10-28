@@ -38,7 +38,7 @@ class WizardIT {
 		@ParameterizedTest
 		@EnumSource
 		void zoom_should_be_applied_properly(Zoom zoom) {
-			var zoomName = TestUtil.toStringNormalized(zoom);
+			var zoomName = zoom.name().toLowerCase();
 			new Wizard(pdf, null, zoom).call();
 			var bookmarks = TestUtil.getBookmarks(pdf);
 			Approvals.verifyAll(bookmarks.toArray(), Object::toString, Approvals.NAMES.withParameters(zoomName));

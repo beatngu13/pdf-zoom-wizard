@@ -1,6 +1,5 @@
 package com.github.beatngu13.pdfzoomwizard;
 
-import com.github.beatngu13.pdfzoomwizard.core.Zoom;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfReader;
@@ -17,12 +16,6 @@ public final class TestUtil {
 	}
 
 	private TestUtil() {
-	}
-
-	public static String toStringNormalized(Zoom zoom) {
-		return zoom.toString()
-				.toLowerCase()
-				.replaceAll(" ", "_");
 	}
 
 	public static List<Bookmark> getBookmarks(File pdf) {
