@@ -204,9 +204,10 @@ public class MainViewController {
 	 * @return Confirmation message for directory/file to be overwritten/copied.
 	 */
 	private String getConfirmationMessage() {
-		var prefix = multipleMode
-				? "All files in '" + root.getAbsolutePath() + "' and its enclosing subdirectories will be "
-				: "File '" + root.getAbsolutePath() + "' will be ";
+		var prefix = (multipleMode
+				? "All files in '%s' and its enclosing subdirectories will be "
+				: "File '%s' will be ")
+				.formatted(root.getAbsolutePath());
 		var infix = copyCheckBox.isSelected() ? "copied." : "overwritten.";
 		var suffix = "\n\nAre you sure to proceed?";
 		return prefix + infix + suffix;
