@@ -1,4 +1,4 @@
-package com.github.beatngu13.pdfzoomwizard;
+package com.github.beatngu13.pdfzoomwizard.core;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfOutline;
@@ -10,17 +10,17 @@ import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.stream.Stream;
 
-public final class TestUtil {
+final class WizardITUtil {
 
-	public record Bookmark(String title, String data) {
+	record Bookmark(String title, String data) {
 	}
 
-	private TestUtil() {
+	private WizardITUtil() {
 	}
 
-	public static List<Bookmark> getBookmarks(File pdf) {
+	static List<Bookmark> getBookmarks(File pdf) {
 		return streamOutlines(pdf)
-				.map(TestUtil::toBookmark)
+				.map(WizardITUtil::toBookmark)
 				.toList();
 	}
 
@@ -29,7 +29,7 @@ public final class TestUtil {
 			return doc.getOutlines(true)
 					.getAllChildren()
 					.stream()
-					.flatMap(TestUtil::streamOutlines);
+					.flatMap(WizardITUtil::streamOutlines);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
@@ -38,7 +38,7 @@ public final class TestUtil {
 	private static Stream<PdfOutline> streamOutlines(PdfOutline pdfOutline) {
 		Stream<PdfOutline> allChildren = pdfOutline.getAllChildren()
 				.stream()
-				.flatMap(TestUtil::streamOutlines);
+				.flatMap(WizardITUtil::streamOutlines);
 		return Stream.concat(Stream.of(pdfOutline), allChildren);
 	}
 

@@ -1,6 +1,5 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import com.github.beatngu13.pdfzoomwizard.TestUtil;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -40,7 +39,7 @@ class WizardIT {
 		void zoom_should_be_applied_properly(Zoom zoom) {
 			var zoomName = zoom.name().toLowerCase();
 			new Wizard(pdf, null, zoom).call();
-			var bookmarks = TestUtil.getBookmarks(pdf);
+			var bookmarks = WizardITUtil.getBookmarks(pdf);
 			Approvals.verifyAll(bookmarks.toArray(), Object::toString, Approvals.NAMES.withParameters(zoomName));
 		}
 
