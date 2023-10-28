@@ -3,6 +3,7 @@ package com.github.beatngu13.pdfzoomwizard.core;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.navigation.PdfDestination;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,11 @@ final class WizardITUtil {
 
 	private static Stream<PdfOutline> streamOutlines(File pdf) {
 		try (PdfDocument doc = new PdfDocument(new PdfReader(pdf))) {
-			return doc.getOutlines(true)
+			PdfOutline outlines = doc.getOutlines(true);
+			if (outlines == null) {
+				return Stream.empty();
+			}
+			return outlines
 					.getAllChildren()
 					.stream()
 					.flatMap(WizardITUtil::streamOutlines);
@@ -35,16 +40,19 @@ final class WizardITUtil {
 		}
 	}
 
-	private static Stream<PdfOutline> streamOutlines(PdfOutline pdfOutline) {
-		Stream<PdfOutline> allChildren = pdfOutline.getAllChildren()
+	private static Stream<PdfOutline> streamOutlines(PdfOutline outline) {
+		Stream<PdfOutline> allChildren = outline.getAllChildren()
 				.stream()
 				.flatMap(WizardITUtil::streamOutlines);
-		return Stream.concat(Stream.of(pdfOutline), allChildren);
+		return Stream.concat(Stream.of(outline), allChildren);
 	}
 
-	private static Bookmark toBookmark(PdfOutline pdfOutline) {
-		String title = pdfOutline.getTitle();
-		String data = pdfOutline.getDestination().getPdfObject().toString();
+	private static Bookmark toBookmark(PdfOutline outline) {
+		String title = outline.getTitle();
+		PdfDestination destination = outline.getDestination();
+		String data = destination == null
+				? "No destination"
+				: destination.getPdfObject().toString();
 		return new Bookmark(title, data);
 	}
 
