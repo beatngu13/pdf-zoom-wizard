@@ -68,7 +68,10 @@
 },
 {
   "name":"ch.qos.logback.core.encoder.LayoutWrappingEncoder",
-  "methods":[{"name":"setParent","parameterTypes":["ch.qos.logback.core.spi.ContextAware"] }]
+  "methods":[
+    {"name":"setCharset","parameterTypes":["java.nio.charset.Charset"] }, 
+    {"name":"setParent","parameterTypes":["ch.qos.logback.core.spi.ContextAware"] }
+  ]
 },
 {
   "name":"ch.qos.logback.core.pattern.PatternLayoutEncoderBase",
