@@ -55,14 +55,16 @@
       "name":"com.sun.javafx.tk.quantum.QuantumMessagesBundle",
       "locales":[
         "", 
-        "de"
+        "de", 
+        "und"
       ]
     }, 
     {
       "name":"com/sun/javafx/scene/control/skin/resources/controls",
       "locales":[
         "", 
-        "de"
+        "de", 
+        "und"
       ]
     }
   ]
