@@ -2,4 +2,4 @@
 
 set -x
 
-./mvnw -B gitflow:hotfix-start
+./mvnw -B gitflow:hotfix-start -DhotfixBranch="$1"
