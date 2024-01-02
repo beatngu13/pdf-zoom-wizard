@@ -149,13 +149,19 @@ public class Wizard extends Task<Void> {
 	 * @param bookmarks Bookmarks to be modified.
 	 */
 	void modifyBookmarks(Bookmarks bookmarks) {
+		Bookmark previous = null;
 		for (Bookmark bookmark : bookmarks) {
-			var children = bookmark.getBookmarks();
+			// Bookmarks#iterator() might be endless.
+			if (bookmark.equals(previous)) {
+				break;
+			}
+			Bookmarks children = bookmark.getBookmarks();
 			// Size might be positive (bookmark open) or negative (bookmark closed).
 			if (children.size() != 0) {
 				modifyBookmarks(children);
 			}
 			modifyBookmark(bookmark);
+			previous = bookmark;
 		}
 	}
 
