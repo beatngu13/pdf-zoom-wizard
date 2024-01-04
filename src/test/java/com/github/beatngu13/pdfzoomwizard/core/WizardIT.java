@@ -1,10 +1,6 @@
 package com.github.beatngu13.pdfzoomwizard.core;
 
-import com.github.beatngu13.pdfzoomwizard.TestUtil;
-import com.itextpdf.kernel.pdf.PdfObject;
 import org.approvaltests.Approvals;
-import org.approvaltests.namer.NamedEnvironment;
-import org.approvaltests.namer.NamerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -40,22 +35,19 @@ class WizardIT {
 		}
 
 		@ParameterizedTest
-		@EnumSource(Zoom.class)
+		@EnumSource
 		void zoom_should_be_applied_properly(Zoom zoom) {
-			var zoomName = TestUtil.toStringNormalized(zoom);
-			try (NamedEnvironment env = NamerFactory.withParameters(zoomName)) {
-				new Wizard(pdf, null, zoom).call();
-				List<PdfObject> pdfObjects = TestUtil.getAllPdfObjects(pdf);
-				Approvals.verify(pdfObjects);
-			}
+			var zoomName = zoom.name().toLowerCase();
+			new Wizard(pdf, null, zoom).call();
+			var bookmarks = WizardITUtil.getBookmarks(pdf);
+			Approvals.verifyAll(bookmarks.toArray(), Object::toString, Approvals.NAMES.withParameters(zoomName));
 		}
 
 		@Test
 		void should_overwrite_pdf_if_infix_is_null() {
 			new Wizard(pdf, null, Zoom.INHERIT_ZOOM).call();
-			assertThat(pdf.getParentFile().listFiles())
-					.extracting(File::getName)
-					.containsExactly(pdfName);
+			assertThat(pdf.getParentFile())
+					.isDirectoryContaining(file -> file.getName().equals(pdfName));
 		}
 
 		@Test
@@ -63,9 +55,9 @@ class WizardIT {
 			var pdfInfix = "-infix";
 			new Wizard(pdf, pdfInfix, Zoom.INHERIT_ZOOM).call();
 			var pdfCopyName = pdfPrefix + pdfInfix + pdfSuffix;
-			assertThat(pdf.getParentFile().listFiles())
-					.extracting(File::getName)
-					.containsExactlyInAnyOrder(pdfName, pdfCopyName);
+			assertThat(pdf.getParentFile())
+					.isDirectoryContaining(file -> file.getName().equals(pdfName))
+					.isDirectoryContaining(file -> file.getName().equals(pdfCopyName));
 		}
 
 	}

@@ -12,12 +12,12 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 class ZoomTest {
 
 	@ParameterizedTest
-	@MethodSource("args")
+	@MethodSource
 	void to_string_should_be_formatted(Zoom zoom, String formatted) {
 		assertThat(zoom).hasToString(formatted);
 	}
 
-	static Stream<Arguments> args() {
+	static Stream<Arguments> to_string_should_be_formatted() {
 		return Stream.of(
 				arguments(Zoom.ACTUAL_SIZE, "Actual size"),
 				arguments(Zoom.FIT_PAGE, "Fit page"),
