@@ -1,1 +1,6 @@
-[[42 0 R /XYZ 742 null 1 ], [1 0 R /XYZ 731 null 1 ], [3 0 R /XYZ 731 null 1 ], [5 0 R /XYZ 731 null 1 ], [7 0 R /XYZ 731 null 1 ], [11 0 R /XYZ 731 null 1 ]]
+Bookmark[title=Working with Bookmarks , data=[42 0 R /XYZ 742 null 1 ]]
+Bookmark[title=Creating New Bookmarks  , data=[1 0 R /XYZ 731 null 1 ]]
+Bookmark[title=Creating a Bookmark Hierarchy  , data=[3 0 R /XYZ 731 null 1 ]]
+Bookmark[title=Editing Bookmarks  , data=[5 0 R /XYZ 731 null 1 ]]
+Bookmark[title=Deleting Bookmarks  , data=[7 0 R /XYZ 731 null 1 ]]
+Bookmark[title=Setting Documents Properties for Bookmarks , data=[11 0 R /XYZ 731 null 1 ]]

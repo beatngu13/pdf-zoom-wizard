@@ -21,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Provides a JavaFX-based Wizard UI.
@@ -31,6 +33,10 @@ public class MainViewController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainViewController.class);
 
+	/**
+	 * <code>ExecutorService</code> for running {@link Wizard} tasks.
+	 */
+	private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 	/**
 	 * Provides the last directory for {@link #directoryChooser} and
 	 * {@link #fileChooser}.
@@ -204,11 +210,12 @@ public class MainViewController {
 	 * @return Confirmation message for directory/file to be overwritten/copied.
 	 */
 	private String getConfirmationMessage() {
-		var prefix = multipleMode
-				? "All files in '" + root.getAbsolutePath() + "' and its enclosing subdirectories will be "
-				: "File '" + root.getAbsolutePath() + "' will be ";
+		var prefix = (multipleMode
+				? "All files in '%s' and its enclosing subdirectories will be "
+				: "File '%s' will be ")
+				.formatted(root.getAbsolutePath());
 		var infix = copyCheckBox.isSelected() ? "copied." : "overwritten.";
-		var suffix = "\n\nAre you sure to proceed?";
+		var suffix = System.lineSeparator().repeat(2) + "Are you sure to proceed?";
 		return prefix + infix + suffix;
 	}
 
@@ -219,11 +226,9 @@ public class MainViewController {
 	private void run() {
 		var filenameInfix = copyCheckBox.isSelected() ? copyTextField.getText() : null;
 		var wizard = new Wizard(root, filenameInfix, zoomChoiceBox.getValue());
-		var thread = new Thread(wizard);
 		// Can't be bound because infoText is also set within here.
 		wizard.messageProperty().addListener((observable, oldValue, newValue) -> infoText.setText(newValue));
-		thread.setDaemon(true);
-		thread.start();
+		executorService.submit(wizard);
 	}
 
 }
