@@ -57,9 +57,9 @@ jobs:
           ./mvnw -B sonar:sonar
 
       - name: Upload JAR
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: artifacts-jar
           path: ./target/pdfzoomwizard-*.jar
 
       - name: Extract version
@@ -115,9 +115,9 @@ jobs:
           tar --create --gzip --file "./pdfzoomwizard-linux-${{needs.build.outputs.version}}.tar.gz" ./pdfzoomwizard
 
       - name: Upload native image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: artifacts-linux
           path: ./pdfzoomwizard-linux-*.tar.gz
 
   native-macos:
@@ -156,9 +156,9 @@ jobs:
           tar --create --gzip --file "./pdfzoomwizard-macos-${{needs.build.outputs.version}}.tar.gz" ./pdfzoomwizard
 
       - name: Upload native image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: artifacts-macos
           path: ./pdfzoomwizard-macos-*.tar.gz
 
   native-windows:
@@ -203,9 +203,9 @@ jobs:
           Compress-Archive -Path .\pdfzoomwizard.exe -DestinationPath ".\pdfzoomwizard-windows-${{needs.build.outputs.version}}.zip"
 
       - name: Upload native image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: artifacts-windows
           path: ./pdfzoomwizard-windows-*.zip
 
   release:
@@ -218,6 +218,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: artifacts
+          pattern: artifacts-*
+          merge-multiple: true
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v0.1.15
