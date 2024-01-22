@@ -28,13 +28,13 @@ jobs:
           jdk: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Cache Sonar
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.sonar/cache/
           key: ${{ runner.os }}-sonar
@@ -84,7 +84,7 @@ jobs:
           jdk: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -137,7 +137,7 @@ jobs:
           jdk: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -184,7 +184,7 @@ jobs:
           jdk: ${{ env.JAVA_VERSION }}
 
       - name: Cache Maven
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
