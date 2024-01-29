@@ -17,7 +17,7 @@
 		<project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
 		<java.version>17</java.version>
 		<javafx.version>20.0.2</javafx.version>
-		<mockito.version>5.9.0</mockito.version>
+		<mockito.version>5.10.0</mockito.version>
 		<mainClass>com.github.beatngu13.pdfzoomwizard.LauncherWrapper</mainClass>
 		<sonar.projectKey>beatngu13_pdf-zoom-wizard</sonar.projectKey>
 		<sonar.organization>beatngu13</sonar.organization>
