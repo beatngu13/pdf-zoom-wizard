@@ -222,7 +222,7 @@ jobs:
           merge-multiple: true
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2.0.4
+        uses: softprops/action-gh-release@v2.0.5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
