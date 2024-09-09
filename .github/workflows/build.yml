@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up GraalVM
-        uses: gluonhq/setup-graalvm@6eecc74f9ad1f028b863d7a494e351668a1b0370
+        uses: gluonhq/setup-graalvm@3a9b11a45ef0ecad69107f5884b5dbbb7b806e1c
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -76,7 +76,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up GraalVM
-        uses: gluonhq/setup-graalvm@6eecc74f9ad1f028b863d7a494e351668a1b0370
+        uses: gluonhq/setup-graalvm@3a9b11a45ef0ecad69107f5884b5dbbb7b806e1c
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -129,7 +129,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up GraalVM
-        uses: gluonhq/setup-graalvm@6eecc74f9ad1f028b863d7a494e351668a1b0370
+        uses: gluonhq/setup-graalvm@3a9b11a45ef0ecad69107f5884b5dbbb7b806e1c
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -176,7 +176,7 @@ jobs:
         uses: egor-tensin/vs-shell@v2
 
       - name: Set up GraalVM
-        uses: gluonhq/setup-graalvm@6eecc74f9ad1f028b863d7a494e351668a1b0370
+        uses: gluonhq/setup-graalvm@3a9b11a45ef0ecad69107f5884b5dbbb7b806e1c
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
