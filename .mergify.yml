@@ -1,26 +1,25 @@
 queue_rules:
   - name: default
-    conditions:
-      - "check-success=build"
-      - "check-success=native-linux"
-      - "check-success=native-macos"
-      - "check-success=native-windows"
-
-pull_request_rules:
-  - name: merge_dependabot
-    conditions:
+    queue_conditions:
       - "author=dependabot[bot]"
       - "check-success=build"
       - "check-success=native-linux"
       - "check-success=native-macos"
       - "check-success=native-windows"
-    actions:
-      queue:
-        name: default
-        update_method: rebase
+    merge_conditions:
+      - "check-success=build"
+      - "check-success=native-linux"
+      - "check-success=native-macos"
+      - "check-success=native-windows"
+    update_method: rebase
 
+pull_request_rules:
   - name: delete_merged
     conditions:
       - merged
     actions:
-      delete_head_branch: { }
+      delete_head_branch: {}
+  - name: merge_dependabot
+    conditions: []
+    actions:
+      queue:
